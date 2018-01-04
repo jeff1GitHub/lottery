@@ -50,8 +50,8 @@ public class MpGenerator {
 		dsc.setDbType(DbType.MYSQL);
 		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setUsername("root");
-		dsc.setPassword("a123456");
-		dsc.setUrl("jdbc:mysql://localhost:3306/game");
+		dsc.setPassword("tsunami");
+		dsc.setUrl("jdbc:mysql://localhost:3306/lottery");
 		mpg.setDataSource(dsc);
 
 		String[] TablePrefix = new String[] { "t_", "sys_" };
@@ -87,12 +87,12 @@ public class MpGenerator {
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		pc.setParent("com.og");
-		pc.setModuleName("oms");
+		pc.setParent("com.sf");
+		pc.setModuleName("lottery");
 		pc.setController("controller");
-		pc.setMapper("dao");
-		pc.setXml("dao.mapping");
-		pc.setEntity("model");
+		pc.setMapper("mapper");
+		pc.setXml("mapping");
+		pc.setEntity("entity");
 
 		mpg.setPackageInfo(pc);
 
