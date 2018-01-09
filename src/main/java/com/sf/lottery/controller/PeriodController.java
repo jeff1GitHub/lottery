@@ -1,6 +1,5 @@
 package com.sf.lottery.controller;
 
-
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -16,5 +15,5 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequestMapping("/lottery/period")
 public class PeriodController {
-	
+
 }
