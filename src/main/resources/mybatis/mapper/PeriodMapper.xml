@@ -13,7 +13,7 @@
 		<result column="f_status" property="status" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
 	
-	<select id="insertPeriodTemplate">
+	<select id="insertPeriodTemplate" statementType="CALLABLE">
 		<![CDATA[
 			CALL p_create_period()
 		]]>
