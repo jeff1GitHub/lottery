@@ -1,24 +1,18 @@
 package com.sf.lottery.service.impl;
 
-import com.sf.lottery.entity.Lottery;
-import com.sf.lottery.mapper.LotteryMapper;
-import com.sf.lottery.service.ILotteryService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import com.sf.lottery.entity.Lottery;
+import com.sf.lottery.service.ILotteryService;
+
 /**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author jeff
- * @since 2018-01-03
+ *  注单服务实现类
  */
 @Service
-public class LotteryServiceImpl extends ServiceImpl<LotteryMapper, Lottery> implements ILotteryService {
+public class LotteryServiceImpl implements ILotteryService {
 
     @Override
-    public Lottery getLotteryById(Integer lotteryId) {
-        return super.selectById(lotteryId);
+    public Lottery getLotteryById(int lotteryId) {
+        return null;
     }
 }

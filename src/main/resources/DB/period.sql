@@ -1,5 +1,5 @@
 --生成期数模板存储过程
-CREATE PROCEDURE `p_create_period`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_create_period`()
 BEGIN
 	DECLARE startTime TIME DEFAULT '00:00';
 	DECLARE endTime TIME;
@@ -8,24 +8,24 @@ BEGIN
 	DECLARE finishIntervalTime INT DEFAULT 5*60;
 	DECLARE i INT DEFAULT 1;
 
-	while i <= 120 do
-		set endTime = DATE_ADD(startTime, INTERVAL endIntervalTime HOUR_SECOND);
-		set finishTime = DATE_ADD(startTime, INTERVAL finishIntervalTime HOUR_SECOND);
-		INSERT INTO lottery.base_period (game_id, start_time, end_time, finish_time) VALUES (1, startTime, endTime, finishTime);
-		set i=i+1;
-        
-        if finishTime = '02:00:00' then
-			set startTime = '10:00';
-			set endIntervalTime = 9 * 60;
-			set finishIntervalTime = 10 * 60;
-        elseif finishTime = '22:00:00' then
-			set endIntervalTime = 4 * 60;
-			set finishIntervalTime = 5 * 60;
-            set startTime = finishTime;
-		else
-			set startTime = finishTime;
-        end if;
-	end while;
+	WHILE i <= 120 DO
+		SET endTime = DATE_ADD(startTime, INTERVAL endIntervalTime HOUR_SECOND);
+		SET finishTime = DATE_ADD(startTime, INTERVAL finishIntervalTime HOUR_SECOND);
+		INSERT INTO t_period_template(f_game_id, f_code, f_start_time, f_end_time, f_finish_time) VALUES(1, i, startTime, endTime, finishTime);
+		SET i=i+1;
+		
+		IF finishTime = '02:00:00' THEN
+			SET startTime = '10:00';
+			SET endIntervalTime = 9 * 60;
+			SET finishIntervalTime = 10 * 60;
+		ELSEIF finishTime = '22:00:00' THEN
+			SET endIntervalTime = 4 * 60;
+			SET finishIntervalTime = 5 * 60;
+			SET startTime = finishTime;
+		ELSE
+			SET startTime = finishTime;
+		END IF;
+	END WHILE;
 END
 
 --生成日期的期数

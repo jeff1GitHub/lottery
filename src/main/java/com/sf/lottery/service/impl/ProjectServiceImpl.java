@@ -1,24 +1,18 @@
 package com.sf.lottery.service.impl;
 
-import com.sf.lottery.entity.Project;
-import com.sf.lottery.mapper.ProjectMapper;
-import com.sf.lottery.service.IProjectService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import com.sf.lottery.entity.Project;
+import com.sf.lottery.service.IProjectService;
+
 /**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author jeff
- * @since 2018-01-03
+ *  投注项服务实现类
  */
 @Service
-public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements IProjectService {
+public class ProjectServiceImpl implements IProjectService {
 
     @Override
-    public Project getProject(Integer projectId) {
-        return super.selectById(projectId);
+    public Project getProject(int projectId) {
+        return null;
     }
 }

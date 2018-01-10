@@ -1,28 +1,35 @@
 package com.sf.lottery.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.sf.lottery.entity.Period;
-import com.sf.lottery.mapper.PeriodMapper;
-import com.sf.lottery.service.IPeriodService;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sf.lottery.entity.Period;
+import com.sf.lottery.mapper.IPeriodMapper;
+import com.sf.lottery.service.IPeriodService;
 
 /**
- * <p>
- * 期号服务实现类
- * </p>
- *
- * @author jeff
- * @since 2018-01-03
+ * 期数服务实现类
  */
 @Service
-public class PeriodServiceImpl extends ServiceImpl<PeriodMapper, Period> implements IPeriodService {
-
+public class PeriodServiceImpl implements IPeriodService {
+	@Resource
+	private IPeriodMapper periodMapper;
+	
+	@Transactional
+	@Override
+	public boolean initPeriod() {
+		int periodNum = periodMapper.selectPeriodTemplateNum();
+		if(periodNum == 120){
+			Period period = periodMapper.selectLastPeriod();
+		}
+		return false;
+	}
+	
     @Override
-    public Period getPeriod(Integer lotteryId, String period) {
-        EntityWrapper<Period> wrapper = new EntityWrapper<>();
-        wrapper.eq("lottery_id", lotteryId);
-        wrapper.eq("period", period);
+    public Period getPeriod(int lotteryId, String period) {
         return null;
     }
+
 }

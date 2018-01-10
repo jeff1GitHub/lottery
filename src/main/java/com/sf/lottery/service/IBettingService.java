@@ -1,34 +1,23 @@
 package com.sf.lottery.service;
 
-import com.baomidou.mybatisplus.service.IService;
-import com.sf.lottery.entity.Betting;
-import com.sf.lottery.entity.Period;
-
 import java.util.List;
 
-/**
- * <p>
- * 注单服务接口类
- * </p>
- *
- * @author jeff
- * @since 2018-01-03
- */
-public interface IBettingService extends IService<Betting> {
+import com.sf.lottery.entity.Betting;
+
+public interface IBettingService {
+	
     /**
      * 通过彩票id和彩票期号获取所有注单
-     *
-     * @param lotteryId
-     * @param period
-     * @return
+     * @param lotteryId 彩票id
+     * @param period 彩票期期数
+     * @return 注单
      */
-    List<Betting> getBettingList(Integer lotteryId, String period);
+    List<Betting> getBettingList(int lotteryId, String period);
 
     /**
      * 保存注单
-     *
-     * @param betting
-     * @return
+     * @param betting 注单注单对象
+     * @return 结果(true:保存成功  false:保存失败)
      */
     boolean saveBetting(Betting betting);
 }
