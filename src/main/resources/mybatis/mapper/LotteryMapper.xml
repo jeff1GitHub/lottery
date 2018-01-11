@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sf.lottery.mapper.ILotteryMapper">
+	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.Lottery">
+		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
+		<result column="f_name" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_type" property="type" javaType="int" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="selectLottery" parameterType="int" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT f_id, f_name, f_type FROM t_lottery where f_id = #{value}
+		]]>
+	</select>
+	
+</mapper>

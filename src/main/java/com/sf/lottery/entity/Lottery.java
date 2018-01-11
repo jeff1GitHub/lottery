@@ -5,13 +5,13 @@ package com.sf.lottery.entity;
  */
 public class Lottery {
 	/** 流水号 */
-	private Integer id;
+	private int id;
 	/** 彩票名称 */
 	private String name;
 	/** 彩票类型 */
-	private Integer type;
+	private int type;
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -19,7 +19,7 @@ public class Lottery {
 		return name;
 	}
 
-	public Integer getType() {
+	public int getType() {
 		return type;
 	}
 

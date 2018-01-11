@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.sf.lottery.entity.Betting;
 
+/**
+ * 彩票服务接口
+ */
 public interface IBettingService {
 	
     /**

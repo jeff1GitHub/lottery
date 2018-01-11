@@ -7,15 +7,15 @@ import java.math.BigDecimal;
  */
 public class Project {
 	/** 项目编号 */
-	private Integer id;
+	private int id;
 	/** 项目名称 */
 	private String name;
 	/** 彩票id */
-	private Integer lotteryId;
+	private int lotteryId;
 	/** 赔率 */
 	private BigDecimal odds;
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -23,7 +23,7 @@ public class Project {
 		return name;
 	}
 
-	public Integer getLotteryId() {
+	public int getLotteryId() {
 		return lotteryId;
 	}
 

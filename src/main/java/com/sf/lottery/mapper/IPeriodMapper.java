@@ -3,6 +3,8 @@ package com.sf.lottery.mapper;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.sf.lottery.entity.Period;
 
 public interface IPeriodMapper {
@@ -26,10 +28,11 @@ public interface IPeriodMapper {
 	
 	/**
 	 * 查询当前期数
+	 * @param gameId 游戏编号
 	 * @param time 当前时间
 	 * @return 彩票期号
 	 */
-	public Period selectNowPeriod(Timestamp time);
+	public Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") Timestamp time);
 	
 	/**
 	 * 添加指定日期期数

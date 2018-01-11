@@ -28,25 +28,5 @@ BEGIN
 	END WHILE;
 END
 
---生成日期的期数
-INSERT INTO lottery.t_period (
-  `code`,
-  game_id,
-  start_time,
-  end_time,
-  finish_time,
-  result,
-  `status`
-)
-SELECT
-	LPAD(id, 3, '000') AS `code`,
-	game_id,
-	DATE_ADD(@dt, INTERVAL start_time HOUR_SECOND) AS start_time,
-	DATE_ADD(@dt, INTERVAL end_time HOUR_SECOND) AS end_time,
-	DATE_ADD(@dt, INTERVAL finish_time HOUR_SECOND) AS finish_time,
-	'' result,
-	0 `status`
-FROM base_period ORDER BY id
-
---查询档期期数
-select * from t_period where @dt >= start_time and @dt < finish_time
+--插入彩票基础数据
+insert into t_lottery(f_id, f_name, f_type) values(1, '重庆时时彩', 1);

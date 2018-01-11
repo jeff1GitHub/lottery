@@ -1,18 +1,24 @@
 package com.sf.lottery.service.impl;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.sf.lottery.entity.Lottery;
+import com.sf.lottery.mapper.ILotteryMapper;
 import com.sf.lottery.service.ILotteryService;
 
 /**
- *  注单服务实现类
+ *  彩票服务实现类
  */
 @Service
 public class LotteryServiceImpl implements ILotteryService {
-
+	@Resource
+	private ILotteryMapper lotteryMapper;
+	
     @Override
     public Lottery getLotteryById(int lotteryId) {
-        return null;
+    	Lottery lottery = lotteryMapper.selectLottery(lotteryId);
+        return lottery;
     }
 }

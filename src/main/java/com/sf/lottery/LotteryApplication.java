@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.InitBinder;
 
 @SpringBootApplication
-@MapperScan("com.sf.lottery.entity")
+@MapperScan("com.sf.lottery.mapper")
 @EnableScheduling//开启扫描定时器
 @EnableCaching//标注启用缓存
 public class LotteryApplication {
