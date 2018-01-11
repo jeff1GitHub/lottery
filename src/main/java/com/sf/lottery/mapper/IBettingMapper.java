@@ -1,5 +1,5 @@
 package com.sf.lottery.mapper;
 
-public interface BettingMapper {
+public interface IBettingMapper {
 
 }
