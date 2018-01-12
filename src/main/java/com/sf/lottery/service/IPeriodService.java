@@ -15,10 +15,19 @@ public interface IPeriodService {
 	
     /**
      * 通过彩票id和期数获取彩票期数对象
-     * @param lotteryId 彩票id
+     * @param lotteryId 彩票编号
      * @param periodCode 期数
      * @return 期数对象
      */
     Period getPeriod(int lotteryId, String periodCode);
+    
+    /**
+     * 期数开奖
+     * @param lotteryId 彩票编号
+     * @param periodCode 期数
+     * @param result 开奖结果
+     * @return 设置状态(true:设置成功  false:设置失败)
+     */
+    boolean setPeriodResult(int lotteryId, String periodCode, String result);
     
 }

@@ -23,6 +23,8 @@ public class ResultExceptionHandle {
 			BindException exc = (BindException)e;
 			String errMsg = exc.getBindingResult().getFieldError().getDefaultMessage();
 			return new JsonResult<>(ResultCode.EXCEPTION, errMsg);
+		}else if(e instanceof IllegalStateException){
+			return new JsonResult<>(ResultCode.PARAMS_ERROR);
 		}else{
 			e.printStackTrace();
 			return new JsonResult<>(ResultCode.SYS_ERROR);

@@ -34,8 +34,10 @@ public enum ResultCode {
     /** 未知的错误 */
     UNKNOWN_ERROR("499", "未知错误");
 
-    private String val;
-    private String msg;
+	/** 状态码 */
+    private final String val;
+    /** 状态说明 */
+    private final String msg;
 
     ResultCode(String value, String msg){
         this.val = value;

@@ -63,4 +63,9 @@ public class PeriodServiceImpl implements IPeriodService {
         return period != null && periodCode.equals(period.getCode()) ? period : null;
     }
 
+	@Override
+	public boolean setPeriodResult(int lotteryId, String periodCode, String result) {
+		return false;
+	}
+
 }

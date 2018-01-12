@@ -8,8 +8,8 @@ import com.sf.lottery.entity.Lottery;
 public interface ILotteryService {
 	
 	/**
-	 * 根据Id获取彩票对象
-	 * @param lotteryId 彩票Id
+	 * 根据编号获取彩票对象
+	 * @param lotteryId 彩票编号
 	 * @return 彩票对象(当查询失败或者没有该Id对应的彩票时返回Null)
 	 */
     Lottery getLotteryById(int lotteryId);

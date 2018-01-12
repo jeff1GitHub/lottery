@@ -8,29 +8,39 @@ import java.util.Date;
  */
 public class Betting {
 	/** 注单流水号 */
-	private Long id;
+	private long id;
 	/** 期号 */
 	private String period;
 	/** 投注时间 */
 	private Date bettingTime;
 	/** 彩票id */
-	private Integer lotteryId;
+	private int lotteryId;
 	/** 投注项 */
-	private Integer project;
+	private int project;
 	/** 赔率 */
 	private BigDecimal odds;
 	/** 投注金额 */
 	private BigDecimal money;
 	/** 是否结算 */
-	private Integer square;
+	private int square;
 	/** 结算时间 */
 	private Date squareTime;
 	/** 是否派彩 */
-	private Integer prize;
+	private int prize;
 	/** 派奖时间 */
 	private Date prizeTime;
 
-	public Long getId() {
+	public Betting(long id, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
+		this.id = id;
+		this.period = period;
+		this.bettingTime = bettingTime;
+		this.lotteryId = lotteryId;
+		this.project = project;
+		this.odds = odds;
+		this.money = money;
+	}
+
+	public long getId() {
 		return id;
 	}
 
@@ -42,11 +52,11 @@ public class Betting {
 		return bettingTime;
 	}
 
-	public Integer getLotteryId() {
+	public int getLotteryId() {
 		return lotteryId;
 	}
 
-	public Integer getProject() {
+	public int getProject() {
 		return project;
 	}
 
@@ -58,7 +68,7 @@ public class Betting {
 		return money;
 	}
 
-	public Integer getSquare() {
+	public int getSquare() {
 		return square;
 	}
 
@@ -66,7 +76,7 @@ public class Betting {
 		return squareTime;
 	}
 
-	public Integer getPrize() {
+	public int getPrize() {
 		return prize;
 	}
 

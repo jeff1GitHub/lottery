@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sf.lottery.mapper.IBettingMapper">
+	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.Betting">
+		<id column="f_id" property="id" javaType="long" jdbcType="BIGINT" />
+		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_betting_time" property="bettingTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		<result column="f_lottery_id" property="lotteryId" javaType="int" jdbcType="INTEGER" />
+		<result column="f_project" property="project" javaType="int" jdbcType="INTEGER" />
+		<result column="f_odds" property="odds" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_money" property="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_square" property="square" javaType="int" jdbcType="INTEGER" />
+		<result column="f_square_time" property="squareTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		<result column="f_prize" property="prize" javaType="int" jdbcType="INTEGER" />
+		<result column="f_prize_time" property="prizeTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="insertBetting" parameterType="com.sf.lottery.entity.Betting">
+		<![CDATA[
+			INSERT INTO lottery.t_betting (
+				f_id,
+			  	f_period,
+			  	f_betting_time,
+			  	f_lottery_id,
+			  	f_project,
+			 	f_odds,
+			  	f_money,
+			)
+			VALUES (
+				#{id},
+			    #{period},
+			    #{bettingTime},
+			    #{lotteryId},
+			    #{project},
+			    #{odds},
+			    #{money}
+			 );
+		]]>
+	</insert>
+	
+	<select id="selectBetting" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_time, f_prize, f_prize_time
+			FROM t_betting
+			WHERE f_period = #{period, jdbcType=VARCHAR} AND f_lottery_id = #{lotteryId, jdbcType=INTEGER}
+		]]>
+	</select>
+	
+</mapper>

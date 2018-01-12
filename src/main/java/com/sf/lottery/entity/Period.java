@@ -51,8 +51,17 @@ public class Period {
 		return result;
 	}
 
+	public void setResult(String result) {
+		this.result = result;
+	}
+
 	public int getStatus() {
 		return status;
 	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 
 }
