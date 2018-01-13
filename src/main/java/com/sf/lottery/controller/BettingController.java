@@ -63,7 +63,7 @@ public class BettingController {
 
         // 判断当期时间
         long nowTime = Instant.now().toEpochMilli();
-        if (period.getStartTime().getTime() >= nowTime || period.getEndTime().getTime() <= nowTime) {
+        if (nowTime >= period.getStartTime().getTime() &&  nowTime < period.getEndTime().getTime()) {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注时间无效!");
         }
         

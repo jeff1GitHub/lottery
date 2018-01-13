@@ -62,4 +62,15 @@
 		]]>
 	</insert>
 	
+	<update id="updatePeriodResult">
+		<![CDATA[
+			UPDATE t_period
+			SET
+				f_result = #{result, jdbcType=VARCHAR},
+				f_status = 1
+			WHERE f_id = #{id, jdbcType=INTEGER};
+						
+		]]>
+	</update>
+	
 </mapper>

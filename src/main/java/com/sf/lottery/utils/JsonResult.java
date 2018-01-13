@@ -17,6 +17,11 @@ public class JsonResult<T> {
     	this.code = code.val();
         this.message = message;
     }
+    
+    public JsonResult(ResultCode code, T data) {
+        this(code);
+        this.data = data;
+    }
 
     public JsonResult(ResultCode code, String message, T data) {
         this(code, message);

@@ -1,8 +1,7 @@
 package com.sf.lottery.service;
 
-import java.util.List;
-
 import com.sf.lottery.entity.Betting;
+import com.sf.lottery.entity.PageInfo;
 
 /**
  * 彩票服务接口
@@ -20,8 +19,9 @@ public interface IBettingService {
      * 通过彩票编号和彩票期号获取所有注单
      * @param lotteryId 彩票编号
      * @param period 彩票期数
-     * @return 注单列表(获取失败时将返回Null)
+     * @param pageNum 页数
+     * @return 注单页(获取失败时将返回Null)
      */
-    List<Betting> getBettingList(int lotteryId, String period);
+    PageInfo getBettingList(int lotteryId, String period, int pageNum);
 
 }

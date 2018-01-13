@@ -12,19 +12,19 @@ public interface IPeriodMapper {
 	/**
 	 * 添加参数模板
 	 */
-	public void insertPeriodTemplate();
+	void insertPeriodTemplate();
 	
 	/**
 	 * 查询期数模板数量
 	 * @return 数模板数量
 	 */
-	public int selectPeriodTemplateNum();
+	int selectPeriodTemplateNum();
 	
 	/**
 	 * 查询最后一期期数
 	 * @return 彩票期号
 	 */
-	public Period selectLastPeriod();
+	Period selectLastPeriod();
 	
 	/**
 	 * 查询当前期数
@@ -32,11 +32,19 @@ public interface IPeriodMapper {
 	 * @param time 当前时间
 	 * @return 彩票期号
 	 */
-	public Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") Timestamp time);
+	Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") Timestamp time);
 	
 	/**
 	 * 添加指定日期期数
 	 */
-	public void insertPeriod(Date date);
+	void insertPeriod(Date date);
+	
+	/**
+	 * 更新期数开奖结果
+	 * @param id 期数编号
+	 * @param result 开奖结果
+	 * @return 更新条数
+	 */
+	int updatePeriodResult(@Param("id") int id, @Param("result") String result);
 	
 }

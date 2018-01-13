@@ -14,8 +14,10 @@ import com.sf.lottery.entity.Project;
 public class Context {
 	/** 投注项集合 */
 	private final Map<Integer, Project> projectMap = new HashMap<>();
-	/** 当前期数 */
+	/** 当前期数集合(在有多个游戏时将改变存放方式) */
 	private final Map<Integer, Period> currentPeriodMap = new ConcurrentHashMap<>();
+	/** 待开奖期数集合(在有多个游戏时将改变存放方式) */
+	private final Map<Integer, Period> waitOpenPeriodMap = new ConcurrentHashMap<>();
 	
 	/**
 	 * 初始化投注项集合
@@ -37,12 +39,28 @@ public class Context {
 		return projectMap.get(projectId);
 	}
 	
-	public Period getCurrentPeriod(int lotteryId) {
-		return currentPeriodMap.get(lotteryId);
+	public Period getCurrentPeriod(int gameId) {
+		return currentPeriodMap.get(gameId);
 	}
 	
 	public void addCurrentPeriod(Period period) {
 		currentPeriodMap.put(period.getGameId(), period);
+	}
+	
+	public void removeCurrentPeriod(int gameId) {
+		this.currentPeriodMap.remove(gameId);
+	}
+	
+	public Period getWaitOpenPeriod(int gameId) {
+		return this.waitOpenPeriodMap.get(gameId);
+	}
+	
+	public void addWaitOpenPeriod(Period period) {
+		this.waitOpenPeriodMap.put(period.getGameId(), period);
+	}
+	
+	public void removeWaitOpenPeriod(int gameId) {
+		this.waitOpenPeriodMap.remove(gameId);
 	}
 	
 }

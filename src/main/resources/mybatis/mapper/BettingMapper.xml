@@ -25,7 +25,7 @@
 			  	f_lottery_id,
 			  	f_project,
 			 	f_odds,
-			  	f_money,
+			  	f_money
 			)
 			VALUES (
 				#{id},

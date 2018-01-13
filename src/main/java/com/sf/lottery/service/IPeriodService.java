@@ -14,7 +14,7 @@ public interface IPeriodService {
 	boolean initPeriod();
 	
     /**
-     * 通过彩票id和期数获取彩票期数对象
+     * 通过彩票编号和期数获取彩票期数对象
      * @param lotteryId 彩票编号
      * @param periodCode 期数
      * @return 期数对象
@@ -23,11 +23,17 @@ public interface IPeriodService {
     
     /**
      * 期数开奖
-     * @param lotteryId 彩票编号
-     * @param periodCode 期数
+     * @param id 期数编号
      * @param result 开奖结果
      * @return 设置状态(true:设置成功  false:设置失败)
      */
-    boolean setPeriodResult(int lotteryId, String periodCode, String result);
+    boolean setPeriodResult(int id, String result);
+    
+    /**
+     * 获取当前期数
+     * @param lotteryId 彩票编号
+     * @return 当前期数(没有时将返回Null)
+     */
+    Period getNowPeriod(int lotteryId);
     
 }

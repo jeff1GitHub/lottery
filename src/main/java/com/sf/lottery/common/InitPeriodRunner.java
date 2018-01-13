@@ -28,13 +28,6 @@ public class InitPeriodRunner implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		boolean result = periodService.initPeriod();
-		if(result){
-			logger.info("--------初始化期数完成--------");
-		}else{
-			logger.error("--------初始化期数失败--------");
-		}
-		
 		List<Project> list = projectService.getAllProject();
 		this.context.initProjectMap(list);
 		logger.info("==========所有初始化完成===========");

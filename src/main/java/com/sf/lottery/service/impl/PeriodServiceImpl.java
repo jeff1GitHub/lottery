@@ -59,13 +59,22 @@ public class PeriodServiceImpl implements IPeriodService {
     		return null;
     	}
     	
-    	Period period = periodMapper.selectNowPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
+    	//查询当前期数
+    	Period period = getNowPeriod(lotteryId);
         return period != null && periodCode.equals(period.getCode()) ? period : null;
     }
 
 	@Override
-	public boolean setPeriodResult(int lotteryId, String periodCode, String result) {
-		return false;
+	public boolean setPeriodResult(int id, String result) {
+		int num = periodMapper.updatePeriodResult(id, result);
+		return num == 1;
+	}
+
+	@Override
+	public Period getNowPeriod(int lotteryId) {
+		//查询当前期数
+    	Period period = periodMapper.selectNowPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
+		return period;
 	}
 
 }

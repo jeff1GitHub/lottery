@@ -1,5 +1,7 @@
 package com.sf.lottery;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,8 +29,8 @@ public class Test {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		
-		for(int i=100; i>0; --i) System.out.println(Tools.getRandomNum(5, 10));
+		System.out.println(Instant.now().toEpochMilli());
+		System.out.println(System.currentTimeMillis());
 		
 	}
 	
