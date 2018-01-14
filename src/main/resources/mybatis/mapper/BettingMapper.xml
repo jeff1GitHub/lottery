@@ -11,9 +11,17 @@
 		<result column="f_odds" property="odds" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
 		<result column="f_money" property="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
 		<result column="f_square" property="square" javaType="int" jdbcType="INTEGER" />
+		<result column="f_square_money" property="squareMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
 		<result column="f_square_time" property="squareTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
 		<result column="f_prize" property="prize" javaType="int" jdbcType="INTEGER" />
 		<result column="f_prize_time" property="prizeTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap id="BettingProjectResultMap" type="com.sf.lottery.entity.BettingProject">
+		<result column="f_lottery_id" property="lotteryId" javaType="int" jdbcType="INTEGER" />
+		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_project" property="project" javaType="int" jdbcType="INTEGER" />
+		<result column="f_count" property="count" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
 
 	<insert id="insertBetting" parameterType="com.sf.lottery.entity.Betting">
@@ -39,12 +47,42 @@
 		]]>
 	</insert>
 	
-	<select id="selectBetting" resultMap="BaseResultMap">
+	<select id="selectBettingBySquare" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_time, f_prize, f_prize_time
-			FROM t_betting
-			WHERE f_period = #{period, jdbcType=VARCHAR} AND f_lottery_id = #{lotteryId, jdbcType=INTEGER}
+			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money from  t_betting
+			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR} AND f_square = #{square, jdbcType=INTEGER}
 		]]>
 	</select>
+	
+	<select id="selectBettingProject" resultMap="BettingProjectResultMap">
+		<![CDATA[
+			SELECT f_lottery_id, f_period, f_project, count(f_project) as f_count
+			FROM t_betting
+			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR}
+			GROUP BY f_project
+		]]>
+	</select>
+	
+	<select id="selectBetting" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_money, f_square_time, f_prize, f_prize_time
+			FROM t_betting
+			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	<update id="updateSquareBetting">
+		<![CDATA[
+			UPDATE t_betting SET f_square_money = #{squareMoney, jdbcType=DECIMAL}, f_square = 1, f_square_time = #{squareTime, jdbcType=TIMESTAMP} WHERE f_id = #{bettingId, jdbcType=BIGINT}
+		]]>
+	</update>
+	
+	<update id="batchUpdateSquareBetting" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			<![CDATA[
+				UPDATE t_betting SET f_square_money = #{item.squareMoney}, f_square = 1, f_square_time = #{item.squareTime} WHERE f_id = #{item.bettingId}
+			]]>
+		</foreach>
+	</update>
 	
 </mapper>

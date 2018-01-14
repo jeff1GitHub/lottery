@@ -1,5 +1,8 @@
 package com.sf.lottery.service;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import com.sf.lottery.entity.Period;
 
 /**
@@ -35,5 +38,14 @@ public interface IPeriodService {
      * @return 当前期数(没有时将返回Null)
      */
     Period getNowPeriod(int lotteryId);
+    
+    /**
+	 * 根据结算时间和状态获取期数
+	 * @param gameId 游戏编号
+	 * @param time 结算时间
+	 * @param status 状态
+	 * @return 期数列表(当获取失败时将返回Null)
+	 */
+	List<Period> getPeriodByStatus(int gameId, Timestamp time, int status);
     
 }

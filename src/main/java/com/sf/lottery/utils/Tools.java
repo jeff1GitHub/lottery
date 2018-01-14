@@ -26,20 +26,17 @@ public class Tools {
 	}
 	
 	/**
-	 * 获取随机数字符串，并用“,”分割
+	 * 获取随机数数组
 	 * @param amount 产生随机数的数量
 	 * @param maxNum 随机随机数范围:0(包含)~maxNum(不包含)
-	 * @return 随机数字符串
+	 * @return 随机数字数组
 	 */
-	public static String getRandomNum(int amount, int maxNum) {
-		StringBuilder randomStr = new StringBuilder();
+	public static int[] getRandomNum(int amount, int maxNum) {
+		int[] randomArr = new int[amount];
 		while(--amount >= 0){
-			randomStr.append(ThreadLocalRandom.current().nextInt(maxNum));
-			if(amount > 0){
-				randomStr.append(",");
-			}
+			randomArr[amount] = ThreadLocalRandom.current().nextInt(maxNum);
 		}
-		return randomStr.toString();
+		return randomArr;
 	}
 
 }

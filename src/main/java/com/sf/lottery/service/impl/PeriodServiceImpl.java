@@ -3,6 +3,7 @@ package com.sf.lottery.service.impl;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -75,6 +76,12 @@ public class PeriodServiceImpl implements IPeriodService {
 		//查询当前期数
     	Period period = periodMapper.selectNowPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
 		return period;
+	}
+
+	@Override
+	public List<Period> getPeriodByStatus(int gameId, Timestamp time, int status) {
+		List<Period> list = periodMapper.selectPeriodByStatus(gameId, time, status);
+		return list;
 	}
 
 }

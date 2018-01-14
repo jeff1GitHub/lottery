@@ -2,6 +2,7 @@ package com.sf.lottery.mapper;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -46,5 +47,14 @@ public interface IPeriodMapper {
 	 * @return 更新条数
 	 */
 	int updatePeriodResult(@Param("id") int id, @Param("result") String result);
+	
+	/**
+	 * 根据结算时间和状态查询期数
+	 * @param gameId 游戏编号
+	 * @param time 结算时间
+	 * @param status 状态
+	 * @return 期数列表(当查询失败时将返回Null)
+	 */
+	List<Period> selectPeriodByStatus(@Param("gameId") int gameId, @Param("nowTime") Timestamp time, @Param("status") int status);
 	
 }

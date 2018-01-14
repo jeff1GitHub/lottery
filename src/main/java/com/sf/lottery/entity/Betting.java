@@ -23,12 +23,16 @@ public class Betting {
 	private BigDecimal money;
 	/** 是否结算 */
 	private int square;
+	/** 结算金额 */
+	private BigDecimal squareMoney;
 	/** 结算时间 */
 	private Date squareTime;
 	/** 是否派彩 */
 	private int prize;
 	/** 派奖时间 */
 	private Date prizeTime;
+	
+	public Betting() {}
 
 	public Betting(long id, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
 		this.id = id;
@@ -70,6 +74,10 @@ public class Betting {
 
 	public int getSquare() {
 		return square;
+	}
+
+	public BigDecimal getSquareMoney() {
+		return squareMoney;
 	}
 
 	public Date getSquareTime() {
