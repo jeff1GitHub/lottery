@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sf.lottery.mapper.IUserMapper">
+	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.User">
+		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
+		<result column="f_name" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_pwd" property="pwd" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_create_time" javaType="java.sql.Date" jdbcType="DATETIME" />
+	</resultMap>
+	
+	<insert id="insertUser" parameterType="com.sf.lottery.entity.User">
+		<![CDATA[
+			INSERT INTO t_user(f_id, f_name, f_pwd, f_create_time) VALUES(#{id}, #{name}, #{pwd}, #{createTime})
+		]]>
+	</insert>
+
+	<select id="selectUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT f_id, f_name, f_pwd, f_create_time FROM t_user WHERE f_name = #{name}
+		]]>
+	</select>
+	
+</mapper>

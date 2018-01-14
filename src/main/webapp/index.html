@@ -8,6 +8,7 @@
 		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 		
 		<script type="text/javascript">
+			var domain = 'http://localhost:8899';
 			$(function(){
 				var screen = $.mobile.getScreenHeight();
 				var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
@@ -23,7 +24,7 @@
 			
 			$(document).on('pageinit', '#pageone', function () {
 				$.ajax({
-					url: 'http://localhost:8899/lottery/period/nowPeriod',
+					url: domain + '/lottery/period/nowPeriod',
 					dataType: 'json',
 					async: true,
 					success: function (result) {
@@ -63,7 +64,7 @@
 				</div>
 			</div>
 			
-			<div data-role="footer" data-position="fixed">
+			<div data-role="footer" data-position="fixed" style="height: 50px;">
 				<div>已选中<span>0</span>注</div>
 			</div>
 		</div>

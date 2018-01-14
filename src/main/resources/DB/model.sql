@@ -70,5 +70,5 @@ CREATE TABLE `t_odds` (
 `odds` double NOT NULL,
 `min` int NOT NULL,
 `max` int NOT NULL
-);
-
+);CREATE TABLE `t_user` (  `f_id` BIGINT NOT NULL,  `f_name` VARCHAR(45) NOT NULL,  `f_pwd` VARCHAR(45) NOT NULL,  `f_create_time` DATETIME NOT NULL,  PRIMARY KEY (`f_id`),  UNIQUE INDEX `f_name_UNIQUE` (`f_name` ASC));
+CREATE TABLE `t_manager` (  `f_id` BIGINT NOT NULL,  `f_name` VARCHAR(45) NOT NULL,  `f_pwd` VARCHAR(45) NOT NULL,  `f_create_time` DATETIME NOT NULL,  PRIMARY KEY (`f_id`),  UNIQUE INDEX `f_name_UNIQUE` (`f_name` ASC));

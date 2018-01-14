@@ -31,4 +31,9 @@ public class PeriodController {
 		return result;
 	}
 	
+	@RequestMapping(value = "beforPeriod")
+	public JsonResult<Period> getBeforPeriod() {
+		return null;
+	}
+	
 }
