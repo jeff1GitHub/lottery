@@ -6,7 +6,7 @@
 		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
 		<result column="f_name" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_pwd" property="pwd" javaType="java.lang.String" jdbcType="VARCHAR" />
-		<result column="f_create_time" javaType="java.sql.Date" jdbcType="DATETIME" />
+		<result column="f_create_time" javaType="java.sql.Date" jdbcType="DATE" />
 	</resultMap>
 	
 	<insert id="insertUser" parameterType="com.sf.lottery.entity.User">

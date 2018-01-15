@@ -2,10 +2,27 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
-		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css">
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/jquery.mobile-1.3.2.min.js"></script>
+		<style type="text/css">
+			body {background-color: #88a6b1}
+			.round {
+				display: inline-block;
+    			text-align: center;
+			    box-shadow: inset 1px -6px 10px #fff;
+			    width: .9rem;
+			    height: .9rem;
+			    border-radius: .9rem;
+			    background: #d5d5d5;
+			    color: #000;
+			    margin-right: .1rem;
+			    line-height: .9rem;
+			    font-size: .6rem;
+			}
+		</style>
 		
 		<script type="text/javascript">
 			var domain = 'http://localhost:8899';
@@ -18,18 +35,21 @@
 				$(".ui-content").height(content);
 				
 				var gridHeight = content - 50;
-				$(".ui-grid-b").height(gridHeight);
-				$(".ui-block-a").height(gridHeight);
+				$("#contentDiv").height(gridHeight);
+				$("#leftDiv").height(gridHeight);
+				$("#rightDiv").height(gridHeight);
 			});
 			
-			$(document).on('pageinit', '#pageone', function () {
+			$(document).on('pageinit', '#mainPage', function () {
 				$.ajax({
 					url: domain + '/lottery/period/nowPeriod',
 					dataType: 'json',
 					async: true,
 					success: function (result) {
 						if(result.code == 200){
-							$('#beforCode').html(result.data.code);
+							if(result.data){
+								$('#nowCode').html(result.data.code);
+							}
 						}else{
 							alert(result.message);
 						}
@@ -43,22 +63,33 @@
 	</head>
 	
 	<body>
-		<div data-role="page" id="pageone">
+		<div data-role="page" id="mainPage">
 			<div data-role="header">
 				<h1>欢迎来到我的主页</h1>
+				<a class="ui-btn-right" data-rel="dialog" href="#loginPage">登陆</a>
 			</div>
 			
 			<div data-role="content">
-				<div style="background-color: red; height: 50px;">
-					<span id='beforCode'>xxxx</span>期：
+				<div style="height: 50px; border-bottom: 1px solid #000;">
+					<span id='beforCode'>xxxx</span>期:
+					<span id="round1" class="round"></span><span id="round2" class="round"></span><span id="round3" class="round"></span><span id="round4" class="round"></span><span id="round5" class="round"></span>
 				</div>
-				<div class="ui-grid-b" style="background-color: orange;">
-					<div class="ui-block-a" style="background-color: yellow;">
+				<div class="ui-grid-a" style="background-color: orange; height: 30px; padding: 5px 0px;">
+					<div class="ui-block-a">
+						第<span id='nowCode'>xxxx</span>期
+					</div>
+					<div class="ui-block-b" style="text-align:right;">
+						<span>封盘:</span><span>03:05</span>
+						<span style="margin-left:10px;">开奖:</span><span>04:05</span>
+					</div>
+				</div>
+				<div id="contentDiv" class="ui-grid-a" style="background-color: orange;">
+					<div id="leftDiv" class="ui-block-a" style="background-color: yellow;">
 						<div>两面</div>
 						<div>1-5球</div>
 						<div>前中后</div>
 					</div>
-					<div class="ui-block-b" style="background-color: pink;">
+					<div id="rightDiv" class="ui-block-b" style="background-color: pink;">
 						sadas
 					</div>
 				</div>
@@ -66,6 +97,21 @@
 			
 			<div data-role="footer" data-position="fixed" style="height: 50px;">
 				<div>已选中<span>0</span>注</div>
+			</div>
+		</div>
+		
+		<div data-role="page" id="loginPage">
+			<div data-role="header">
+				<h1>用户登陆</h1>
+			</div>
+			<div data-role="content">
+				<form action="demoform.asp" method="post">
+					<label for="account">账号：</label><input id="account" name="account" type="text">
+					<label for="pwd">密码：</label><input type="password" name="pwd" id="pwd">
+					<div style="text-align:center;">
+						<input type="submit" data-inline="true" value="登陆">
+					</div>
+				</form>
 			</div>
 		</div>
 	</body>
