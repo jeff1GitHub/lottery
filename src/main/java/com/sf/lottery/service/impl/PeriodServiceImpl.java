@@ -77,6 +77,12 @@ public class PeriodServiceImpl implements IPeriodService {
     	Period period = periodMapper.selectNowPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
 		return period;
 	}
+	
+	@Override
+	public Period getBeforPeriod(int lotteryId) {
+		Period period = periodMapper.selectBeforPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
+		return period;
+	}
 
 	@Override
 	public List<Period> getPeriodByStatus(int gameId, Timestamp time, int status) {

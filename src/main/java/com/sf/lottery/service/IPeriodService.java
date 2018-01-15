@@ -40,6 +40,13 @@ public interface IPeriodService {
     Period getNowPeriod(int lotteryId);
     
     /**
+	 * 查询上一期期数
+	 * @param lotteryId 彩票编号
+	 * @return 上期期数(没有时将返回Null)
+	 */
+	Period getBeforPeriod(int lotteryId);
+    
+    /**
 	 * 根据结算时间和状态获取期数
 	 * @param gameId 游戏编号
 	 * @param time 结算时间

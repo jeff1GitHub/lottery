@@ -26,6 +26,8 @@
 		
 		<script type="text/javascript">
 			var domain = 'http://localhost:8899';
+			var userName;
+			var token;
 			$(function(){
 				var screen = $.mobile.getScreenHeight();
 				var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
@@ -41,6 +43,33 @@
 			});
 			
 			$(document).on('pageinit', '#mainPage', function () {
+				$.ajax({
+					url: domain + '/lottery/period/beforPeriod',
+					dataType: 'json',
+					async: true,
+					success: function (result) {
+						if(result.code == 200){
+							if(result.data){
+								$('#beforCode').html(result.data.code);
+								
+								if(result.data.result){
+									var resultArr = result.data.result.split(',');
+									$('#round1').html(resultArr[0]);
+									$('#round2').html(resultArr[1]);
+									$('#round3').html(resultArr[2]);
+									$('#round4').html(resultArr[3]);
+									$('#round5').html(resultArr[4]);
+								}
+							}
+						}else{
+							alert(result.message);
+						}
+					},
+					error: function (request, error) {
+						alert('无法连接网络或者返回值错误!');
+					}
+				});
+				
 				$.ajax({
 					url: domain + '/lottery/period/nowPeriod',
 					dataType: 'json',
@@ -59,6 +88,33 @@
 					}
 				});
 			});
+			
+			function login() {
+				//domain + '/lottery/user/login'?account=hermes&pwd=21232f297a57a5a743894a0e4a801fc3
+				var account = $('#account').val();
+				var pwd = $('#pwd').val();
+				$.ajax({
+					url: domain + '/lottery/user/login',
+					dataType: 'json',
+					async: true,
+					data: {
+						'account': account,
+						'pwd': pwd
+					},
+					success: function (result) {
+						if(result.code == 200){
+							userName = result.data.name;
+							token = result.data.token;
+							alert("登录成功: name=" + userName + " token=" + token);
+						}else{
+							alert(result.message);
+						}
+					},
+					error: function (request, error) {
+						alert('无法连接网络或者返回值错误!');
+					}
+				});
+			}
 		</script>
 	</head>
 	
@@ -71,16 +127,16 @@
 			
 			<div data-role="content">
 				<div style="height: 50px; border-bottom: 1px solid #000;">
-					<span id='beforCode'>xxxx</span>期:
-					<span id="round1" class="round"></span><span id="round2" class="round"></span><span id="round3" class="round"></span><span id="round4" class="round"></span><span id="round5" class="round"></span>
+					第<span id='beforCode'></span>期:
+					<span id="round1" class="round">9</span><span id="round2" class="round">0</span><span id="round3" class="round"></span><span id="round4" class="round"></span><span id="round5" class="round"></span>
 				</div>
 				<div class="ui-grid-a" style="background-color: orange; height: 30px; padding: 5px 0px;">
 					<div class="ui-block-a">
 						第<span id='nowCode'>xxxx</span>期
 					</div>
 					<div class="ui-block-b" style="text-align:right;">
-						<span>封盘:</span><span>03:05</span>
-						<span style="margin-left:10px;">开奖:</span><span>04:05</span>
+						<span>封盘:</span><span id="endTime">03:05</span>&nbsp;
+						<span>开奖:</span><span id="finishTime">04:05</span>
 					</div>
 				</div>
 				<div id="contentDiv" class="ui-grid-a" style="background-color: orange;">
@@ -105,13 +161,11 @@
 				<h1>用户登陆</h1>
 			</div>
 			<div data-role="content">
-				<form action="demoform.asp" method="post">
-					<label for="account">账号：</label><input id="account" name="account" type="text">
-					<label for="pwd">密码：</label><input type="password" name="pwd" id="pwd">
-					<div style="text-align:center;">
-						<input type="submit" data-inline="true" value="登陆">
-					</div>
-				</form>
+				<label for="account">账号：</label><input id="account" name="account" type="text">
+				<label for="pwd">密码：</label><input id="pwd" name="pwd" type="password">
+				<div style="text-align:center;">
+					<input type="button" data-inline="true" onclick="login()" value="登陆">
+				</div>
 			</div>
 		</div>
 	</body>

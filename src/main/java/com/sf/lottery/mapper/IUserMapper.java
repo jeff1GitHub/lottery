@@ -14,7 +14,7 @@ public interface IUserMapper {
 	/**
 	 * 根据名称查询用户
 	 * @param name 名称
-	 * @return用户对象
+	 * @return 用户对象
 	 */
 	User selectUserByName(String name);
 	

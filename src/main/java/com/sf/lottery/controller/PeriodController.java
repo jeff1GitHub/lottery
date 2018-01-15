@@ -7,6 +7,7 @@ import com.sf.lottery.entity.Period;
 import com.sf.lottery.service.IPeriodService;
 import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
+import com.sf.lottery.vo.PeriodVo;
 
 import javax.annotation.Resource;
 
@@ -25,15 +26,17 @@ public class PeriodController {
     private IPeriodService periodService;
 	
 	@RequestMapping(value = "nowPeriod")
-	public JsonResult<Period> getNowPeriod() {
+	public JsonResult<PeriodVo> getNowPeriod() {
 		Period period = periodService.getNowPeriod(1);
-		JsonResult<Period> result = new JsonResult<>(ResultCode.SUCCESS, period);
-		return result;
+		PeriodVo vo = new PeriodVo(period);
+		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
 	
 	@RequestMapping(value = "beforPeriod")
-	public JsonResult<Period> getBeforPeriod() {
-		return null;
+	public JsonResult<PeriodVo> getBeforPeriod() {
+		Period period = periodService.getBeforPeriod(1);
+		PeriodVo vo = new PeriodVo(period);
+		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
 	
 }

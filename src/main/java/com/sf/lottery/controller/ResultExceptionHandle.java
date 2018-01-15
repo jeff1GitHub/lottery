@@ -2,6 +2,8 @@ package com.sf.lottery.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +17,7 @@ import com.sf.lottery.utils.ResultCode;
  */
 @RestControllerAdvice
 public class ResultExceptionHandle {
+	private final Logger logger = LoggerFactory.getLogger(ResultExceptionHandle.class);
 
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
@@ -26,7 +29,7 @@ public class ResultExceptionHandle {
 		}else if(e instanceof IllegalStateException){
 			return new JsonResult<>(ResultCode.PARAMS_ERROR);
 		}else{
-			e.printStackTrace();
+			logger.error("", e);
 			return new JsonResult<>(ResultCode.SYS_ERROR);
 		}
 	}

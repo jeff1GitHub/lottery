@@ -1,7 +1,6 @@
 package com.sf.lottery;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +30,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		System.out.println(Instant.now().toEpochMilli());
 		System.out.println(System.currentTimeMillis());
+		System.out.println(Tools.MD5("admin"));
 		
 	}
 	

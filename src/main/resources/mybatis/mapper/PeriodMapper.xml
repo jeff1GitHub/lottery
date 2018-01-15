@@ -39,6 +39,14 @@
 		]]>
 	</select>
 	
+	<select id="selectBeforPeriod" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			FROM t_period
+			WHERE f_game_id = #{gameId, jdbcType=INTEGER} AND f_start_time <= #{nowTime, jdbcType=TIMESTAMP} ORDER BY f_code DESC LIMIT 1,1
+		]]>
+	</select>
+	
 	<insert id="insertPeriod" parameterType="java.sql.Date">
 		<![CDATA[
 			INSERT INTO t_period (

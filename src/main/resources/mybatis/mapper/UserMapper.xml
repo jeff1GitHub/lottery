@@ -3,10 +3,10 @@
 
 <mapper namespace="com.sf.lottery.mapper.IUserMapper">
 	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.User">
-		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
+		<id column="f_id" property="id" javaType="long" jdbcType="INTEGER" />
 		<result column="f_name" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_pwd" property="pwd" javaType="java.lang.String" jdbcType="VARCHAR" />
-		<result column="f_create_time" javaType="java.sql.Date" jdbcType="DATE" />
+		<result column="f_create_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
 	</resultMap>
 	
 	<insert id="insertUser" parameterType="com.sf.lottery.entity.User">

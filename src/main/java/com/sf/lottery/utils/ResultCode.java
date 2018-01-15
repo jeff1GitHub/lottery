@@ -18,7 +18,7 @@ public enum ResultCode {
 
     /** 参数错误 */
     PARAMS_ERROR("403", "参数错误 "),
-
+    
     /** 不支持或已经废弃 */
     NOT_SUPPORTED("410", "不支持或已经废弃"),
 
