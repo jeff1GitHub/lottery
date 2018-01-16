@@ -13,9 +13,9 @@ public class PeriodVo {
 	/** 彩票id */
 	private int gameId;
 	/** 剩余封盘时间 */
-	private long endTime;
+	private int endTime;
 	/** 剩余开奖时间 */
-	private long finishTime;
+	private int finishTime;
 	/** 开奖结果 */
 	private String result;
 	/** 状态 */
@@ -31,8 +31,8 @@ public class PeriodVo {
 		}
 		if(this.status == 0){
 			long nowTime = System.currentTimeMillis();
-			this.endTime = nowTime - period.getEndTime().getTime();
-			this.finishTime = nowTime - period.getFinishTime().getTime();
+			this.endTime = (int)Math.ceil((period.getEndTime().getTime() - nowTime) / 1000.0);
+			this.finishTime = (int)Math.ceil((period.getFinishTime().getTime() - nowTime) / 1000.0);
 		}
 	}
 
@@ -48,11 +48,11 @@ public class PeriodVo {
 		return gameId;
 	}
 
-	public long getEndTime() {
+	public int getEndTime() {
 		return endTime;
 	}
 
-	public long getFinishTime() {
+	public int getFinishTime() {
 		return finishTime;
 	}
 

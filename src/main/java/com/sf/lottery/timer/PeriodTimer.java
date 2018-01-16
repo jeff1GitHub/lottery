@@ -66,7 +66,7 @@ public class PeriodTimer {
 	public void createNowPeriod() {
 		int nowHour = LocalDateTime.now().getHour();
 		//在每天2点到10点间不进行处理(因为这段时间没有期数)
-		if(nowHour <= 2 || nowHour >= 10){
+		if(nowHour < 2 || nowHour >= 10){
 			Period currentPeriod = context.getCurrentPeriod(1);
 			if(currentPeriod == null){
 				addNowPeriod();

@@ -28,14 +28,14 @@ public class PeriodController {
 	@RequestMapping(value = "nowPeriod")
 	public JsonResult<PeriodVo> getNowPeriod() {
 		Period period = periodService.getNowPeriod(1);
-		PeriodVo vo = new PeriodVo(period);
+		PeriodVo vo = period == null ? null : new PeriodVo(period);
 		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
 	
 	@RequestMapping(value = "beforPeriod")
 	public JsonResult<PeriodVo> getBeforPeriod() {
 		Period period = periodService.getBeforPeriod(1);
-		PeriodVo vo = new PeriodVo(period);
+		PeriodVo vo = period == null ? null : new PeriodVo(period);
 		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
 	
