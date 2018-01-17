@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sf.lottery.entity.Manager;
@@ -25,7 +26,7 @@ public class AccountController {
 	@Resource
 	private IManagerService managerService;
 
-	@RequestMapping(value = "user/login")
+	@RequestMapping(value = "user/login", method = RequestMethod.POST)
 	public JsonResult<UserLoginResult> userLogin(String account, String pwd) {
 		try {
 			User user = userService.login(account, Tools.MD5(account + pwd));

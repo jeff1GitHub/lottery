@@ -56,7 +56,7 @@ public class PeriodTimer {
 				setPeriodResult(period);
 			}
 		}
-		logger.info("==========定时器=========={}", LocalDateTime.now());
+//		logger.info("==========定时器=========={}", LocalDateTime.now());
 	}
 	
 	/**

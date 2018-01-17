@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css">
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="js/jquery.mobile-1.3.2.min.js"></script>
+		<script src="js/jquery.md5.js"></script>
 		<style type="text/css">
 			body {background-color: #88a6b1}
 			.round {
@@ -57,8 +58,21 @@
 			}
 			
 			#rightTwoDiv {
-				overflow: scroll;
+				overflow-y: scroll;
 			}
+			
+			.box {
+				border: 1px solid rgb(217, 232, 247);
+			}
+			
+			table, table tr th, table tr td {
+				border:1px solid #0094ff;
+			}
+			
+        	table {
+        		line-height: 1.4rem;
+        		border-collapse: collapse;
+        	}
 		</style>
 		
 		<script type="text/javascript">
@@ -77,13 +91,13 @@
 				var nowPeriodDivHeight = $('#nowPeriodDiv').outerHeight();
 				
 				var gameDivHeight = content - beforPeriodDivHeight - nowPeriodDivHeight;
-				$('#gameDiv').height(gameDivHeight);
-				$('#leftDiv').height(gameDivHeight);
-				$('#rightOneDiv').height(gameDivHeight);
-				$('#rightTwoDiv').height(gameDivHeight);
-				$('#rightThreeDiv').height(gameDivHeight);
+				$('#gameDiv').outerHeight(gameDivHeight);
+				$('#leftDiv').outerHeight(gameDivHeight);
+				$('#rightOneDiv').outerHeight(gameDivHeight);
+				$('#rightTwoDiv').outerHeight(gameDivHeight);
+				$('#rightThreeDiv').outerHeight(gameDivHeight);
 				
-				var gameDivWidth = $('#gameDiv').width() - $('#leftDiv').width();
+				var gameDivWidth = $('#gameDiv').width() - $('#leftDiv').width() - 4;
 				$('#rightOneDiv').width(gameDivWidth);
 				$('#rightTwoDiv').width(gameDivWidth);
 				$('#rightThreeDiv').width(gameDivWidth);
@@ -94,32 +108,12 @@
 				getNowPeriod();
 			});
 			
-			/* function setHeight(nextPage) {
-				var screen = $.mobile.getScreenHeight();
-			    var header = nextPage.children(".ui-header").hasClass("ui-header-fixed") ? nextPage.children(".ui-header").outerHeight() - 1 : nextPage.children(".ui-header").outerHeight();
-			    var footer = nextPage.children(".ui-footer").hasClass("ui-footer-fixed") ? nextPage.children(".ui-footer").outerHeight() - 1 : nextPage.children(".ui-footer").outerHeight();
-			    var contentCurrent = nextPage.children(".ui-content").outerHeight() - nextPage.children(".ui-content").height();
-			    var content = screen - header - footer - contentCurrent;
-			    nextPage.children(".ui-content").height(content);
-			}
-			
-			function initHeightSetting(yourFirstPageId) {
-			    // 这段代码在初始化的时候执行.设置第一个页面的高度
-			    setHeight($(yourFirstPageId));
-
-			    // 在页面显示前会执行下面代码.设置高度
-			    $("body").on("pagecontainershow", function(event, ui) {
-			        var nextPage = $(ui.toPage[0]);
-			        setHeight(nextPage);
-			    });
-			} */
-			
 			function login() {
-				//domain + '/lottery/user/login'?account=hermes&pwd=21232f297a57a5a743894a0e4a801fc3
 				var account = $('#account').val();
-				var pwd = $('#pwd').val();
+				var pwd = $.md5($('#pwd').val());
 				$.ajax({
 					url: domain + '/lottery/user/login',
+					type: 'POST',
 					dataType: 'json',
 					async: true,
 					data: {
@@ -255,18 +249,18 @@
 	</head>
 	
 	<body>
-		<div data-role="page" id="mainPage">
+		<div data-role="page" id="mainPage" data-theme="a">
 			<div data-role="header">
 				<h1>欢迎来到我的主页</h1>
 				<a class="ui-btn-right" data-rel="dialog" href="#loginPage">登陆</a>
 			</div>
 			
-			<div id="contentDiv" data-role="content" style="background-color: blue;">
-				<div id="beforPeriodDiv" style="height: 40px; border-bottom: 1px solid #000;">
+			<div id="contentDiv" data-role="content">
+				<div id="beforPeriodDiv" style="height: 39px; border-bottom: 1px solid rgb(217, 232, 247);">
 					第<span id='beforCode'>---</span>期:
 					<span id="round1" class="round">-</span><span id="round2" class="round">-</span><span id="round3" class="round">-</span><span id="round4" class="round">-</span><span id="round5" class="round">-</span>
 				</div>
-				<div id="nowPeriodDiv" class="ui-grid-a" style="background-color: orange; padding: 5px 0px;">
+				<div id="nowPeriodDiv" class="ui-grid-a" style="height: 24px; border-bottom: 1px solid rgb(217, 232, 247);">
 					<div class="ui-block-a">
 						第<span id='nowCode'>---</span>期
 					</div>
@@ -275,200 +269,25 @@
 						<span>开奖:</span><span id="finishTimeSpan">--:--</span>
 					</div>
 				</div>
-				<div id="gameDiv" class="ui-grid-a" style="background-color: orange;">
-					<div id="leftDiv" class="ui-block-a" style="background-color: yellow; width: 6rem;">
+				<div id="gameDiv" style="background: olive;">
+					<div style="float:left; width:5rem; border:1px solid #00F;">
 						<div onclick="showRightDiv('rightOneDiv')">两面</div>
 						<div onclick="showRightDiv('rightTwoDiv')">1-5球</div>
 						<div onclick="showRightDiv('rightThreeDiv')">前中后</div>
 					</div>
-					<div id="rightOneDiv" class="ui-block-b bet-content" style="background-color: pink;">
-						<div class="textCenter col">龙虎、总和</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a textCenter col">
-								<span class="bet">总和大</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="bet">总和小</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="bet">总和单</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="bet">总和双</span>
-								<span>1.995</span>
-							</div>
-						</div>
-						<div class="ui-grid-b">
-							<div class="ui-block-a textCenter col">
-								<span class="bet">龙</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="bet">虎</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-c textCenter col">
-								<span class="bet">和</span>
-								<span>1.995</span>
-							</div>
-						</div>
-						<div class="textCenter col">第一球</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a textCenter col">
-								<span class="bet">大</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="bet">小</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="bet">单</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="bet">双</span>
-								<span>1.995</span>
-							</div>
-						</div>
+					<div style="float:right;width:200px;border:1px solid #00F;height:50px;">
+						<table>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									
+								</td>
+							</tr>
+						</table>
 					</div>
-					<div id="rightTwoDiv" class="ui-block-b" style="background-color: orange; display: none;">
-						<div class="textCenter col">第一球</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">0</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">1</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">2</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">3</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">4</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">5</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">6</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">7</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">8</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">9</span>
-								<span>1.995</span>
-							</div>
-						</div>
-						<div class="textCenter col">第一球</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">0</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">1</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">2</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">3</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">4</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">5</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">6</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">7</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">8</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">9</span>
-								<span>1.995</span>
-							</div>
-						</div>
-						<div class="textCenter col">第一球</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">0</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">1</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">2</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">3</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">4</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">5</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">6</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">7</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-a textCenter col">
-								<span class="round-1">8</span>
-								<span>1.995</span>
-							</div>
-							<div class="ui-block-b textCenter col">
-								<span class="round-1">9</span>
-								<span>1.995</span>
-							</div>
-						</div>
-					</div>
-					<div id="rightThreeDiv" class="ui-block-b" style="background-color: red; display: none;">
-						ccccccc
-					</div>
+					<div style="clear:both;"></div>
 				</div>
 			</div>
 			
