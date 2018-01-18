@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 工具类
  */
@@ -37,6 +40,18 @@ public class Tools {
 			randomArr[amount] = ThreadLocalRandom.current().nextInt(maxNum);
 		}
 		return randomArr;
+	}
+	
+	/**
+	 * 将Java对象转成Json字符串
+	 * @param obj java对象
+	 * @return json字符串
+	 * @throws Exception
+	 */
+	public static String getJsonString(Object obj) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper(); 
+		String json = mapper.writeValueAsString(obj);
+		return json;
 	}
 
 }

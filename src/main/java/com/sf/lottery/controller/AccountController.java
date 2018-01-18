@@ -15,7 +15,7 @@ import com.sf.lottery.service.IUserService;
 import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
 import com.sf.lottery.utils.Tools;
-import com.sf.lottery.vo.UserLoginResult;
+import com.sf.lottery.vo.UserVo;
 
 @RestController
 @RequestMapping("/lottery")
@@ -27,13 +27,13 @@ public class AccountController {
 	private IManagerService managerService;
 
 	@RequestMapping(value = "user/login", method = RequestMethod.POST)
-	public JsonResult<UserLoginResult> userLogin(String account, String pwd) {
+	public JsonResult<UserVo> userLogin(String account, String pwd) {
 		try {
 			User user = userService.login(account, Tools.MD5(account + pwd));
 			if(user == null){
 				return new JsonResult<>(ResultCode.PARAMS_ERROR, "登录失败，帐号或密码错误!");
 			}else{
-				UserLoginResult info = new UserLoginResult(user.getName(), "aaaa");
+				UserVo info = new UserVo(user.getName(), "aaaa");
 				return new JsonResult<>(ResultCode.SUCCESS, info);
 			}
 		} catch (Exception e) {
@@ -58,7 +58,7 @@ public class AccountController {
 		}
 	}
 	
-	@RequestMapping(value = "manager/login")
+	@RequestMapping(value = "manager/login", method = RequestMethod.POST)
 	public JsonResult<Manager> managerLogin() {
 		return null;
 	}

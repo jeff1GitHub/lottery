@@ -16,8 +16,8 @@
 			var userName;
 			var token;
 			var isLogin;
-			var nowLotteryId = '1001';
-			var nowPeriodCode = '10010';
+			var nowLotteryId;
+			var nowPeriodCode;
 			var betItem = [];
 			
 			$(function() {
@@ -37,7 +37,7 @@
 				
 				var gameDivWidth = $('#gameDiv').width() - $('#leftDiv').width() - 4;
 				$('.rightGameDiv').width(gameDivWidth);
-				$('.gameTable').width(gameDivWidth-1);
+				$('.gameTable').width(gameDivWidth-2);
 				
 				$('.item').click(function() {
 					selectBetItem(betItem, this);

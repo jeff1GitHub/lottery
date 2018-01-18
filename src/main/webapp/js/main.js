@@ -15,7 +15,7 @@ function login() {
 		dataType: 'json',
 		async: true,
 		data: {
-			'account': account,
+			'acc': account,
 			'pwd': pwd
 		},
 		success: function (result) {

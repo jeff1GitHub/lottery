@@ -7,6 +7,7 @@ public class User {
 	private String name;
 	private String pwd;
 	private Timestamp createTime;
+	private String token;
 
 	public User(long id, String name, String pwd, Timestamp createTime) {
 		this.id = id;
@@ -29,6 +30,14 @@ public class User {
 
 	public Timestamp getCreateTime() {
 		return createTime;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

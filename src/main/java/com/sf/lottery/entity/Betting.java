@@ -9,6 +9,8 @@ import java.util.Date;
 public class Betting {
 	/** 注单流水号 */
 	private long id;
+	/** 帐号编号 */
+	private long userId;
 	/** 期号 */
 	private String period;
 	/** 投注时间 */
@@ -34,8 +36,9 @@ public class Betting {
 	
 	public Betting() {}
 
-	public Betting(long id, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
+	public Betting(long id, long userId, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
 		this.id = id;
+		this.userId = id;
 		this.period = period;
 		this.bettingTime = bettingTime;
 		this.lotteryId = lotteryId;
@@ -46,6 +49,10 @@ public class Betting {
 
 	public long getId() {
 		return id;
+	}
+	
+	public long getUserId() {
+		return userId;
 	}
 
 	public String getPeriod() {

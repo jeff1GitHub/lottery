@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.sf.lottery.entity.Period;
 import com.sf.lottery.entity.Project;
+import com.sf.lottery.entity.User;
 
 @Component
 public class Context {
@@ -18,6 +19,8 @@ public class Context {
 	private final Map<Integer, Period> currentPeriodMap = new ConcurrentHashMap<>();
 	/** 待开奖期数集合(在有多个游戏时将改变存放方式) */
 	private final Map<Integer, Period> waitOpenPeriodMap = new ConcurrentHashMap<>();
+	/** 登录帐号集合(key:token value:帐号对象) */
+	private final Map<String, User> userMap = new ConcurrentHashMap<>();
 	
 	/**
 	 * 初始化投注项集合
@@ -37,6 +40,19 @@ public class Context {
 	 */
 	public Project getProjectById(int projectId) {
 		return projectMap.get(projectId);
+	}
+	
+	public User getUser(String token) {
+		User user = userMap.get(token);
+		return user;
+	}
+	
+	public void addUser(User user) {
+		userMap.put(user.getToken(), user);
+	}
+	
+	public void removeUser(String token) {
+		userMap.remove(token);
 	}
 	
 	public Period getCurrentPeriod(int gameId) {

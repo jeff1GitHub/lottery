@@ -105,7 +105,7 @@ public class BettingController {
 				return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
 			}
 	        
-	        Betting betting = new Betting(newId, period.getCode(), new Date(), lotteryId, project.getId(), odds, money);
+	        Betting betting = new Betting(newId, 0, period.getCode(), new Date(), lotteryId, project.getId(), odds, money);
 	        bettings[i] = betting;
 		}
         
