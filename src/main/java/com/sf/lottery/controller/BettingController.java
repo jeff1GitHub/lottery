@@ -9,8 +9,11 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sf.lottery.common.Context;
 import com.sf.lottery.common.IdGenerator;
 import com.sf.lottery.entity.Betting;
@@ -47,8 +50,8 @@ public class BettingController {
      * @param bindingResult
      * @return
      */
-    @RequestMapping(value = "betting")
-    public JsonResult<String> betting(int lotteryId, String periodCode, int projectId, BigDecimal odds, BigDecimal money) {
+    @RequestMapping(value = "betting", method = RequestMethod.POST)
+    public JsonResult<String> betting(int lotteryId, String periodCode, BigDecimal money, String projects) {
         // 获取彩票信息
         Lottery lottery = this.lotteryService.getLotteryById(lotteryId);
         if (lottery == null) {
@@ -67,30 +70,48 @@ public class BettingController {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注时间无效!");
         }
         
-        // 判断投注项
-        Project project = this.context.getProjectById(projectId);
-        if (project == null) {
-        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注项无效!");
-        }
-        
-        // 判断赔率
-        if (project.getOdds().compareTo(odds) != 0) {
-        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "赔率有变动!");
-        }
-
-        // 执行彩票投注方法
-        long newId;
-        try {
-        	newId = this.idGenerator.createId();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json;
+    	try {
+    		json = mapper.readTree(projects);
 		} catch (Exception e) {
-			logger.error("create id error.", e);
-			return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
+			return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注项错误!");
+		}
+    	
+    	JsonNode node = null;
+    	Betting[] bettings = new Betting[json.size()];
+		for(int i=bettings.length; i>=0; --i){
+			node = json.get(i);
+			int projectId = node.get("id").intValue();
+			BigDecimal odds = new BigDecimal(node.get("odds").doubleValue());
+			
+			// 判断投注项
+	        Project project = this.context.getProjectById(projectId);
+	        if (project == null) {
+	        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注项无效!");
+	        }
+	        
+	        // 判断赔率
+	        if (project.getOdds().compareTo(odds) != 0) {
+	        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "赔率有变动!");
+	        }
+
+	        // 执行彩票投注方法
+	        long newId;
+	        try {
+	        	newId = this.idGenerator.createId();
+			} catch (Exception e) {
+				logger.error("create id error.", e);
+				return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
+			}
+	        
+	        Betting betting = new Betting(newId, period.getCode(), new Date(), lotteryId, project.getId(), odds, money);
+	        bettings[i] = betting;
 		}
         
-        Betting betting = new Betting(newId, period.getCode(), new Date(), lotteryId, project.getId(), odds, money);
         JsonResult<String> ret;
-        if (this.bettingService.saveBetting(betting)) {
-            ret = new JsonResult<>(ResultCode.SUCCESS);
+        if (this.bettingService.saveBetting(bettings)) {
+            ret = new JsonResult<>(ResultCode.SUCCESS, "下注成功!");
         } else {
             ret = new JsonResult<>(ResultCode.EXCEPTION);
         }

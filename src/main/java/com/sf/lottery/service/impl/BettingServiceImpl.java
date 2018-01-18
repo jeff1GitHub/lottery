@@ -31,6 +31,11 @@ public class BettingServiceImpl implements IBettingService {
     }
 	
 	@Override
+	public boolean saveBetting(Betting[] bettings) {
+		return false;
+	}
+	
+	@Override
 	public PageInfo getBettingBySquare(int lotteryId, String period, int square, int pageNum) {
 		PageHelper.startPage(pageNum, Constant.BETTING_PAGE_SIZE);
 		Page<Betting> page = (Page<Betting>)bettingMapper.selectBettingBySquare(lotteryId, period, square);

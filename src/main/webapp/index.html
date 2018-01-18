@@ -5,81 +5,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title></title>
 		<link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css">
+		<link rel="stylesheet" href="css/main.css">
 		<script src="js/jquery-1.8.3.min.js"></script>
 		<script src="js/jquery.mobile-1.3.2.min.js"></script>
+		<script src="js/main.js"></script>
 		<script src="js/jquery.md5.js"></script>
-		<style type="text/css">
-			body {background-color: #88a6b1}
-			.round {
-				display: inline-block;
-    			text-align: center;
-			    box-shadow: inset 1px -6px 10px #fff;
-			    width: .9rem;
-			    height: .9rem;
-			    border-radius: .9rem;
-			    background: #d5d5d5;
-			    color: #000!important;
-			    margin-right: .1rem;
-			    line-height: .9rem;
-			    font-size: .6rem;
-			}
-			
-			.textCenter {
-				text-align: center;
-			}
-			
-			.col {
-			    padding: .4rem 0;
-			    font-size: .92rem;
-			}
-			
-			.bet {
-				font-weight: bolder;
-    			color: rgba(0, 0, 0, .8);
-			}
-			
-			.bet-content {
-			    display: inline-block;
-			    line-height: 1.4rem;
-			}
-			
-			.round-1 {
-				line-height: 1.4rem;
-				display: inline-block;
-				text-align: center;
-				box-shadow: inset 1px -6px 10px #fff;
-				background: #d5d5d5;
-				color: #000!important;
-			    width: 1.4rem;
-			    height: 1.4rem;
-			    border-radius: 1.4rem;
-			    font-size: .9rem;
-			    font-weight: bolder;
-			}
-			
-			#rightTwoDiv {
-				overflow-y: scroll;
-			}
-			
-			.box {
-				border: 1px solid rgb(217, 232, 247);
-			}
-			
-			table, table tr th, table tr td {
-				border:1px solid #0094ff;
-			}
-			
-        	table {
-        		line-height: 1.4rem;
-        		border-collapse: collapse;
-        	}
-		</style>
 		
 		<script type="text/javascript">
 			var domain = 'http://localhost:8899';
 			var userName;
 			var token;
-			$(function(){
+			var isLogin;
+			var nowLotteryId = '1001';
+			var nowPeriodCode = '10010';
+			var betItem = [];
+			
+			$(function() {
 				var screen = $.mobile.getScreenHeight();
 				var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
 				var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
@@ -92,214 +33,292 @@
 				
 				var gameDivHeight = content - beforPeriodDivHeight - nowPeriodDivHeight;
 				$('#gameDiv').outerHeight(gameDivHeight);
-				$('#leftDiv').outerHeight(gameDivHeight);
-				$('#rightOneDiv').outerHeight(gameDivHeight);
-				$('#rightTwoDiv').outerHeight(gameDivHeight);
-				$('#rightThreeDiv').outerHeight(gameDivHeight);
+				$('.inGameDiv').outerHeight(gameDivHeight);
 				
 				var gameDivWidth = $('#gameDiv').width() - $('#leftDiv').width() - 4;
-				$('#rightOneDiv').width(gameDivWidth);
-				$('#rightTwoDiv').width(gameDivWidth);
-				$('#rightThreeDiv').width(gameDivWidth);
+				$('.rightGameDiv').width(gameDivWidth);
+				$('.gameTable').width(gameDivWidth-1);
+				
+				$('.item').click(function() {
+					selectBetItem(betItem, this);
+					$('#selectedCount').html(betItem.length);
+				});
 			});
 			
 			$(document).on('pageinit', '#mainPage', function () {
 				getBeforPeriod();
 				getNowPeriod();
 			});
-			
-			function login() {
-				var account = $('#account').val();
-				var pwd = $.md5($('#pwd').val());
-				$.ajax({
-					url: domain + '/lottery/user/login',
-					type: 'POST',
-					dataType: 'json',
-					async: true,
-					data: {
-						'account': account,
-						'pwd': pwd
-					},
-					success: function (result) {
-						if(result.code == 200){
-							userName = result.data.name;
-							token = result.data.token;
-							$('#loginPage').dialog('close');
-						}else{
-							alert(result.message);
-						}
-					},
-					error: function (request, error) {
-						alert('无法连接网络或者返回值错误!');
-					}
-				});
-			}
-			
-			function getBeforPeriod() {
-				$.ajax({
-					url: domain + '/lottery/period/beforPeriod',
-					dataType: 'json',
-					async: true,
-					success: function (result) {
-						if(result.code == 200){
-							if(result.data){
-								$('#beforCode').html(result.data.code);
-								
-								if(result.data.result){
-									var resultArr = result.data.result.split(',');
-									$('#round1').html(resultArr[0]);
-									$('#round2').html(resultArr[1]);
-									$('#round3').html(resultArr[2]);
-									$('#round4').html(resultArr[3]);
-									$('#round5').html(resultArr[4]);
-								}
-							}
-						}else{
-							alert(result.message);
-						}
-					},
-					error: function (request, error) {
-						alert('无法连接网络或者返回值错误!');
-					}
-				});
-			}
-			
-			function getNowPeriod() {
-				$.ajax({
-					url: domain + '/lottery/period/nowPeriod',
-					dataType: 'json',
-					async: true,
-					success: function (result) {
-						if(result.code == 200){
-							if(result.data){
-								$('#nowCode').html(result.data.code);
-								
-								if(result.data.status == 0){
-									var endTime = result.data.endTime;
-									var finishTime = result.data.finishTime;
-									var periodTimer = setInterval(function(){
-										if(endTime > 0){
-											var endS = parseInt(endTime / 60);
-											if(endS < 10){
-												endS = '0' + endS;
-											}
-											
-											var endM = endTime % 60;
-											if(endM < 10){
-												endM = '0' + endM;
-											}
-											
-											$('#endTimeSpan').html(endS + ":" + endM);
-											endTime -= 1;
-										}else{
-											$('#endTimeSpan').html('已封盘');
-										}
-										
-										if(finishTime > 0){
-											var endS = parseInt(finishTime / 60);
-											if(endS < 10){
-												endS = '0' + endS;
-											}
-											
-											var endM = finishTime % 60;
-											if(endM < 10){
-												endM = '0' + endM;
-											}
-											
-											$('#finishTimeSpan').html(endS + ":" + endM);
-											finishTime -= 1;
-										}else{
-											clearInterval(periodTimer);
-											getBeforPeriod();
-											getNowPeriod();
-										}
-									}, 1000);
-								}
-							}
-						}else{
-							alert(result.message);
-						}
-					},
-					error: function (request, error) {
-						alert('无法连接网络或者返回值错误!');
-					}
-				});
-			}
-			
-			function showRightDiv(showName) {
-				if('rightOneDiv' == showName){
-					$('#rightOneDiv').css("display", "block");
-				}else{
-					$('#rightOneDiv').css("display", "none");
-				}
-				
-				if('rightTwoDiv' == showName){
-					$('#rightTwoDiv').css("display", "block");
-				}else{
-					$('#rightTwoDiv').css("display", "none");
-				}
-				
-				if('rightThreeDiv' == showName){
-					$('#rightThreeDiv').css("display", "block");
-				}else{
-					$('#rightThreeDiv').css("display", "none");
-				}
-			}
 		</script>
 	</head>
 	
 	<body>
 		<div data-role="page" id="mainPage" data-theme="a">
 			<div data-role="header">
-				<h1>欢迎来到我的主页</h1>
-				<a class="ui-btn-right" data-rel="dialog" href="#loginPage">登陆</a>
+				<span id="welcomeSpan" class="ui-btn-left"></span>
+				<h1>首页</h1>
+				<input type='button' id="loginOrExit" class="ui-btn-right" onclick="loginOrExit()" value="登陆">
 			</div>
 			
+			<a id="openLoginPage" data-rel="dialog" href="#loginPage" style="display:none"></a>
+			
 			<div id="contentDiv" data-role="content">
-				<div id="beforPeriodDiv" style="height: 39px; border-bottom: 1px solid rgb(217, 232, 247);">
+				<div id="beforPeriodDiv">
 					第<span id='beforCode'>---</span>期:
 					<span id="round1" class="round">-</span><span id="round2" class="round">-</span><span id="round3" class="round">-</span><span id="round4" class="round">-</span><span id="round5" class="round">-</span>
 				</div>
-				<div id="nowPeriodDiv" class="ui-grid-a" style="height: 24px; border-bottom: 1px solid rgb(217, 232, 247);">
+				<div id="nowPeriodDiv" class="ui-grid-a">
 					<div class="ui-block-a">
 						第<span id='nowCode'>---</span>期
 					</div>
-					<div class="ui-block-b" style="text-align:right;">
+					<div class="ui-block-b" style="text-align: right;">
 						<span>封盘:</span><span id="endTimeSpan">--:--</span>&nbsp;
 						<span>开奖:</span><span id="finishTimeSpan">--:--</span>
 					</div>
 				</div>
 				<div id="gameDiv" style="background: olive;">
-					<div style="float:left; width:5rem; border:1px solid #00F;">
+					<div id="leftDiv" class="inGameDiv" style="border-right:0px;">
 						<div onclick="showRightDiv('rightOneDiv')">两面</div>
 						<div onclick="showRightDiv('rightTwoDiv')">1-5球</div>
 						<div onclick="showRightDiv('rightThreeDiv')">前中后</div>
 					</div>
-					<div style="float:right;width:200px;border:1px solid #00F;height:50px;">
-						<table>
-							<tr>
-								<td>
-									
-								</td>
-								<td>
-									
-								</td>
-							</tr>
-						</table>
+					<div id="rightOneDiv" class="inGameDiv rightGameDiv">
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">龙虎、总和</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="1"><span class="bet">总和大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="2"><span class="bet">总和小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="3"><span class="bet">总和单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="4"><span class="bet">总和双</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="5"><span class="bet">龙</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="6"><span class="bet">虎</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="7"><span class="bet">和</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第一球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="8"><span class="bet">大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="9"><span class="bet">小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="10"><span class="bet">单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="11"><span class="bet">双</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第二球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="12"><span class="bet">大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="13"><span class="bet">小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="14"><span class="bet">单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="15"><span class="bet">双</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第三球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="16"><span class="bet">大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="17"><span class="bet">小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="18"><span class="bet">单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="19"><span class="bet">双</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第四球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="20"><span class="bet">大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="21"><span class="bet">小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="22"><span class="bet">单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="23"><span class="bet">双</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第五球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="24"><span class="bet">大</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="25"><span class="bet">小</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable">
+							<div class="table-cell item" id="26"><span class="bet">单</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="27"><span class="bet">双</span><span class="odds">1.995</span></div>
+						</div>
+					</div>
+					<div id="rightTwoDiv" class="inGameDiv rightGameDiv" style="display: none;">
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">总和尾数</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="28"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="29"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="30"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="31"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="32"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="33"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="34"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="35"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="36"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="37"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第一球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="38"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="39"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="40"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="41"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="42"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="43"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="44"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="45"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="46"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="47"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第二球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="48"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="49"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="50"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="51"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="52"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="53"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="54"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="55"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="56"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="57"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第三球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="58"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="59"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="60"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="61"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="62"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="63"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="64"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="65"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="66"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="67"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第四球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="68"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="69"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="70"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="71"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="72"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="73"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="74"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="75"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="76"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="77"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell">第五球</div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="78"><span class="bet round-1">0</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="79"><span class="bet round-1">1</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="80"><span class="bet round-1">2</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="81"><span class="bet round-1">3</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="82"><span class="bet round-1">4</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="83"><span class="bet round-1">5</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="84"><span class="bet round-1">6</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="85"><span class="bet round-1">7</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable">
+							<div class="table-cell item" id="86"><span class="bet round-1">8</span><span class="odds">1.995</span></div>
+							<div class="table-cell item" id="87"><span class="bet round-1">9</span><span class="odds">1.995</span></div>
+						</div>
+					</div>
+					<div id="rightThreeDiv" class="inGameDiv rightGameDiv" style="display: none;">
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="88"><span class="bet">前三豹子</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable" style="border-bottom:0px;">
+							<div class="table-cell item" id="89"><span class="bet">中三豹子</span><span class="odds">1.995</span></div>
+						</div>
+						<div class="table gameTable">
+							<div class="table-cell item" id="90"><span class="bet">后三豹子</span><span class="odds">1.995</span></div>
+						</div>
 					</div>
 					<div style="clear:both;"></div>
 				</div>
 			</div>
 			
 			<div data-role="footer" data-position="fixed" style="height: 120px;">
-				<div style="margin-left: 1rem; margin-top: .5rem;">已选中<span>0</span>注</div>
+				<div style="margin-left: 1rem; margin-top: .5rem;">已选中<span id="selectedCount">0</span>注</div>
 				<div class="ui-grid-a" style="margin-left: 1rem;">
 					<div class="ui-block-a" style="width: 10rem; margin-top: 1rem;">
-						<input>
+						<input id="moneyInput">
 					</div>
-					<div class="ui-block-b" style="text-align:right;">
-						<button style="">下注</button>
-						<button>重置</button>
+					<div class="ui-block-b" style="text-align: right;">
+						<button onclick="commitBet()">下注</button>
+						<button onclick="cancelSeletedBet()">重置</button>
 					</div>					
 				</div>
 			</div>

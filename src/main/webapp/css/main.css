@@ -1,0 +1,94 @@
+#welcomeSpan {
+	margin-top: .3rem
+}
+#contentDiv {
+	padding: 0px .5rem;
+}
+#beforPeriodDiv {
+	height: 39px;
+	border-bottom: 1px solid rgb(217, 232, 247);
+}
+#nowPeriodDiv {
+	height: 24px;
+	border-bottom: 1px solid rgb(217, 232, 247);
+}
+.round {
+	display: inline-block;
+	text-align: center;
+    box-shadow: inset 1px -6px 10px #fff;
+    width: .9rem;
+    height: .9rem;
+    border-radius: .9rem;
+    background: #d5d5d5;
+    color: #000!important;
+    margin-right: .1rem;
+    line-height: .9rem;
+    font-size: .6rem;
+}
+.round-1 {
+	display: inline-block;
+	text-align: center;
+	box-shadow: inset 1px -6px 10px #fff;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 1.4rem;
+	background: #d5d5d5;
+	color: #000!important;
+	line-height: 1.4rem;
+    font-size: .9rem;
+    font-weight: bolder;
+}
+
+.col {
+    padding: .4rem 0;
+    font-size: .92rem;
+}
+
+.bet-content {
+    display: inline-block;
+    line-height: 1.4rem;
+}
+
+
+
+.box {
+	border: 1px solid rgb(217, 232, 247);
+}
+
+.inGameDiv {
+	float: left;
+	border: 1px solid #00F;
+}
+#leftDiv {
+	width: 5rem;
+}
+.rightGameDiv {
+	overflow-y: scroll;
+}
+.gameTable, .gameTable tr th, .gameTable tr td {
+	border: 1px solid #0094ff;
+	text-align: center;
+}
+.gameTable {
+	line-height: 1.4rem;
+	border-collapse: collapse;
+}
+.bet {
+	font-weight: bolder;
+	margin-right: .5rem;
+}
+
+.table {
+	display:table;
+	border-bottom:1px solid #0094ff;
+	border-right:1px solid #0094ff;
+}
+.table-cell {
+	display:table-cell;
+	border-left:1px solid #0094ff;
+	border-top:1px solid #0094ff;
+	height:2rem;
+}
+.seletedBet {
+	background-color: orange;
+}
