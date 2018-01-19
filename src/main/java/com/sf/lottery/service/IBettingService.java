@@ -14,17 +14,10 @@ public interface IBettingService {
 	
 	/**
      * 保存注单
-     * @param betting 注单注单对象
+     * @param bettings 注单列表
      * @return 结果(true:保存成功  false:保存失败)
      */
-    boolean saveBetting(Betting betting);
-    
-    /**
-     * 保存注单
-     * @param bettings 注单注单对象
-     * @return 结果(true:保存成功  false:保存失败)
-     */
-    boolean saveBetting(Betting[] bettings);
+    boolean saveBetting(List<Betting> bettings);
     
     /**
 	 * 根据结算状态获取注单

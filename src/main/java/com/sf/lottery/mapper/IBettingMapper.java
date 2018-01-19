@@ -14,10 +14,10 @@ public interface IBettingMapper {
 	
 	/**
 	 * 添加注单
-	 * @param betting 注单对象
+	 * @param betting 注单列表
 	 * @return 添加结果(1:成功)
 	 */
-	int insertBetting(Betting betting);
+	int insertBetting(List<Betting> bettings);
 	
 	/**
 	 * 根据结算状态获取注单

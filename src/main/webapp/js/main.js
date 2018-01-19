@@ -1,13 +1,28 @@
 function loginOrExit() {
 	if(isLogin){
-		$('#loginOrExit').val('登陆').button("refresh");;
+		$('#loginOrExit').val('登陆').button("refresh");
+		$('#welcomeSpan').html(null);
+		isLogin = false;
+		
+		var token = window.localStorage.getItem('token');
+		if(token && token.length > 0){
+			window.localStorage.removeItem('token');
+			$.ajax({
+				url: domain + '/lottery/user/exit',
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('Authorization', 'Basic'+token);
+				}
+			});
+		}
 	}else{
-		$("#openLoginPage").trigger("click");  
+		$("#openLoginPage").trigger("click");
 	}
 }
 
 function login() {
-	var account = $('#account').val();
+	var acc = $('#acc').val();
 	var pwd = $.md5($('#pwd').val());
 	$.ajax({
 		url: domain + '/lottery/user/login',
@@ -15,16 +30,17 @@ function login() {
 		dataType: 'json',
 		async: true,
 		data: {
-			'acc': account,
+			'acc': acc,
 			'pwd': pwd
 		},
 		success: function (result) {
 			if(result.code == 200){
 				isLogin = true;
-				userName = result.data.name;
-				token = result.data.token;
+				var userName = result.data.name;
+				window.localStorage.setItem('token', result.data.token);
+				
 				$('#welcomeSpan').html('您好，' + userName);
-				$('#loginOrExit').val('退出').button("refresh");;
+				$('#loginOrExit').val('退出').button("refresh");
 				$('#loginPage').dialog('close');
 			}else{
 				alert(result.message);
@@ -34,6 +50,33 @@ function login() {
 			alert('无法连接网络或者返回值错误!');
 		}
 	});
+}
+
+function getStatus() {
+	var token = window.localStorage.getItem('token');
+	if(token && token.length > 0){
+		$.ajax({
+			url: domain + '/lottery/user/status',
+			type: 'POST',
+			dataType: 'json',
+			async: true,
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('Authorization', 'Basic'+token)
+			},
+			success: function (result) {
+				if(result.code == 200){
+					isLogin = true;
+					$('#welcomeSpan').html('您好，' + result.message);
+					$('#loginOrExit').val('退出').button("refresh");
+				}else{
+					window.localStorage.removeItem('token');
+				}
+			},
+			error: function (request, error) {
+				window.localStorage.removeItem('token');
+			}
+		});
+	}
 }
 
 function getBeforPeriod() {
@@ -159,8 +202,15 @@ function selectBetItem(selectedBets, item) {
 		}
 	}
 	
+	var betItem = $(item).find('.bet');
+	var name = betItem[0].title;
+	if(name){
+		name += ('(' + betItem.html() + ')');
+	}else{
+		name = betItem.html();
+	}
 	var odds = $(item).find('.odds').html();
-	selectedBets[selectedBets.length] = [item.id, odds];
+	selectedBets[selectedBets.length] = [item.id, name, odds];
 	$(item).addClass('seletedBet');
 }
 
@@ -171,14 +221,70 @@ function cancelSeletedBet() {
 	$('#moneyInput').val(null);
 }
 
-function commitBet() {
-	var money = $('#moneyInput').val();
+function confirmBet() {
+	if(!isLogin){
+		alert("请先登录!");
+		return;
+	}
+	
 	if(betItem && betItem.length > 0){
+		var money = $('#moneyInput').val();
+		if(money < 10){
+			alert("没注金额不能小余10元!");
+			return;
+		}
+		
+		var msg = '';
+		for(var index in betItem){
+			msg += '<tr>';
+			msg += '<td>' + betItem[index][1] + '</td>';
+			msg += '<td>' + betItem[index][2] + '</td>';
+			msg += '<td>' + money + '</td>';
+			msg += '<td onclick="deleteNowTr(this,' + betItem[index][0] + ')">取消</td>';
+			msg += '</tr>'
+		}
+		
+		$('#betTable').find('tbody').html(msg);
+		$('#openSeletedBet').trigger("click");
+	}else{
+		alert("请选择!");
+	}
+}
+
+function deleteNowTr(nowTr, itemId) {
+	$(nowTr).parent().remove();
+	
+	for(var i=betItem.length-1; i>=0; --i){
+		if(betItem[i][0] == itemId){
+			betItem.splice(i, 1);
+			$('#'+itemId).removeClass('seletedBet');
+			
+			if(betItem.length < 1){
+				$('#confirmBetPage').dialog('close');
+			}
+			return;
+		}
+	}
+}
+
+function commitBet() {
+	if(!isLogin){
+		alert("请先登录!");
+		return;
+	}
+	
+	if(betItem && betItem.length > 0){
+		var money = $('#moneyInput').val();
+		if(money < 10){
+			alert("没注金额不能小余10元!");
+			return;
+		}
+		
 		var json = [];
         var obj = {};
 		for(var index in betItem){
 			obj.id = betItem[index][0];
-			obj.odds = betItem[index][1];
+			obj.odds = betItem[index][2];
 			json.push(obj);
 		}
 		
@@ -193,6 +299,9 @@ function commitBet() {
 				'money': money,
 				'projects': JSON.stringify(json)
 			},
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('Authorization', 'Basic' + window.localStorage.getItem('token'))
+			},
 			success: function (result) {
 				if(result.code == 200){
 					cancelSeletedBet();
@@ -200,10 +309,13 @@ function commitBet() {
 				}else{
 					alert(result.message);
 				}
+				$('#confirmBetPage').dialog('close');
 			},
 			error: function (request, error) {
 				alert('无法连接网络或者返回值错误!');
 			}
 		});
+	}else{
+		alert("请选择!");
 	}
 }

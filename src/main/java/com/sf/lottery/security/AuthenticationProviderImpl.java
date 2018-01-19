@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.sf.lottery.common.Context;
 import com.sf.lottery.entity.User;
 import com.sf.lottery.security.exception.LoginErrorException;
 import com.sf.lottery.security.exception.PasswordErrorException;
@@ -22,6 +23,8 @@ import com.sf.lottery.utils.Tools;
  */
 @Component
 public class AuthenticationProviderImpl implements AuthenticationProvider {
+	@Resource
+	private Context context;
 	@Resource
 	private IUserService userService;
 	
@@ -42,6 +45,8 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 		if (user == null) {
 			throw new PasswordErrorException();
 		} else {
+			context.addUser(user);
+			
 			// 这里设置权限和角色
 			ArrayList<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));

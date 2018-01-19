@@ -25,14 +25,9 @@ public class BettingServiceImpl implements IBettingService {
 	private IBettingMapper bettingMapper;
 
 	@Override
-    public boolean saveBetting(Betting betting) {
-		int result = bettingMapper.insertBetting(betting);
-        return result == 1;
-    }
-	
-	@Override
-	public boolean saveBetting(Betting[] bettings) {
-		return false;
+	public boolean saveBetting(List<Betting> bettings) {
+		int result = bettingMapper.insertBetting(bettings);
+		return result == bettings.size();
 	}
 	
 	@Override

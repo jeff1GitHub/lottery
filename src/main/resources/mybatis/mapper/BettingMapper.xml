@@ -4,6 +4,7 @@
 <mapper namespace="com.sf.lottery.mapper.IBettingMapper">
 	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.Betting">
 		<id column="f_id" property="id" javaType="long" jdbcType="BIGINT" />
+		<result column="f_user_id" property="userId" javaType="long" jdbcType="BIGINT" />
 		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_betting_time" property="bettingTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
 		<result column="f_lottery_id" property="lotteryId" javaType="int" jdbcType="INTEGER" />
@@ -24,32 +25,35 @@
 		<result column="f_count" property="count" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
 
-	<insert id="insertBetting" parameterType="com.sf.lottery.entity.Betting">
-		<![CDATA[
-			INSERT INTO lottery.t_betting (
-				f_id,
-			  	f_period,
-			  	f_betting_time,
-			  	f_lottery_id,
-			  	f_project,
-			 	f_odds,
-			  	f_money
-			)
-			VALUES (
-				#{id},
-			    #{period},
-			    #{bettingTime},
-			    #{lotteryId},
-			    #{project},
-			    #{odds},
-			    #{money}
-			 );
-		]]>
+	<insert id="insertBetting" parameterType="java.util.List">
+		INSERT INTO lottery.t_betting (
+			f_id,
+			f_user_id,
+		  	f_period,
+		  	f_betting_time,
+		  	f_lottery_id,
+		  	f_project,
+		 	f_odds,
+		  	f_money
+		)
+		VALUES 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.userId},
+			    #{item.period},
+			    #{item.bettingTime},
+			    #{item.lotteryId},
+			    #{item.project},
+			    #{item.odds},
+			    #{item.money}
+			 )
+		</foreach>
 	</insert>
 	
 	<select id="selectBettingBySquare" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money from  t_betting
+			SELECT f_id, f_user_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money from  t_betting
 			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR} AND f_square = #{square, jdbcType=INTEGER}
 		]]>
 	</select>
@@ -65,7 +69,7 @@
 	
 	<select id="selectBetting" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_money, f_square_time, f_prize, f_prize_time
+			SELECT f_id, f_user_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_money, f_square_time, f_prize, f_prize_time
 			FROM t_betting
 			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR}
 		]]>

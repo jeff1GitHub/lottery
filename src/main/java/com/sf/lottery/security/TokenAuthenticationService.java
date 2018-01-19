@@ -20,12 +20,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * Token工具类
  */
 public class TokenAuthenticationService {
-	/** 有效期(5天) */
-	private static final long EXPIRATION_TIME = 432_000_000;
+	/** 有效期(毫秒) */
+	private static final long EXPIRATION_TIME = 1 * 60 * 60 * 1000;
 	/** JWT密码 */
 	private static final String SECRET = "P@ssw02d";
 	/** Token前缀 */
-	private static final String TOKEN_PREFIX = "Bearer";
+	private static final String TOKEN_PREFIX = "Basic";
 	/** 存放Token的Header中的Key */
 	private static final String HEADER_STRING = "Authorization";
 

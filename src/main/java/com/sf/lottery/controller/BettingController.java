@@ -2,12 +2,16 @@ package com.sf.lottery.controller;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +55,11 @@ public class BettingController {
      * @return
      */
     @RequestMapping(value = "betting", method = RequestMethod.POST)
-    public JsonResult<String> betting(int lotteryId, String periodCode, BigDecimal money, String projects) {
+    public JsonResult<String> betting(int lotteryId, String periodCode, int money, String projects) {
+    	if(money < 10) {
+    		return new JsonResult<>(ResultCode.PARAMS_ERROR, "下注金额最少10元!");
+    	}
+    	
         // 获取彩票信息
         Lottery lottery = this.lotteryService.getLotteryById(lotteryId);
         if (lottery == null) {
@@ -78,12 +86,15 @@ public class BettingController {
 			return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注项错误!");
 		}
     	
+    	String acc = SecurityContextHolder.getContext().getAuthentication().getName();
+		long userId = context.getUser(acc).getId();
+    	
     	JsonNode node = null;
-    	Betting[] bettings = new Betting[json.size()];
-		for(int i=bettings.length; i>=0; --i){
-			node = json.get(i);
-			int projectId = node.get("id").intValue();
-			BigDecimal odds = new BigDecimal(node.get("odds").doubleValue());
+    	List<Betting> bettings = new ArrayList<>();
+		for(Iterator<JsonNode> iter=json.iterator(); iter.hasNext();){
+			node = iter.next();
+			int projectId = node.get("id").asInt();
+			BigDecimal odds = new BigDecimal(node.get("odds").asText());
 			
 			// 判断投注项
 	        Project project = this.context.getProjectById(projectId);
@@ -105,8 +116,8 @@ public class BettingController {
 				return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
 			}
 	        
-	        Betting betting = new Betting(newId, 0, period.getCode(), new Date(), lotteryId, project.getId(), odds, money);
-	        bettings[i] = betting;
+	        Betting betting = new Betting(newId, userId, period.getCode(), new Date(), lotteryId, project.getId(), odds, new BigDecimal(money));
+	        bettings.add(betting);
 		}
         
         JsonResult<String> ret;

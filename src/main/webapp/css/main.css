@@ -92,3 +92,8 @@
 .seletedBet {
 	background-color: orange;
 }
+
+#betTable {
+	text-align: center;
+	width: 100%;
+}
