@@ -21,7 +21,7 @@ import com.sf.lottery.security.exception.PasswordErrorException;
 import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
 import com.sf.lottery.utils.Tools;
-import com.sf.lottery.vo.UserVo;
+import com.sf.lottery.vo.AccountVo;
 
 /**
  * 拦截用户登录请求
@@ -37,14 +37,23 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
 		//登录时需要验证时候调用
+		String acc = req.getParameter("acc");
+		String pwd = req.getParameter("pwd");
+		String type = req.getParameter("type");
+		AccountCredentials.AccountEnum accountType;
+		try {
+			accountType = type == null ? null : AccountCredentials.AccountEnum.valueOf(type);
+		} catch (Exception e) {
+			logger.error("account type parameter error.", e);
+			accountType = null;
+		}
 		
 		// JSON反序列化成 AccountCredentials
-		AccountCredentials creds = new AccountCredentials();//new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
-		creds.setUsername(req.getParameter("acc"));
-		creds.setPassword(req.getParameter("pwd"));
+		//new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
+		AccountCredentials creds = new AccountCredentials(acc, pwd, accountType);
 		
 		// 返回一个验证令牌
-		Authentication authentication = new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword());
+		Authentication authentication = new UsernamePasswordAuthenticationToken(creds, creds.getPassword());
 		authentication = getAuthenticationManager().authenticate(authentication);
 		return authentication;
 	}
@@ -56,8 +65,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 		//验证成功后调用
 		String JWT = TokenAuthenticationService.addAuthentication(res, userName);
 		
-		UserVo vo = new UserVo(userName, JWT);
-		JsonResult<UserVo> result = new JsonResult<>(ResultCode.SUCCESS, vo);
+		AccountVo vo = new AccountVo(userName, JWT);
+		JsonResult<AccountVo> result = new JsonResult<>(ResultCode.SUCCESS, vo);
 		String msg = Tools.getJsonString(result);
 		
 		res.setContentType("application/json;charset=UTF-8");

@@ -24,13 +24,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 对请求进行认证
 		http.authorizeRequests()
 			// 对主页和资源以及期数信息放行
+			.antMatchers("/").permitAll()
 			.antMatchers("/index.html").permitAll()
 			.antMatchers("/css/**").permitAll()
 			.antMatchers("/js/**").permitAll()
 			.antMatchers("/lottery/period/**").permitAll()
+			.antMatchers("/manager/login.html").permitAll()
+			.antMatchers("/manager/lib/**").permitAll()
+			.antMatchers("/manager/static/**").permitAll()
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()
-			.antMatchers(HttpMethod.POST, "/lottery/manager/login").permitAll()
+			.antMatchers(HttpMethod.POST, "/manager/login").permitAll()
 			// 权限检查
 			//.antMatchers("/lottery/**").hasAuthority("AUTH_WRITE");
 			// 角色检查
@@ -39,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated().and();
 		// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
 		http.addFilterBefore(new JWTLoginFilter("/lottery/user/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JWTLoginFilter("/manager/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		// 添加一个过滤器验证其他请求的Token是否合法
 		http.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

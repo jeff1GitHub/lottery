@@ -12,49 +12,67 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.sf.lottery.common.Context;
+import com.sf.lottery.entity.Manager;
 import com.sf.lottery.entity.User;
+import com.sf.lottery.security.AccountCredentials.AccountEnum;
 import com.sf.lottery.security.exception.LoginErrorException;
 import com.sf.lottery.security.exception.PasswordErrorException;
+import com.sf.lottery.service.IManagerService;
 import com.sf.lottery.service.IUserService;
 import com.sf.lottery.utils.Tools;
 
 /**
  * 身份认证验证组件
  */
-@Component
+@Component("UserAuthenticationProvider")
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 	@Resource
 	private Context context;
 	@Resource
 	private IUserService userService;
+	@Resource
+	private IManagerService managerService;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		// 获取认证的用户名 & 密码
-		String acc = authentication.getName();
+		AccountCredentials creds = (AccountCredentials)authentication.getPrincipal();
+		String acc = creds.getUsername();
 		String pwd = authentication.getCredentials().toString();
 		
-		User user;
-		try {
-			user = userService.login(acc, Tools.MD5(acc + pwd));
-		} catch (Exception e) {
-			throw new LoginErrorException("user login error.", e);
-		}
-
-		// 认证逻辑
-		if (user == null) {
-			throw new PasswordErrorException();
-		} else {
-			context.addUser(user);
+		if(creds.getAccountEnum() == AccountEnum.ADMIN){
+			Manager manager;
+			try {
+				manager = managerService.login(acc, Tools.MD5(acc + pwd));
+			} catch (Exception e) {
+				throw new LoginErrorException("user login error.", e);
+			}
 			
-			// 这里设置权限和角色
-			ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-			authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-			authorities.add(new GrantedAuthorityImpl("AUTH_WRITE"));
-			// 生成令牌
-			Authentication auth = new UsernamePasswordAuthenticationToken(acc, pwd, authorities);
-			return auth;
+			if(manager == null){
+				throw new PasswordErrorException();
+			}
+		}else{
+			User user;
+			try {
+				user = userService.login(acc, Tools.MD5(acc + pwd));
+			} catch (Exception e) {
+				throw new LoginErrorException("user login error.", e);
+			}
+			
+			if (user == null) {
+				throw new PasswordErrorException();
+			} else {
+				context.addUser(user);
+			}
 		}
+		
+		// 这里设置权限和角色
+		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
+		authorities.add(new GrantedAuthorityImpl("AUTH_WRITE"));
+		// 生成令牌
+		Authentication auth = new UsernamePasswordAuthenticationToken(acc, pwd, authorities);
+		return auth;
 	}
 
 	@Override

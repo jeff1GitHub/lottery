@@ -21,4 +21,12 @@ public interface IManagerService {
 	 */
 	Manager getManagerByName(String name);
 	
+	/**
+	 * 用户登录
+	 * @param name 帐号
+	 * @param pwd 密码
+	 * @return 用户对象
+	 * @throws Exception
+	 */
+	Manager login(String name, String pwd) throws Exception;
 }
