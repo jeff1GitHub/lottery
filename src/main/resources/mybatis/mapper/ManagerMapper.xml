@@ -21,4 +21,10 @@
 		]]>
 	</select>
 	
+	<select id="selectManager">
+		<![CDATA[
+			SELECT f_id, f_name, f_create_time FROM t_manager
+		]]>
+	</select>
+	
 </mapper>

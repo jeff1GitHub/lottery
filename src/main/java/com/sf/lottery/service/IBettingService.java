@@ -24,6 +24,7 @@ public interface IBettingService {
 	 * @param lotteryId 彩票编号
 	 * @param period 期号
 	 * @param square 注单结算状态
+	 * @param pageNum 页码
 	 * @return 注单页(当查询失败时将返回Null)
 	 */
     PageInfo getBettingBySquare(int lotteryId, String period, int square, int pageNum);

@@ -1,5 +1,7 @@
 package com.sf.lottery.mapper;
 
+import java.util.List;
+
 import com.sf.lottery.entity.Manager;
 
 public interface IManagerMapper {
@@ -17,4 +19,10 @@ public interface IManagerMapper {
 	 * @return 管理帐号
 	 */
 	Manager selectManagerByName(String name);
+	
+	/**
+	 * 查询管理员列表
+	 * @return 管理员列表
+	 */
+	List<Manager> selectManager();
 }

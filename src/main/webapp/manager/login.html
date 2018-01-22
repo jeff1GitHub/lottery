@@ -25,7 +25,7 @@
 	<div class="header"></div>
 	<div class="loginWraper">
 		<div id="loginform" class="loginBox">
-			<form id="loginForm" class="form form-horizontal" action="#" method="post">
+			<form class="form form-horizontal" action="#" method="post">
 				<div class="row cl">
 					<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
 					<div class="formControls col-xs-8">
@@ -39,24 +39,7 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<div class="formControls col-xs-8 col-xs-offset-3">
-						<input class="input-text size-L" type="text" placeholder="验证码"
-							onblur="if(this.value==''){this.value='验证码:'}"
-							onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:"
-							style="width: 150px;" />
-						<img src="" /><a id="kanbuq" href="javascript:;">看不清，换一张</a>
-					</div>
-				</div>
-				<div class="row cl">
-					<div class="formControls col-xs-8 col-xs-offset-3">
-						<label for="online">
-							<input type="checkbox" name="online" id="online" value="" /> 使我保持登录状态
-						</label>
-					</div>
-				</div>
-				<div class="row cl">
-					<div class="formControls col-xs-8 col-xs-offset-3">
-						<input id="type" name="type" type="hidden" value="ADMIN" />
+					<div class="formControls col-xs-8 col-xs-offset-3" style="text-align: center;">
 						<input id="loginBtn" type="button" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;" />
 					</div>
 				</div>
@@ -66,18 +49,24 @@
 	<div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
 	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript" src="lib/jquery.md5.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#loginBtn').click(function() {
-				var params = $('#loginForm').serialize();
+				var acc = $('#acc').val();
+				var pwd = $('#pwd').val();
 				$.ajax({
 					url: 'login',
 					type: 'POST',
-					data: params,
+					data: {
+						'acc': acc,
+						'pwd': $.md5(pwd),
+						'type': 'ADMIN'
+					},
 					success: function(result) {
 						if(result.code == 200){
-							//var userName = result.data.name;
-							//window.localStorage.setItem('token', result.data.token);
+							window.localStorage.setItem('manager-name', result.data.name);
+							window.localStorage.setItem('manager-token', result.data.token);
 							$(location).attr('href', 'index.html');
 						}else{
 							alert(result.message);
@@ -88,7 +77,39 @@
 					}
 				});
 			});
+			
+			getStatus();
 		});
+		
+		function getStatus() {
+			var token = window.localStorage.getItem('manager-token');
+			if(token && token.length > 0){
+				$.ajax({
+					url: 'user/status',
+					type: 'POST',
+					dataType: 'json',
+					async: true,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('Authorization', 'Basic'+token)
+					},
+					success: function (result) {
+						if(result.code == 200){
+							$(location).attr('href', 'index.html');
+						}else{
+							window.localStorage.removeItem('manager-token');
+						}
+					},
+					error: function (request, error) {
+						window.localStorage.removeItem('manager-token');
+					}
+				});
+			}else{
+				var name = window.localStorage.getItem('manager-name');
+				if(name && name.length > 1){
+					$('#acc').val(name);
+				}
+			}
+		}
 	</script>
 </body>
 </html>

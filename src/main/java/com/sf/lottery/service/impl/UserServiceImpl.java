@@ -6,7 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.sf.lottery.common.Constant;
 import com.sf.lottery.common.IdGenerator;
+import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.User;
 import com.sf.lottery.mapper.IUserMapper;
 import com.sf.lottery.service.IUserService;
@@ -46,6 +50,13 @@ public class UserServiceImpl implements IUserService {
 			pwd = Tools.MD5(user.getId() + pwd);
 			return user.getPwd().equals(pwd) ? user : null;
 		}
+	}
+
+	@Override
+	public PageInfo getUserPage(int pageNum) {
+		PageHelper.startPage(pageNum, Constant.MANAGER_PAGE_SIZE);
+		Page<User> page = (Page<User>)userMapper.selectUser();
+		return page == null ? null : new PageInfo(page);
 	}
 
 }

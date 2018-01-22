@@ -1,10 +1,17 @@
 package com.sf.lottery.service.impl;
 
+import java.sql.Timestamp;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.sf.lottery.common.Constant;
+import com.sf.lottery.common.IdGenerator;
 import com.sf.lottery.entity.Manager;
+import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.mapper.IManagerMapper;
 import com.sf.lottery.service.IManagerService;
 import com.sf.lottery.utils.Tools;
@@ -15,10 +22,15 @@ import com.sf.lottery.utils.Tools;
 @Service
 public class ManagerServiceImpl implements IManagerService {
 	@Resource
+	private IdGenerator idGenerator;
+	@Resource
 	private IManagerMapper managerMapper;
 
 	@Override
-	public boolean addManager(Manager manager) {
+	public boolean addManager(String account, String pwd) throws Exception {
+		long id = idGenerator.createId();
+		pwd = Tools.MD5(id + pwd);
+		Manager manager = new Manager(id, account, pwd, new Timestamp(System.currentTimeMillis()));
 		int result = managerMapper.insertManager(manager);
 		return result == 1;
 	}
@@ -38,6 +50,13 @@ public class ManagerServiceImpl implements IManagerService {
 			pwd = Tools.MD5(manager.getId() + pwd);
 			return manager.getPwd().equals(pwd) ? manager : null;
 		}
+	}
+
+	@Override
+	public PageInfo getManagerPage(int pageNum) {
+		PageHelper.startPage(pageNum, Constant.MANAGER_PAGE_SIZE);
+		Page<Manager> page = (Page<Manager>)managerMapper.selectManager();
+		return page == null ? null : new PageInfo(page);
 	}
 
 }

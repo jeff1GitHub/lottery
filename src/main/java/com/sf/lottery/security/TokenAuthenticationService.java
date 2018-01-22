@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,14 +30,23 @@ public class TokenAuthenticationService {
 
 	/**
 	 * 生成JWT并写入到Body
-	 * @param response
+	 * @param auth
 	 * @param userName
 	 */
-	public static String addAuthentication(HttpServletResponse response, String userName) {
+	public static String addAuthentication(Authentication auth, String userName) {
+		StringBuilder authorities = new StringBuilder();
+		auth.getAuthorities().forEach(aut -> {
+			authorities.append(aut.getAuthority());
+			authorities.append(",");
+		});
+		if(authorities.length() > 0){
+			authorities.delete(authorities.length() - 1, authorities.length());
+		}
+		
 		// 生成JWT
 		final String JWT = Jwts.builder()
 				// 保存权限（角色）
-				.claim("authorities", "ROLE_ADMIN,AUTH_WRITE")
+				.claim("authorities", authorities)
 				// 用户名写入标题
 				.setSubject(userName)
 				// 有效期设置

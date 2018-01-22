@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.sf.lottery.common.Context;
 import com.sf.lottery.entity.Manager;
 import com.sf.lottery.entity.User;
+import com.sf.lottery.enums.AuthorityName;
 import com.sf.lottery.security.AccountCredentials.AccountEnum;
 import com.sf.lottery.security.exception.LoginErrorException;
 import com.sf.lottery.security.exception.PasswordErrorException;
@@ -24,7 +25,7 @@ import com.sf.lottery.utils.Tools;
 /**
  * 身份认证验证组件
  */
-@Component("UserAuthenticationProvider")
+@Component
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 	@Resource
 	private Context context;
@@ -40,6 +41,8 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 		String acc = creds.getUsername();
 		String pwd = authentication.getCredentials().toString();
 		
+		// 这里设置权限和角色
+		ArrayList<GrantedAuthority> authorities = null;
 		if(creds.getAccountEnum() == AccountEnum.ADMIN){
 			Manager manager;
 			try {
@@ -50,6 +53,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 			
 			if(manager == null){
 				throw new PasswordErrorException();
+			}else{
+				authorities = new ArrayList<>();
+				authorities.add(new GrantedAuthorityImpl(AuthorityName.ROLE_ADMIN));
 			}
 		}else{
 			User user;
@@ -63,13 +69,12 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 				throw new PasswordErrorException();
 			} else {
 				context.addUser(user);
+				
+				authorities = new ArrayList<>();
+				authorities.add(new GrantedAuthorityImpl(AuthorityName.ROLE_USER));
 			}
 		}
 		
-		// 这里设置权限和角色
-		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-		authorities.add(new GrantedAuthorityImpl("AUTH_WRITE"));
 		// 生成令牌
 		Authentication auth = new UsernamePasswordAuthenticationToken(acc, pwd, authorities);
 		return auth;

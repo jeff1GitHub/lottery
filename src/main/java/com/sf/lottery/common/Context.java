@@ -13,6 +13,8 @@ import com.sf.lottery.entity.User;
 
 @Component
 public class Context {
+	/** 服务器开关 */
+	private boolean isOpen = false;
 	/** 投注项集合 */
 	private final Map<Integer, Project> projectMap = new HashMap<>();
 	/** 当前期数集合(在有多个游戏时将改变存放方式) */
@@ -33,6 +35,14 @@ public class Context {
 		});
 	}
 	
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
 	/**
 	 * 获取投注项
 	 * @param projectId 投注项编号

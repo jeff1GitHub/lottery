@@ -15,10 +15,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
+	private ServerFilter serverFilter;
+	@Resource
 	private AuthenticationProvider authenticationProvider;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable();
 		// 关闭csrf验证
 		http.csrf().disable();
 		// 对请求进行认证
@@ -26,12 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 对主页和资源以及期数信息放行
 			.antMatchers("/").permitAll()
 			.antMatchers("/index.html").permitAll()
-			.antMatchers("/css/**").permitAll()
-			.antMatchers("/js/**").permitAll()
+			.antMatchers("/css/**", "/js/**").permitAll()
 			.antMatchers("/lottery/period/**").permitAll()
 			.antMatchers("/manager/login.html").permitAll()
-			.antMatchers("/manager/lib/**").permitAll()
-			.antMatchers("/manager/static/**").permitAll()
+			.antMatchers("/manager/index.html").permitAll()
+			.antMatchers("/manager/lib/**", "/manager/static/**").permitAll()
+			.antMatchers("/manager/page/**").permitAll()
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()
 			.antMatchers(HttpMethod.POST, "/manager/login").permitAll()
@@ -42,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 对请求需要身份认证
 			.anyRequest().authenticated().and();
 		// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
+		http.addFilterBefore(serverFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JWTLoginFilter("/lottery/user/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JWTLoginFilter("/manager/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		// 添加一个过滤器验证其他请求的Token是否合法

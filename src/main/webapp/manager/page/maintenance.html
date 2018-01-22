@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div class="row cl" style="text-align: center;">
+		<div>
+			<span>服务器状态:</span>
+			<input id="normal" name="serverState" type="radio">正常
+			<input id="close" name="serverState" type="radio">维护
+		</div>
+	</div>
+	
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+	<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+	
+	<script type="text/javascript">
+		$(function() {
+			var token = window.localStorage.getItem('manager-token');
+			if(token && token.length > 0){
+				$.ajax({
+					url: '../server/status',
+					type: 'POST',
+					dataType: 'json',
+					async: true,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('Authorization', 'Basic'+token)
+					},
+					success: function (result) {
+						if(result.code == 200){
+							if(result.data){
+								$("input:radio[name='serverState']").eq(0).attr("checked",true);
+							}else{
+								$("input:radio[name='serverState']").eq(1).attr("checked",true);
+							}
+						}else{
+							alert('获取服务器状态信息失败!');
+						}
+					},
+					error: function (request, error) {
+						alert('获取服务器状态信息失败!');
+					}
+				});
+			}else{
+				alert('请先登录!');
+			}
+			
+			$("input:radio[name='serverState']").change(function (){
+				var status = this.id == 'normal';
+				$.ajax({
+					url: '../server/change/status',
+					type: 'POST',
+					dataType: 'json',
+					async: true,
+					data: {
+						'status': status
+					},
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('Authorization', 'Basic'+token)
+					},
+					success: function (result) {
+						if(result.code == 200){
+							if(result.data){
+								$("input:radio[name='serverState']").eq(0).attr("checked",true);
+							}else{
+								$("input:radio[name='serverState']").eq(1).attr("checked",true);
+							}
+							alert('更新服务器状态成功!');
+						}else{
+							alert('更新服务器状态失败!');
+						}
+					},
+					error: function (request, error) {
+						alert('更新服务器状态失败!');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

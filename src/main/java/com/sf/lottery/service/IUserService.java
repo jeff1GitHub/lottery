@@ -1,5 +1,6 @@
 package com.sf.lottery.service;
 
+import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.User;
 
 /**
@@ -31,5 +32,12 @@ public interface IUserService {
 	 * @throws Exception
 	 */
 	User login(String name, String pwd) throws Exception;
+	
+	/**
+	 * 获取用户分页
+	 * @param pageNum 页码
+	 * @return 用户分页
+	 */
+	PageInfo getUserPage(int pageNum);
 	
 }

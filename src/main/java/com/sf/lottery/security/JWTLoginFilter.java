@@ -63,7 +63,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 		String userName = auth.getName();
 		
 		//验证成功后调用
-		String JWT = TokenAuthenticationService.addAuthentication(res, userName);
+		String JWT = TokenAuthenticationService.addAuthentication(auth, userName);
 		
 		AccountVo vo = new AccountVo(userName, JWT);
 		JsonResult<AccountVo> result = new JsonResult<>(ResultCode.SUCCESS, vo);
