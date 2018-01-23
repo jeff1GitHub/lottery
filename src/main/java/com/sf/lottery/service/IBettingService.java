@@ -45,6 +45,13 @@ public interface IBettingService {
      * @return 注单页(获取失败时将返回Null)
      */
     PageInfo getBettingList(int lotteryId, String period, int pageNum);
+    
+    /**
+	 * 根据彩票编号查询注单分页
+	 * @param lotteryId 彩票编号
+	 * @return 注单列表
+	 */
+    PageInfo getBettingPage(int lotteryId, int pageNum);
 
     /**
 	 * 批量更新注单结算

@@ -11,11 +11,13 @@ public class Betting {
 	private long id;
 	/** 帐号编号 */
 	private long userId;
+	/** 账号名称 */
+	private String userName;
 	/** 期号 */
 	private String period;
 	/** 投注时间 */
 	private Date bettingTime;
-	/** 彩票id */
+	/** 彩票编号 */
 	private int lotteryId;
 	/** 投注项 */
 	private int project;
@@ -36,9 +38,10 @@ public class Betting {
 	
 	public Betting() {}
 
-	public Betting(long id, long userId, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
+	public Betting(long id, long userId, String userName, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
 		this.id = id;
 		this.userId = id;
+		this.userName = userName;
 		this.period = period;
 		this.bettingTime = bettingTime;
 		this.lotteryId = lotteryId;
@@ -53,6 +56,10 @@ public class Betting {
 	
 	public long getUserId() {
 		return userId;
+	}
+
+	public String getUserName() {
+		return userName;
 	}
 
 	public String getPeriod() {

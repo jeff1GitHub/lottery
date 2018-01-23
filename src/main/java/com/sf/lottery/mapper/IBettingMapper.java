@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.sf.lottery.entity.Betting;
+import com.sf.lottery.entity.BettingMsg;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
 
@@ -42,6 +43,13 @@ public interface IBettingMapper {
 	 * @return 注单列表(当查询失败时将返回Null)
 	 */
 	List<Betting> selectBetting(@Param("lotteryId") int lotteryId, @Param("period") String period);
+	
+	/**
+	 * 根据彩票编号查询注单
+	 * @param lotteryId 彩票编号
+	 * @return 注单列表
+	 */
+	List<BettingMsg> selectBettingMsg(int lotteryId);
 	
 	/**
 	 * 注单结算

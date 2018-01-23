@@ -10,6 +10,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sf.lottery.common.Constant;
 import com.sf.lottery.entity.Betting;
+import com.sf.lottery.entity.BettingMsg;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
 import com.sf.lottery.entity.PageInfo;
@@ -49,6 +50,13 @@ public class BettingServiceImpl implements IBettingService {
     	Page<Betting> page = (Page<Betting>)bettingMapper.selectBetting(lotteryId, period);
     	return page == null ? null : new PageInfo(page);
     }
+    
+    @Override
+	public PageInfo getBettingPage(int lotteryId, int pageNum) {
+    	PageHelper.startPage(pageNum, Constant.BETTING_PAGE_SIZE);
+    	Page<BettingMsg> page = (Page<BettingMsg>)bettingMapper.selectBettingMsg(lotteryId);
+    	return page == null ? null : new PageInfo(page);
+	}
 
 	@Override
 	public int batchSquareBetting(List<BettingSquareInfo> list) {

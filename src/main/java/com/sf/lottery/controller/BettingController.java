@@ -71,6 +71,11 @@ public class BettingController {
         if (period == null) {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "彩票期号不存在!");
         }
+        
+        // 判断当期状态
+        if (period.getStatus() != 0) {
+        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "已停止投注!");
+        }
 
         // 判断当期时间
         long nowTime = Instant.now().toEpochMilli();
@@ -116,7 +121,7 @@ public class BettingController {
 				return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
 			}
 	        
-	        Betting betting = new Betting(newId, userId, period.getCode(), new Date(), lotteryId, project.getId(), odds, new BigDecimal(money));
+	        Betting betting = new Betting(newId, userId, acc, period.getCode(), new Date(), lotteryId, project.getId(), odds, new BigDecimal(money));
 	        bettings.add(betting);
 		}
         
@@ -128,4 +133,5 @@ public class BettingController {
         }
         return ret;
     }
+    
 }

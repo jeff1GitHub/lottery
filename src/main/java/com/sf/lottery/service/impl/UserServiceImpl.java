@@ -1,6 +1,6 @@
 package com.sf.lottery.service.impl;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -30,7 +30,7 @@ public class UserServiceImpl implements IUserService {
 	public boolean addUser(String account, String pwd) throws Exception {
 		long id = idGenerator.createId();
 		pwd = Tools.MD5(id + pwd);
-		User user = new User(id, account, pwd, new Timestamp(System.currentTimeMillis()));
+		User user = new User(id, account, pwd, new Date());
 		int result = userMapper.insertUser(user);
 		return result == 1;
 	}

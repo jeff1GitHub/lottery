@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/lottery/period/**").permitAll()
 			.antMatchers("/manager/login.html").permitAll()
 			.antMatchers("/manager/index.html").permitAll()
-			.antMatchers("/manager/lib/**", "/manager/static/**").permitAll()
+			.antMatchers("/manager/lib/**", "/manager/static/**", "/manager/js/**").permitAll()
 			.antMatchers("/manager/page/**").permitAll()
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()

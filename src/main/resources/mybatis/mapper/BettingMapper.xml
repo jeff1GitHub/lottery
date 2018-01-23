@@ -5,6 +5,7 @@
 	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.Betting">
 		<id column="f_id" property="id" javaType="long" jdbcType="BIGINT" />
 		<result column="f_user_id" property="userId" javaType="long" jdbcType="BIGINT" />
+		<result column="f_user_name" property="userName" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_betting_time" property="bettingTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
 		<result column="f_lottery_id" property="lotteryId" javaType="int" jdbcType="INTEGER" />
@@ -24,11 +25,26 @@
 		<result column="f_project" property="project" javaType="int" jdbcType="INTEGER" />
 		<result column="f_count" property="count" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
+	
+	<resultMap id="BettingMsgResultMap" type="com.sf.lottery.entity.BettingMsg">
+		<id column="f_id" property="id" javaType="long" jdbcType="BIGINT" />
+		<result column="f_user_name" property="userName" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_betting_time" property="bettingTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		<result column="f_lottery_name" property="lotteryName" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_project_name" property="projectName" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_odds" property="odds" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_money" property="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_square" property="square" javaType="int" jdbcType="INTEGER" />
+		<result column="f_square_money" property="squareMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+		<result column="f_square_time" property="squareTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+	</resultMap>
 
 	<insert id="insertBetting" parameterType="java.util.List">
 		INSERT INTO lottery.t_betting (
 			f_id,
 			f_user_id,
+			f_user_name,
 		  	f_period,
 		  	f_betting_time,
 		  	f_lottery_id,
@@ -41,6 +57,7 @@
 			(
 				#{item.id},
 				#{item.userId},
+				#{item.userName},
 			    #{item.period},
 			    #{item.bettingTime},
 			    #{item.lotteryId},
@@ -53,7 +70,8 @@
 	
 	<select id="selectBettingBySquare" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_user_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money from  t_betting
+			SELECT f_id, f_user_id, f_user_name, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money
+			FROM t_betting
 			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR} AND f_square = #{square, jdbcType=INTEGER}
 		]]>
 	</select>
@@ -69,9 +87,34 @@
 	
 	<select id="selectBetting" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_user_id, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_money, f_square_time, f_prize, f_prize_time
+			SELECT f_id, f_user_id, f_user_name, f_period, f_betting_time, f_lottery_id, f_project, f_odds, f_money, f_square, f_square_money, f_square_time, f_prize, f_prize_time
 			FROM t_betting
 			WHERE f_lottery_id = #{lotteryId, jdbcType=INTEGER} AND f_period = #{period, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	<select id="selectBettingMsg" resultMap="BettingMsgResultMap">
+		<![CDATA[
+			SELECT
+			  b.f_id,
+			  b.f_user_name,
+			  b.f_period,
+			  b.f_betting_time,
+			  l.f_name AS f_lottery_name,
+			  p.f_name AS f_project_name,
+			  b.f_odds,
+			  b.f_money,
+			  b.f_square,
+			  f_square_money,
+			  b.f_square_time
+			FROM
+			  t_betting AS b
+			  LEFT JOIN t_lottery AS l ON b.f_lottery_id = l.f_id
+			  LEFT JOIN t_project AS p ON b.f_project = p.f_id
+			WHERE
+			  b.f_lottery_id = 1
+			ORDER BY
+			  b.f_id
 		]]>
 	</select>
 	
