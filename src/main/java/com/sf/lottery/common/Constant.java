@@ -5,9 +5,9 @@ package com.sf.lottery.common;
  */
 public final class Constant {
 	/** 注单页大小 */
-	public static int BETTING_PAGE_SIZE = 10;
+	public static int BETTING_PAGE_SIZE = 15;
 	/** 用户页大小 */
-	public static int USER_PAGE_SIZE = 2;
+	public static int USER_PAGE_SIZE = 15;
 	/** 管理员页大小 */
-	public static int MANAGER_PAGE_SIZE = 2;
+	public static int MANAGER_PAGE_SIZE = 15;
 }

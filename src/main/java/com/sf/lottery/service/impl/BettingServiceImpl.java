@@ -1,5 +1,6 @@
 package com.sf.lottery.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -52,9 +53,9 @@ public class BettingServiceImpl implements IBettingService {
     }
     
     @Override
-	public PageInfo getBettingPage(int lotteryId, int pageNum) {
+	public PageInfo getBettingPage(int lotteryId, int pageNum, String name, LocalDateTime startTime, LocalDateTime endTime) {
     	PageHelper.startPage(pageNum, Constant.BETTING_PAGE_SIZE);
-    	Page<BettingMsg> page = (Page<BettingMsg>)bettingMapper.selectBettingMsg(lotteryId);
+    	Page<BettingMsg> page = (Page<BettingMsg>)bettingMapper.selectBettingMsgByAccount(lotteryId, name, startTime, endTime);
     	return page == null ? null : new PageInfo(page);
 	}
 

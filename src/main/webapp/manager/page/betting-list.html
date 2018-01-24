@@ -9,9 +9,10 @@
 <body>
 	<div class="page-container">
 		<div class="text-c" style="margin-top: 20px;">
+			用户:<select id="userName" class="input-text" style="width:120px;"></select>
 			投注时间：
-            <input id="datemin" name="datemin" type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" class="input-text Wdate" style="width:180px;">-
-            <input id="datemax" name="datemax" type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:180px;">
+            <input id="datemin" type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" class="input-text Wdate" style="width:180px;">-
+            <input id="datemax" type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:180px;">
 			<button id="searchBettingBtn" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>查询</button>
 		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"></span></div>
@@ -49,6 +50,36 @@
 	
 	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript">
+		$(function() {
+			var token = window.localStorage.getItem('manager-token');
+			if(token && token.length > 0){
+				var url = window.parent.domain + '/manager/account/user/all';
+				$.ajax({
+					url: url,
+					type: 'POST',
+					async: true,
+					beforeSend: function(xhr) {
+	    				xhr.setRequestHeader('Authorization', 'Basic'+token)
+	    			},
+					success: function(result) {
+						if(result.code == 200){
+							var names = result.data;
+							for(var index in names){
+								$('#userName').append('<option>' + names[index] + '</option>');
+							}
+						}else{
+							alert(result.message);
+						}
+					},
+					error: function(request, error) {
+						alert('获取用户信息失败，无法连接网络或者返回值错误!');
+					}
+				});
+			}else{
+				alert('请先登录!');
+			}
+		});
+	
 		// 表单中字段的key
 	    var columns = [
 	        {data : 'id'},
@@ -58,7 +89,11 @@
 	        {data : 'projectName'},
 	        {data : 'odds'},
 	        {data : 'money'},
-	        {data : 'bettingTime'},
+	        {
+	        	data : function(e) {
+		        	return window.parent.getFormatDateBy(e.bettingTime);
+		        }
+	        },
 	        {
 	            data: function (e) {
 	                var element = "";
@@ -71,34 +106,22 @@
 	            }
 	        },
 	        {data : 'squareMoney'},
-	        {data : 'squareTime'}
+	        {
+	        	data : function(e) {
+		        	return e.squareTime ? window.parent.getFormatDateBy(e.squareTime) : '';
+		        }
+	        }
 	    ];
 		
 		$('#searchBettingBtn').click(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				$.ajax({
-					url: '../betting/bettingPage',
-					type: 'POST',
-					dataType: 'json',
-					async: true,
-					data: {
-						'pageNum': 1,
-					},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader('Authorization', 'Basic'+token)
-					},
-					success: function (jsonResult) {
-						if(jsonResult.code == 200){
-                            bindJsonTable("bettingList", jsonResult.data, columns);
-                        }else{
-                            layer.msg(jsonResult.message,{icon:2,time:2000});
-                        }
-					},
-					error: function (request, error) {
-						layer.msg('获取用户列表数据失败!',{icon:2,time:1000});
-					}
-				});
+				var queryParam = {};
+				queryParam.name = $('#userName').find("option:selected").text();;
+				queryParam.startTime = $('#datemin').val();
+				queryParam.endTime = $('#datemax').val();
+				var url = window.parent.domain + '/manager/betting/bettingPage';
+				bindPageTable("bettingList", 15, columns, url, token, queryParam);
 			}else{
 				alert('请先登录!');
 			}

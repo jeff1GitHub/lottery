@@ -2,6 +2,7 @@ package com.sf.lottery.mapper;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -47,9 +48,12 @@ public interface IBettingMapper {
 	/**
 	 * 根据彩票编号查询注单
 	 * @param lotteryId 彩票编号
+	 * @param acc 投注账号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
 	 * @return 注单列表
 	 */
-	List<BettingMsg> selectBettingMsg(int lotteryId);
+	List<BettingMsg> selectBettingMsgByAccount(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 	
 	/**
 	 * 注单结算

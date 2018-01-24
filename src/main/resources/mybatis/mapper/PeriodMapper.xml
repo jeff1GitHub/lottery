@@ -6,9 +6,9 @@
 		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
 		<result column="f_code" property="code" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_game_id" property="gameId" javaType="int" jdbcType="INTEGER" />
-		<result column="f_start_time" property="startTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-		<result column="f_end_time" property="endTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-		<result column="f_finish_time" property="finishTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		<result column="f_start_time" property="startTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
+		<result column="f_end_time" property="endTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
+		<result column="f_finish_time" property="finishTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
 		<result column="f_result" property="result" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_status" property="status" javaType="int" jdbcType="INTEGER" />
 	</resultMap>

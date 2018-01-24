@@ -6,7 +6,7 @@
 		<id column="f_id" property="id" javaType="long" jdbcType="INTEGER" />
 		<result column="f_name" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_pwd" property="pwd" javaType="java.lang.String" jdbcType="VARCHAR" />
-		<result column="f_create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		<result column="f_create_time" property="createTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 	<insert id="insertManager" parameterType="com.sf.lottery.entity.Manager">
@@ -23,7 +23,7 @@
 	
 	<select id="selectManager" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_name, f_create_time FROM t_manager
+			SELECT f_id, f_name, f_create_time FROM t_manager ORDER BY f_id
 		]]>
 	</select>
 	

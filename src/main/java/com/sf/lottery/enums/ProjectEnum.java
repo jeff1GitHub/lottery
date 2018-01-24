@@ -1,7 +1,7 @@
 package com.sf.lottery.enums;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.sf.lottery.entity.Betting;
 import com.sf.lottery.entity.BettingSquareInfo;
@@ -511,7 +511,7 @@ public enum ProjectEnum {
 				break;
 			default: return null;
 		}
-		BettingSquareInfo squareInfo = new BettingSquareInfo(betting.getId(), squareResult, new Timestamp(System.currentTimeMillis()));
+		BettingSquareInfo squareInfo = new BettingSquareInfo(betting.getId(), squareResult, LocalDateTime.now());
 		return squareInfo;
 	}
 	

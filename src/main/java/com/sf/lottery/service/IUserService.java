@@ -1,5 +1,7 @@
 package com.sf.lottery.service;
 
+import java.util.List;
+
 import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.User;
 
@@ -39,5 +41,11 @@ public interface IUserService {
 	 * @return 用户分页
 	 */
 	PageInfo getUserPage(int pageNum);
+	
+	/**
+	 * 查询所有用户名
+	 * @return 用户名列表
+	 */
+	List<String> getAllUserName();
 	
 }

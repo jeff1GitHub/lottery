@@ -1,6 +1,6 @@
 package com.sf.lottery.service.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.annotation.Resource;
 
@@ -30,7 +30,7 @@ public class ManagerServiceImpl implements IManagerService {
 	public boolean addManager(String account, String pwd) throws Exception {
 		long id = idGenerator.createId();
 		pwd = Tools.MD5(id + pwd);
-		Manager manager = new Manager(id, account, pwd, new Date());
+		Manager manager = new Manager(id, account, pwd, LocalDateTime.now());
 		int result = managerMapper.insertManager(manager);
 		return result == 1;
 	}

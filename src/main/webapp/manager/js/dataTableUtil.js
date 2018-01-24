@@ -51,3 +51,77 @@ function bindJsonTable(tableName, data, columns) {
         "order": [[ 0, 'desc' ], [ 1, 'desc' ], [ 2, 'desc' ]]
     });
 }
+
+function bindPageTable(tableName, pageLength, columns, url, token, queryParam) {
+    if($.fn.dataTable.isDataTable("#" + tableName)){
+        $("#" + tableName).DataTable().destroy()
+    }
+
+    $("#" + tableName).dataTable({
+        "language": language,
+        "columns": columns,
+        "pageLength": pageLength,
+        "autoWidth": false,
+        "lengthChange": false,
+        "searching": false,
+        "serverSide": true,
+        "processing": true,
+        "sAjaxSource": url,
+        "fnServerData": function(url, aoData, fnCallback) {
+        	var start;
+        	var pageLength;
+        	var draw;
+        	for(var index in aoData){
+        		if(aoData[index].name == 'iDisplayStart'){
+        			start = aoData[index].value;
+        			continue;
+        		}
+        		
+        		if(aoData[index].name == 'iDisplayLength'){
+        			pageLength = aoData[index].value;
+        			continue;
+        		}
+        		
+        		if(aoData[index].name == 'sEcho'){
+        			draw = aoData[index].value;
+        			continue;
+        		}
+        		
+        		if(start && pageLength && draw){
+        			break;
+        		}
+        	}
+        	
+        	if(!queryParam){
+        		queryParam = {};
+        	}
+        	queryParam.pageNum = start / pageLength + 1;
+        	queryParam.draw = draw;
+        	
+        	$.ajax({
+            	url: url,
+            	type: 'POST',
+    			async: true,
+    			data: queryParam,
+    			beforeSend: function(xhr) {
+    				xhr.setRequestHeader('Authorization', 'Basic'+token)
+    			},
+    			success: function (jsonResult) {
+    				if(jsonResult.code == 200){
+    					var obj = {};
+    					obj.draw = jsonResult.message;
+    					obj.recordsFiltered = jsonResult.data.total;
+    					obj.recordsTotal = jsonResult.data.total;
+    					obj.data = jsonResult.data.result;
+    					fnCallback(obj);
+                    }else{
+                    	layer.msg(jsonResult.message,{icon:2,time:2000});
+                    }
+    			},
+    			error: function (request, error) {
+    				alert(error);
+    			}
+            });
+        }
+    });
+}

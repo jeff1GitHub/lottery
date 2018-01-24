@@ -146,6 +146,8 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
+var domain = 'http://10.21.11.107:8899';
+
 $(function(){
 	var managerName = window.localStorage.getItem('manager-name');
 	var managerToken = window.localStorage.getItem('manager-token');
@@ -209,6 +211,29 @@ function product_add(title,url){
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
 }
+
+function getFormatDateBy(dateTime) {
+	var year = dateTime.year;
+	var month = dateTime.monthValue;
+	var day = dateTime.dayOfMonth;
+	
+	var hour = dateTime.hour;
+	var minute = dateTime.minute;
+	var second = dateTime.second;
+	
+	var time = year + "-";
+	time += (month < 10) ? "0" + month : month;
+	time += "-";
+	time += (day < 10) ? "0" + day : day;
+	time += " ";
+	time += (hour < 10) ? "0" + hour : hour;
+	time += ":";
+	time += (minute < 10) ? "0" + minute : minute;
+	time += ":";
+	time += (second < 10) ? "0" + second : second;
+	return time;
+}
+
 </script> 
 
 </body>

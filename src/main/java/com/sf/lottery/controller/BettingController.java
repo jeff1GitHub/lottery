@@ -2,8 +2,8 @@ package com.sf.lottery.controller;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -121,7 +121,7 @@ public class BettingController {
 				return new JsonResult<>(ResultCode.EXCEPTION, "投注失败!");
 			}
 	        
-	        Betting betting = new Betting(newId, userId, acc, period.getCode(), new Date(), lotteryId, project.getId(), odds, new BigDecimal(money));
+	        Betting betting = new Betting(newId, userId, acc, period.getCode(), LocalDateTime.now(), lotteryId, project.getId(), odds, new BigDecimal(money));
 	        bettings.add(betting);
 		}
         

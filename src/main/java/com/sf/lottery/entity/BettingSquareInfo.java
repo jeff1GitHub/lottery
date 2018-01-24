@@ -1,14 +1,14 @@
 package com.sf.lottery.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class BettingSquareInfo {
 	private long bettingId;
 	private BigDecimal squareMoney;
-	private Timestamp squareTime;
+	private LocalDateTime squareTime;
 
-	public BettingSquareInfo(long bettingId, BigDecimal squareMoney, Timestamp squareTime) {
+	public BettingSquareInfo(long bettingId, BigDecimal squareMoney, LocalDateTime squareTime) {
 		this.bettingId = bettingId;
 		this.squareMoney = squareMoney;
 		this.squareTime = squareTime;
@@ -22,7 +22,7 @@ public class BettingSquareInfo {
 		return squareMoney;
 	}
 
-	public Timestamp getSquareTime() {
+	public LocalDateTime getSquareTime() {
 		return squareTime;
 	}
 

@@ -1,5 +1,6 @@
 package com.sf.lottery.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.sf.lottery.entity.Betting;
@@ -48,10 +49,14 @@ public interface IBettingService {
     
     /**
 	 * 根据彩票编号查询注单分页
-	 * @param lotteryId 彩票编号
-	 * @return 注单列表
-	 */
-    PageInfo getBettingPage(int lotteryId, int pageNum);
+     * @param lotteryId 彩票编号
+     * @param pageNum 查询页码
+     * @param name 投注账号
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return 注单列表
+     */
+    PageInfo getBettingPage(int lotteryId, int pageNum, String name, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
 	 * 批量更新注单结算

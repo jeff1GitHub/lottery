@@ -26,4 +26,10 @@ public interface IUserMapper {
 	 */
 	List<User> selectUser();
 	
+	/**
+	 * 查询所有用户名
+	 * @return 用户名列表
+	 */
+	List<String> selectUserName();
+	
 }

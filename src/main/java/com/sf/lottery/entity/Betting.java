@@ -1,7 +1,7 @@
 package com.sf.lottery.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 注单
@@ -16,7 +16,7 @@ public class Betting {
 	/** 期号 */
 	private String period;
 	/** 投注时间 */
-	private Date bettingTime;
+	private LocalDateTime bettingTime;
 	/** 彩票编号 */
 	private int lotteryId;
 	/** 投注项 */
@@ -30,15 +30,15 @@ public class Betting {
 	/** 结算金额 */
 	private BigDecimal squareMoney;
 	/** 结算时间 */
-	private Date squareTime;
+	private LocalDateTime squareTime;
 	/** 是否派彩 */
 	private int prize;
 	/** 派奖时间 */
-	private Date prizeTime;
+	private LocalDateTime prizeTime;
 	
 	public Betting() {}
 
-	public Betting(long id, long userId, String userName, String period, Date bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
+	public Betting(long id, long userId, String userName, String period, LocalDateTime bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
 		this.id = id;
 		this.userId = id;
 		this.userName = userName;
@@ -66,7 +66,7 @@ public class Betting {
 		return period;
 	}
 
-	public Date getBettingTime() {
+	public LocalDateTime getBettingTime() {
 		return bettingTime;
 	}
 
@@ -94,7 +94,7 @@ public class Betting {
 		return squareMoney;
 	}
 
-	public Date getSquareTime() {
+	public LocalDateTime getSquareTime() {
 		return squareTime;
 	}
 
@@ -102,7 +102,7 @@ public class Betting {
 		return prize;
 	}
 
-	public Date getPrizeTime() {
+	public LocalDateTime getPrizeTime() {
 		return prizeTime;
 	}
 

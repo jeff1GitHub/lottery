@@ -46,8 +46,9 @@
 			
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
+				var url = window.parent.domain + '/manager/create/manager';
 				$.ajax({
-					url: '../create/manager',
+					url: url,
 					type: 'POST',
 					dataType: 'json',
 					async: true,

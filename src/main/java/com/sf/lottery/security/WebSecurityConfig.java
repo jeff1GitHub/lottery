@@ -27,8 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 对请求进行认证
 		http.authorizeRequests()
 			// 对主页和资源以及期数信息放行
-			.antMatchers("/").permitAll()
-			.antMatchers("/index.html").permitAll()
+			.antMatchers("/", "/favicon.ico", "/index.html").permitAll()
 			.antMatchers("/css/**", "/js/**").permitAll()
 			.antMatchers("/lottery/period/**").permitAll()
 			.antMatchers("/manager/login.html").permitAll()

@@ -1,6 +1,7 @@
 package com.sf.lottery.service.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -30,7 +31,7 @@ public class UserServiceImpl implements IUserService {
 	public boolean addUser(String account, String pwd) throws Exception {
 		long id = idGenerator.createId();
 		pwd = Tools.MD5(id + pwd);
-		User user = new User(id, account, pwd, new Date());
+		User user = new User(id, account, pwd, LocalDateTime.now());
 		int result = userMapper.insertUser(user);
 		return result == 1;
 	}
@@ -54,9 +55,15 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public PageInfo getUserPage(int pageNum) {
-		PageHelper.startPage(pageNum, Constant.MANAGER_PAGE_SIZE);
+		PageHelper.startPage(pageNum, Constant.USER_PAGE_SIZE);
 		Page<User> page = (Page<User>)userMapper.selectUser();
 		return page == null ? null : new PageInfo(page);
+	}
+
+	@Override
+	public List<String> getAllUserName() {
+		List<String> list = userMapper.selectUserName();
+		return list;
 	}
 
 }

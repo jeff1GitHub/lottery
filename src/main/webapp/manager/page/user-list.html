@@ -42,9 +42,13 @@
 	    var columns = [
 	        {data : 'id'},
 	        {data : 'name'},
-	        {data : 'createTime'},
 	        {
-	            data: function (e) {
+	        	data : function(e) {
+		        	return window.parent.getFormatDateBy(e.createTime);
+		        }
+	        },
+	        {
+	            data: function(e) {
 	                var element = "";
 	                if (e.isDisable == 0) {
 	                    element = '<span class="label label-success radius">启用</span>';
@@ -56,7 +60,7 @@
 	            className: "td-status"
 	        },
 	        {
-	            data: function (e) {
+	            data: function(e) {
 	                var element = table_disable(e.id, e.isDisable);
 	                element += datatable_button_edit("编辑用户", "user-info", e.id);
 					//var element = "<button type='button' class='btn btn-info'data-toggle='modal'"
@@ -72,26 +76,8 @@
 		$('#refreshUserList').click(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				$.ajax({
-					url: '../account/user/page',
-					type: 'POST',
-					dataType: 'json',
-					async: true,
-					data: {'pageNum': 1},
-					beforeSend: function(xhr) {
-						xhr.setRequestHeader('Authorization', 'Basic'+token)
-					},
-					success: function (jsonResult) {
-						if(jsonResult.code == 200){
-                            bindJsonTable("userList", jsonResult.data, columns);
-                        }else{
-                            layer.msg(jsonResult.message,{icon:2,time:2000});
-                        }
-					},
-					error: function (request, error) {
-						layer.msg('获取用户列表数据失败!',{icon:2,time:1000});
-					}
-				});
+				var url = window.parent.domain + '/manager/account/user/page';
+				bindPageTable("userList", 15, columns, url, token);
 			}else{
 				alert('请先登录!');
 			}

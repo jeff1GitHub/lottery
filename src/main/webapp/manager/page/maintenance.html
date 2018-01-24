@@ -23,8 +23,9 @@
 		$(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
+				var url = window.parent.domain + '/manager/server/status';
 				$.ajax({
-					url: '../server/status',
+					url: url,
 					type: 'POST',
 					dataType: 'json',
 					async: true,
@@ -52,8 +53,9 @@
 			
 			$("input:radio[name='serverState']").change(function (){
 				var status = this.id == 'normal';
+				var url = window.parent.domain + '/manager/server/change/status';
 				$.ajax({
-					url: '../server/change/status',
+					url: url,
 					type: 'POST',
 					dataType: 'json',
 					async: true,

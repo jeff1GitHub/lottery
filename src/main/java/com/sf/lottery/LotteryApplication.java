@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 @SpringBootApplication
 @MapperScan("com.sf.lottery.mapper")
-@EnableScheduling//开启扫描定时器
-@EnableCaching//标注启用缓存
+@EnableScheduling // 开启扫描定时器
+@EnableCaching // 标注启用缓存
 public class LotteryApplication extends SpringBootServletInitializer {
 
 	@Override
@@ -24,5 +24,5 @@ public class LotteryApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(LotteryApplication.class, args);
 	}
-	
+
 }

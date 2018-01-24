@@ -1,16 +1,16 @@
 package com.sf.lottery.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User {
 	private long id;
 	private String name;
 	private String pwd;
-	private Date createTime;
+	private LocalDateTime createTime;
 	
 	public User() {}
 
-	public User(long id, String name, String pwd, Date createTime) {
+	public User(long id, String name, String pwd, LocalDateTime createTime) {
 		this.id = id;
 		this.name = name;
 		this.pwd = pwd;
@@ -29,7 +29,7 @@ public class User {
 		return pwd;
 	}
 
-	public Date getCreateTime() {
+	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
