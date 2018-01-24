@@ -12,8 +12,10 @@ import com.github.pagehelper.PageHelper;
 import com.sf.lottery.common.Constant;
 import com.sf.lottery.entity.Betting;
 import com.sf.lottery.entity.BettingMsg;
+import com.sf.lottery.entity.BettingNum;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
+import com.sf.lottery.entity.BettingSquareSummary;
 import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.mapper.IBettingMapper;
 import com.sf.lottery.service.IBettingService;
@@ -62,6 +64,18 @@ public class BettingServiceImpl implements IBettingService {
 	@Override
 	public int batchSquareBetting(List<BettingSquareInfo> list) {
 		int result = bettingMapper.batchUpdateSquareBetting(list);
+		return result;
+	}
+
+	@Override
+	public BettingSquareSummary getBettingSquare(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime) {
+		BettingSquareSummary summary = bettingMapper.selectBettingSquare(lotteryId, acc, startTime, endTime);
+		return summary;
+	}
+
+	@Override
+	public BettingNum getBettingNum(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime) {
+		BettingNum result = bettingMapper.selectBettingNum(lotteryId, acc, startTime, endTime);
 		return result;
 	}
 

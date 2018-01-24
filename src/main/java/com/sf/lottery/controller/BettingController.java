@@ -3,6 +3,7 @@ package com.sf.lottery.controller;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,8 +79,10 @@ public class BettingController {
         }
 
         // 判断当期时间
-        long nowTime = Instant.now().toEpochMilli();
-        if (nowTime < period.getStartTime().getTime() || nowTime >= period.getEndTime().getTime()) {
+        Instant nowTime = Instant.now();
+        Instant startTime = period.getStartTime().atZone(ZoneId.systemDefault()).toInstant();
+        Instant endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant();
+        if (nowTime.isBefore(startTime) || !nowTime.isBefore(endTime)) {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注时间无效!");
         }
         

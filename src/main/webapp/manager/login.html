@@ -51,12 +51,13 @@
 	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 	<script type="text/javascript" src="lib/jquery.md5.js"></script>
 	<script type="text/javascript">
+	var domain = 'http://localhost:8899';
 		$(function() {
 			$('#loginBtn').click(function() {
 				var acc = $('#acc').val();
 				var pwd = $('#pwd').val();
 				$.ajax({
-					url: 'login',
+					url: domain + '/manager/login',
 					type: 'POST',
 					data: {
 						'acc': acc,
@@ -85,7 +86,7 @@
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
 				$.ajax({
-					url: 'user/status',
+					url: domain + '/manager/user/status',
 					type: 'POST',
 					dataType: 'json',
 					async: true,

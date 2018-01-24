@@ -1,7 +1,6 @@
 package com.sf.lottery.mapper;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,8 +8,10 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sf.lottery.entity.Betting;
 import com.sf.lottery.entity.BettingMsg;
+import com.sf.lottery.entity.BettingNum;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
+import com.sf.lottery.entity.BettingSquareSummary;
 
 public interface IBettingMapper {
 	
@@ -62,7 +63,7 @@ public interface IBettingMapper {
 	 * @param squareTime 结算时间
 	 * @return 更新数据数量
 	 */
-	int updateSquareBetting(@Param("bettingId") int bettingId, @Param("squareMoney") BigDecimal squareMoney, @Param("squareTime") Timestamp squareTime);
+	int updateSquareBetting(@Param("bettingId") int bettingId, @Param("squareMoney") BigDecimal squareMoney, @Param("squareTime") LocalDateTime squareTime);
 	
 	/**
 	 * 批量更新注单结算
@@ -71,4 +72,24 @@ public interface IBettingMapper {
 	 */
 	int batchUpdateSquareBetting(List<BettingSquareInfo> list);
 	
+	/**
+	 * 根据帐号查询注单结算汇总
+	 * @param lotteryId 彩票编号
+	 * @param acc 投注账号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return BettingSquareSummary
+	 */
+	BettingSquareSummary selectBettingSquare(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+	
+	/**
+	 * 根据帐号查询各种状态注单数量
+	 * @param lotteryId 彩票编号
+	 * @param acc 投注账号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return BettingNum
+	 */
+	BettingNum selectBettingNum(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
 }

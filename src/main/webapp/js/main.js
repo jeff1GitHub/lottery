@@ -281,8 +281,9 @@ function commitBet() {
 		}
 		
 		var json = [];
-        var obj = {};
+        var obj;
 		for(var index in betItem){
+			obj = {};
 			obj.id = betItem[index][0];
 			obj.odds = betItem[index][2];
 			json.push(obj);

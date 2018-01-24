@@ -1,8 +1,7 @@
 package com.sf.lottery.service.impl;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -50,7 +49,7 @@ public class PeriodServiceImpl implements IPeriodService {
 		}
 		
 		//生成今天的所有期数
-		periodMapper.insertPeriod(new Date(System.currentTimeMillis()));
+		periodMapper.insertPeriod(LocalDateTime.now());
 		return true;
 	}
 	
@@ -74,18 +73,18 @@ public class PeriodServiceImpl implements IPeriodService {
 	@Override
 	public Period getNowPeriod(int lotteryId) {
 		//查询当前期数
-    	Period period = periodMapper.selectNowPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
+    	Period period = periodMapper.selectNowPeriod(lotteryId, LocalDateTime.now());
 		return period;
 	}
 	
 	@Override
 	public Period getBeforPeriod(int lotteryId) {
-		Period period = periodMapper.selectBeforPeriod(lotteryId, new Timestamp(System.currentTimeMillis()));
+		Period period = periodMapper.selectBeforPeriod(lotteryId, LocalDateTime.now());
 		return period;
 	}
 
 	@Override
-	public List<Period> getPeriodByStatus(int gameId, Timestamp time, int status) {
+	public List<Period> getPeriodByStatus(int gameId, LocalDateTime time, int status) {
 		List<Period> list = periodMapper.selectPeriodByStatus(gameId, time, status);
 		return list;
 	}

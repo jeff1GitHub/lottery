@@ -1,8 +1,8 @@
 package com.sf.lottery.timer;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class PeriodTimer {
 	@Scheduled(fixedRate=1000)
 	public void OpenPeriodResult() {
 		if(isFirstRunOpenPeriodResult){
-			List<Period> list = periodService.getPeriodByStatus(1, new Timestamp(Instant.now().toEpochMilli()), 0);
+			List<Period> list = periodService.getPeriodByStatus(1, LocalDateTime.now(), 0);
 			list.forEach(period -> {
 				setPeriodResult(period);
 			});
@@ -50,9 +50,8 @@ public class PeriodTimer {
 		
 		Period period = context.getWaitOpenPeriod(1);
 		if(period != null && period.getStatus() != 1){
-			long finishTime = period.getFinishTime().getTime();
-			long nowTime = Instant.now().toEpochMilli();
-			if(finishTime <= nowTime){
+			Instant finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
+			if(!finishTime.isAfter(Instant.now())){
 				setPeriodResult(period);
 			}
 		}
@@ -71,9 +70,8 @@ public class PeriodTimer {
 			if(currentPeriod == null){
 				addNowPeriod();
 			}else{
-				long finishTime = currentPeriod.getFinishTime().getTime();
-				long nowTime = Instant.now().toEpochMilli();
-				if(finishTime <= nowTime){
+				Instant finishTime = currentPeriod.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
+				if(!finishTime.isAfter(Instant.now())){
 					context.removeCurrentPeriod(currentPeriod.getGameId());
 					context.addWaitOpenPeriod(currentPeriod);
 					addNowPeriod();

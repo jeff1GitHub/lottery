@@ -39,6 +39,20 @@
 		<result column="f_square_money" property="squareMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
 		<result column="f_square_time" property="squareTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
 	</resultMap>
+	
+	<resultMap id="BettingSquareSummaryResultMap" type="com.sf.lottery.entity.BettingSquareSummary">
+		<result column="f_user_name" property="userName" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_bet_money" property="betMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_profit" property="profit" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+		<result column="f_loss" property="loss" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap id="BettingNumResultMap" type="com.sf.lottery.entity.BettingNum">
+		<result column="f_bet_num" property="betNum" javaType="int" jdbcType="INTEGER" />
+		<result column="f_squared_num" property="squaredNum" javaType="int" jdbcType="INTEGER" />
+    	<result column="f_unsquare_num" property="unsquareNum" javaType="int" jdbcType="INTEGER" />
+    	<result column="f_other_bet_num" property="otherBetNum" javaType="int" jdbcType="INTEGER" />
+	</resultMap>
 
 	<insert id="insertBetting" parameterType="java.util.List">
 		INSERT INTO lottery.t_betting (
@@ -118,6 +132,43 @@
 			  AND b.f_betting_time <= #{endTime, jdbcType=TIMESTAMP}
 			ORDER BY
 			  b.f_id
+		]]>
+	</select>
+	
+	<select id="selectBettingSquare" resultMap="BettingSquareSummaryResultMap">
+		<![CDATA[
+			SELECT
+			  f_user_name,
+			  sum(f_money) AS f_bet_money,
+			  sum(case when f_square_money > 0 then f_square_money else 0 end) AS f_profit,
+			  sum(case when f_square_money < 0 then f_square_money else 0 end) AS f_loss
+			FROM
+			  t_betting
+			WHERE
+			  f_lottery_id = #{lotteryId, jdbcType=INTEGER}
+			  AND f_user_name = #{acc, jdbcType=VARCHAR}
+			  AND f_square = 1
+			  AND f_betting_time >= #{startTime, jdbcType=TIMESTAMP}
+			  AND f_betting_time <= #{endTime, jdbcType=TIMESTAMP}
+			GROUP BY
+			  f_user_name
+		]]>
+	</select>
+	
+	<select id="selectBettingNum" resultMap="BettingNumResultMap">
+		<![CDATA[		   
+			SELECT
+			  count(1) as f_bet_num,
+			  sum(case when f_square = 1 then 1 else 0 end) as f_squared_num,
+    		  sum(case when f_square = 0 then 1 else 0 end) as f_unsquare_num,
+    		  sum(case when f_square != 0 and f_square != 1 then 1 else 0 end) as f_other_bet_num
+			FROM
+			  t_betting
+			WHERE
+			  f_lottery_id = #{lotteryId, jdbcType=INTEGER}
+			  AND f_user_name = #{acc, jdbcType=VARCHAR}
+			  AND f_betting_time >= #{startTime, jdbcType=TIMESTAMP}
+			  AND f_betting_time <= #{endTime, jdbcType=TIMESTAMP}
 		]]>
 	</select>
 	

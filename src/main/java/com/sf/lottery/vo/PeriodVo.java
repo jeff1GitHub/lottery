@@ -1,5 +1,8 @@
 package com.sf.lottery.vo;
 
+import java.time.Instant;
+import java.time.ZoneId;
+
 import com.sf.lottery.entity.Period;
 
 /**
@@ -30,9 +33,12 @@ public class PeriodVo {
 			this.result = period.getResult();
 		}
 		if(this.status == 0){
-			long nowTime = System.currentTimeMillis();
-			this.endTime = (int)Math.ceil((period.getEndTime().getTime() - nowTime) / 1000.0);
-			this.finishTime = (int)Math.ceil((period.getFinishTime().getTime() - nowTime) / 1000.0);
+			long nowTime = Instant.now().toEpochMilli();
+			long endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+			long finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+			
+			this.endTime = (int)Math.ceil((endTime - nowTime) / 1000.0);
+			this.finishTime = (int)Math.ceil((finishTime - nowTime) / 1000.0);
 		}
 	}
 

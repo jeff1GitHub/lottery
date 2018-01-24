@@ -228,289 +228,296 @@ public enum ProjectEnum {
 		BigDecimal squareResult;
 		switch (pe) {
 			case SUM_BIG:
-				squareResult = isSumBig ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = isSumBig ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_SMALL:
-				squareResult = isSumBig ? new BigDecimal(0) : betting.getMoney().multiply(betting.getOdds());
+				squareResult = isSumBig ? null : betting.getMoney().multiply(betting.getOdds());
 				break;
 			case SUM_SINGLE:
-				squareResult = isSumSingle ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = isSumSingle ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_DOUBLE:
-				squareResult = isSumSingle ? new BigDecimal(0) : betting.getMoney().multiply(betting.getOdds());
+				squareResult = isSumSingle ? null : betting.getMoney().multiply(betting.getOdds());
 				break;
 			case LOONG:
-				squareResult = result[0] > result[4] ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] > result[4] ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case TIGER:
-				squareResult = result[0] < result[4] ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] < result[4] ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case TIE:
-				squareResult = result[0] == result[4] ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == result[4] ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FIRST_BIG:
-				squareResult = result[0] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_SMALL:
-				squareResult = result[0] < 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] < 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_SINGLE:
-				squareResult = result[0] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_DOUNLE:
-				squareResult = result[0] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case SECOND_BIG:
-				squareResult = result[1] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_SMALL:
-				squareResult = result[1] < 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] < 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_SINGLE:
-				squareResult = result[1] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_DOUBLE:
-				squareResult = result[1] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case THIRD_BIG:
-				squareResult = result[2] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_SMALL:
-				squareResult = result[2] < 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] < 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_SINGLE:
-				squareResult = result[2] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_DOUBLE:
-				squareResult = result[2] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FOURTH_BIG:
-				squareResult = result[3] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_SMALL:
-				squareResult = result[3] < 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] < 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_SINGLE:
-				squareResult = result[3] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_DOUBLE:
-				squareResult = result[3] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FIFTH_BIG:
-				squareResult = result[4] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] >= 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_SMALL:
-				squareResult = result[4] < 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] < 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_SINGLE:
-				squareResult = result[4] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] % 2 == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_DOUBLE:
-				squareResult = result[4] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] % 2 == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case SUM_LAST_NUM_0:
-				squareResult = sumLastNum == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_1:
-				squareResult = sumLastNum == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_2:
-				squareResult = sumLastNum == 2 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 2 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_3:
-				squareResult = sumLastNum == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_4:
-				squareResult = sumLastNum == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_5:
-				squareResult = sumLastNum == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_6:
-				squareResult = sumLastNum == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_7:
-				squareResult = sumLastNum == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_8:
-				squareResult = sumLastNum == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SUM_LAST_NUM_9:
-				squareResult = sumLastNum == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = sumLastNum == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FIRST_NUM_0:
-				squareResult = result[0] == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_1:
-				squareResult = result[0] == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_2:
-				squareResult = result[0] == 2 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 2 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_3:
-				squareResult = result[0] == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_4:
-				squareResult = result[0] == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_5:
-				squareResult = result[0] == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_6:
-				squareResult = result[0] == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_7:
-				squareResult = result[0] == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_8:
-				squareResult = result[0] == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIRST_NUM_9:
-				squareResult = result[0] == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[0] == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case SECOND_NUM_0:
-				squareResult = result[1] == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_1:
-				squareResult = result[1] == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_2:
-				squareResult = result[1] == 2? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 2? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_3:
-				squareResult = result[1] == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_4:
-				squareResult = result[1] == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_5:
-				squareResult = result[1] == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_6:
-				squareResult = result[1] == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_7:
-				squareResult = result[1] == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_8:
-				squareResult = result[1] == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case SECOND_NUM_9:
-				squareResult = result[1] == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[1] == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case THIRD_NUM_0:
-				squareResult = result[2] == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_1:
-				squareResult = result[2] == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_2:
-				squareResult = result[2] == 2 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 2 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_3:
-				squareResult = result[2] == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_4:
-				squareResult = result[2] == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_5:
-				squareResult = result[2] == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_6:
-				squareResult = result[2] == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_7:
-				squareResult = result[2] == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_8:
-				squareResult = result[2] == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case THIRD_NUM_9:
-				squareResult = result[2] == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[2] == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FOURTH_NUM_0:
-				squareResult = result[3] == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_1:
-				squareResult = result[3] == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_2:
-				squareResult = result[3] == 2 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 2 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_3:
-				squareResult = result[3] == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_4:
-				squareResult = result[3] == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_5:
-				squareResult = result[3] == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_6:
-				squareResult = result[3] == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_7:
-				squareResult = result[3] == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_8:
-				squareResult = result[3] == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FOURTH_NUM_9:
-				squareResult = result[3] == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[3] == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case FIFTH_NUM_0:
-				squareResult = result[4] == 0 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 0 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_1:
-				squareResult = result[4] == 1 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 1 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_2:
-				squareResult = result[4] == 2 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 2 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_3:
-				squareResult = result[4] == 3 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 3 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_4:
-				squareResult = result[4] == 4 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 4 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_5:
-				squareResult = result[4] == 5 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 5 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_6:
-				squareResult = result[4] == 6 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 6 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_7:
-				squareResult = result[4] == 7 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 7 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_8:
-				squareResult = result[4] == 8 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 8 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case FIFTH_NUM_9:
-				squareResult = result[4] == 9 ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = result[4] == 9 ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 
 			case BEFOR_THREE_SAME:
-				squareResult = isBeforThreeSame ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = isBeforThreeSame ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case MIDLLE_THREE_SAME:
-				squareResult = isMidlleThreeSame ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = isMidlleThreeSame ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			case LAST_THREE_SAME:
-				squareResult = isLastThreeSame ? betting.getMoney().multiply(betting.getOdds()) : new BigDecimal(0);
+				squareResult = isLastThreeSame ? betting.getMoney().multiply(betting.getOdds()) : null;
 				break;
 			default: return null;
 		}
+		
+		if(squareResult == null){
+			squareResult = betting.getMoney();
+		}else{
+			squareResult = new BigDecimal(0).subtract(squareResult);
+		}
+		
 		BettingSquareInfo squareInfo = new BettingSquareInfo(betting.getId(), squareResult, LocalDateTime.now());
 		return squareInfo;
 	}

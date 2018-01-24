@@ -3,9 +3,13 @@ package com.sf.lottery.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.sf.lottery.entity.Betting;
+import com.sf.lottery.entity.BettingNum;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
+import com.sf.lottery.entity.BettingSquareSummary;
 import com.sf.lottery.entity.PageInfo;
 
 /**
@@ -64,5 +68,26 @@ public interface IBettingService {
 	 * @return 批量更新数量
 	 */
 	int batchSquareBetting(List<BettingSquareInfo> list);
+	
+	/**
+	 * 根据帐号查询注单结算汇总
+	 * @param lotteryId 彩票编号
+	 * @param acc 投注账号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return BettingSquareSummary
+	 */
+	BettingSquareSummary getBettingSquare(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+	
+	/**
+	 * 根据帐号查询各种状态注单数量
+	 * @param lotteryId 彩票编号
+	 * @param acc 投注账号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return BettingNum
+	 */
+	BettingNum getBettingNum(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
     
 }

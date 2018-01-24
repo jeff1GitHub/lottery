@@ -1,6 +1,6 @@
 package com.sf.lottery.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.sf.lottery.entity.Period;
@@ -53,6 +53,6 @@ public interface IPeriodService {
 	 * @param status 状态
 	 * @return 期数列表(当获取失败时将返回Null)
 	 */
-	List<Period> getPeriodByStatus(int gameId, Timestamp time, int status);
+	List<Period> getPeriodByStatus(int gameId, LocalDateTime time, int status);
     
 }

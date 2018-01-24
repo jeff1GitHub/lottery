@@ -1,7 +1,6 @@
 package com.sf.lottery.mapper;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -33,7 +32,7 @@ public interface IPeriodMapper {
 	 * @param time 当前时间
 	 * @return 彩票期号
 	 */
-	Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") Timestamp time);
+	Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time);
 	
 	/**
 	 * 查询上一期期数
@@ -41,12 +40,12 @@ public interface IPeriodMapper {
 	 * @param time 当前时间
 	 * @return 彩票期号
 	 */
-	Period selectBeforPeriod(@Param("gameId") int gameId, @Param("nowTime") Timestamp time);
+	Period selectBeforPeriod(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time);
 	
 	/**
 	 * 添加指定日期期数
 	 */
-	void insertPeriod(Date date);
+	void insertPeriod(LocalDateTime date);
 	
 	/**
 	 * 更新期数开奖结果
@@ -63,6 +62,6 @@ public interface IPeriodMapper {
 	 * @param status 状态
 	 * @return 期数列表(当查询失败时将返回Null)
 	 */
-	List<Period> selectPeriodByStatus(@Param("gameId") int gameId, @Param("nowTime") Timestamp time, @Param("status") int status);
+	List<Period> selectPeriodByStatus(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time, @Param("status") int status);
 	
 }

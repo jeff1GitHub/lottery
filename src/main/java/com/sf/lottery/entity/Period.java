@@ -1,6 +1,6 @@
 package com.sf.lottery.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 彩票期号
@@ -13,11 +13,11 @@ public class Period {
 	/** 彩票id */
 	private int gameId;
 	/** 开盘时间 */
-	private Date startTime;
+	private LocalDateTime startTime;
 	/** 封盘时间 */
-	private Date endTime;
+	private LocalDateTime endTime;
 	/** 开奖时间 */
-	private Date finishTime;
+	private LocalDateTime finishTime;
 	/** 开奖结果 */
 	private String result;
 	/** 状态 */
@@ -35,15 +35,15 @@ public class Period {
 		return gameId;
 	}
 
-	public Date getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
 
-	public Date getEndTime() {
+	public LocalDateTime getEndTime() {
 		return endTime;
 	}
 
-	public Date getFinishTime() {
+	public LocalDateTime getFinishTime() {
 		return finishTime;
 	}
 

@@ -18,7 +18,27 @@
 		<div class="cl pd-5 bg-1 bk-gray mt-20"><span class="l"></span></div>
 		<table id="bettingList" class="table table-border table-bordered table-bg">
 			<thead>
-				<tr><th scope="col" colspan="10">注单列表</th></tr>
+				<tr><th scope="col" colspan="11">注单列表</th></tr>
+				<tr class="text-c">
+					<th>帐号</th>
+					<th>下注金额</th>
+					<th>盈利</th>
+					<th>亏损</th>
+					<th>累计注单</th>
+					<th>已结注单</th>
+					<th>未结注单</th>
+					<th scope="col" colspan="4">其他注单</th>
+				</tr>
+				<tr>
+					<td id="userNameTd"></td>
+					<td id="betMoneyTd"></td>
+					<td id="profitTd"></td>
+					<td id="lossTd"></td>
+					<td id="betNumTd"></td>
+					<td id="squaredTd"></td>
+					<td id="unsquareTd"></td>
+					<td id="otherBetTd" scope="col" colspan="4"></td>
+				</tr>
 				<tr class="text-c">
 					<th>编号</th>
 					<th>账号</th>
@@ -59,7 +79,7 @@
 					type: 'POST',
 					async: true,
 					beforeSend: function(xhr) {
-	    				xhr.setRequestHeader('Authorization', 'Basic'+token)
+	    				xhr.setRequestHeader('Authorization', 'Basic'+token);
 	    			},
 					success: function(result) {
 						if(result.code == 200){
@@ -117,10 +137,67 @@
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
 				var queryParam = {};
-				queryParam.name = $('#userName').find("option:selected").text();;
+				queryParam.name = $('#userName').find("option:selected").text();
 				queryParam.startTime = $('#datemin').val();
 				queryParam.endTime = $('#datemax').val();
-				var url = window.parent.domain + '/manager/betting/bettingPage';
+				
+				url = window.parent.domain + '/manager/betting/bettingSquare';
+				$.ajax({
+					url: url,
+					type: 'POST',
+					async: true,
+					data: {
+						'name': queryParam.name,
+						'startTime': queryParam.startTime,
+						'endTime': queryParam.endTime
+					},
+					beforeSend: function(xhr) {
+	    				xhr.setRequestHeader('Authorization', 'Basic'+token);
+	    			},
+					success: function(result) {
+						if(result.code == 200){
+							$('#userNameTd').html(result.data.userName);
+							$('#betMoneyTd').html(result.data.betMoney);
+							$('#profitTd').html(result.data.profit);
+							$('#lossTd').html(result.data.loss);
+						}else{
+							alert(result.message);
+						}
+					},
+					error: function(request, error) {
+						alert('获取注单汇总信息失败，无法连接网络或者返回值错误!');
+					}
+				});
+				
+				url = window.parent.domain + '/manager/betting/bettingNum';
+				$.ajax({
+					url: url,
+					type: 'POST',
+					async: true,
+					data: {
+						'name': queryParam.name,
+						'startTime': queryParam.startTime,
+						'endTime': queryParam.endTime
+					},
+					beforeSend: function(xhr) {
+	    				xhr.setRequestHeader('Authorization', 'Basic'+token);
+	    			},
+					success: function(result) {
+						if(result.code == 200){
+							$('#betNumTd').html(result.data.betNum);
+							$('#squaredTd').html(result.data.squaredNum);
+							$('#unsquareTd').html(result.data.unsquareNum);
+							$('#otherBetTd').html(result.data.otherBetNum);
+						}else{
+							alert(result.message);
+						}
+					},
+					error: function(request, error) {
+						alert('获取不同状态注单数量信息失败，无法连接网络或者返回值错误!');
+					}
+				});
+				
+				url = window.parent.domain + '/manager/betting/bettingPage';
 				bindPageTable("bettingList", 15, columns, url, token, queryParam);
 			}else{
 				alert('请先登录!');

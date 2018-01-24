@@ -27,7 +27,7 @@ public class WebAccountController {
 	@RequestMapping("user/page")
 	public JsonResult<PageInfo> getUserPage(int pageNum, int draw) {
 		PageInfo info = userService.getUserPage(pageNum);
-		JsonResult<PageInfo> result = new JsonResult<PageInfo>(ResultCode.SUCCESS, String.valueOf(draw), info);
+		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, String.valueOf(draw), info);
 		return result;
 	}
 	
@@ -35,7 +35,7 @@ public class WebAccountController {
 	@RequestMapping("admin/page")
 	public JsonResult<PageInfo> getManagerPage(int pageNum, int draw) {
 		PageInfo info = managerService.getManagerPage(pageNum);
-		JsonResult<PageInfo> result = new JsonResult<PageInfo>(ResultCode.SUCCESS, String.valueOf(draw), info);
+		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, String.valueOf(draw), info);
 		return result;
 	}
 	
@@ -43,7 +43,7 @@ public class WebAccountController {
 	@RequestMapping("user/all")
 	public JsonResult<List<String>> getUserName() {
 		List<String> list = userService.getAllUserName();
-		JsonResult<List<String>> result = new JsonResult<List<String>>(ResultCode.SUCCESS, list);
+		JsonResult<List<String>> result = new JsonResult<>(ResultCode.SUCCESS, list);
 		return result;
 	}
 	
