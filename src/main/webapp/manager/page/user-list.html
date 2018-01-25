@@ -50,10 +50,10 @@
 	        {
 	            data: function(e) {
 	                var element = "";
-	                if (e.isDisable == 0) {
-	                    element = '<span class="label label-success radius">启用</span>';
-	                } else {
+	                if (e.isDisable == 1) {
 	                    element = '<span class="label label-danger radius">禁用</span>';
+	                } else {
+	                    element = '<span class="label label-success radius">启用</span>';
 	                }
 	                return element;
 	            },
@@ -63,10 +63,6 @@
 	            data: function(e) {
 	                var element = table_disable(e.id, e.isDisable);
 	                element += datatable_button_edit("编辑用户", "user-info", e.id);
-					//var element = "<button type='button' class='btn btn-info'data-toggle='modal'"
-							//+	"data-target='#amendGroup' onclick='getUserInfo("+e.id+");'>查看</button>&nbsp;&nbsp;";
-					//element = element + "<button type='button' class='btn btn-info' onclick='search();'>操作日志</button>";
-	                //return element;
 	                return element;
 	            },
 	            className: "td-manage"

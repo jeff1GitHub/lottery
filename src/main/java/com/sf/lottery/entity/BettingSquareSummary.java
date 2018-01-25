@@ -15,6 +15,15 @@ public class BettingSquareSummary {
 	/** 亏损 */
 	private BigDecimal loss;
 
+	public BettingSquareSummary() {}
+	
+	public BettingSquareSummary(String userName, BigDecimal betMoney, BigDecimal profit, BigDecimal loss) {
+		this.userName = userName;
+		this.betMoney = betMoney;
+		this.profit = profit;
+		this.loss = loss;
+	}
+
 	public String getUserName() {
 		return userName;
 	}

@@ -82,8 +82,15 @@ public class BettingController {
         Instant nowTime = Instant.now();
         Instant startTime = period.getStartTime().atZone(ZoneId.systemDefault()).toInstant();
         Instant endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant();
-        if (nowTime.isBefore(startTime) || !nowTime.isBefore(endTime)) {
+        Instant finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
+        if (nowTime.isBefore(startTime)) {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注时间无效!");
+        }
+        if (nowTime.isAfter(finishTime)) {
+        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "已停止投注!");
+        }
+        if (!nowTime.isBefore(endTime)) {
+        	return new JsonResult<>(ResultCode.PARAMS_ERROR, "已封盘!");
         }
         
         ObjectMapper mapper = new ObjectMapper();

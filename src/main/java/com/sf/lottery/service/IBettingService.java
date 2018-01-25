@@ -25,7 +25,7 @@ public interface IBettingService {
     boolean saveBetting(List<Betting> bettings);
     
     /**
-	 * 根据结算状态获取注单
+	 * 根据结算状态获取注单分页
 	 * @param lotteryId 彩票编号
 	 * @param period 期号
 	 * @param square 注单结算状态
@@ -33,6 +33,15 @@ public interface IBettingService {
 	 * @return 注单页(当查询失败时将返回Null)
 	 */
     PageInfo getBettingBySquare(int lotteryId, String period, int square, int pageNum);
+    
+    /**
+     * 根据结算状态获取注单
+     * @param lotteryId 彩票编号
+     * @param period 期号
+     * @param square 注单结算状态
+     * @return 注单列表
+     */
+    List<Betting> getBettingBySquare(int lotteryId, String period, int square);
 	
 	/**
 	 * 根据条件查询注单投注项数量

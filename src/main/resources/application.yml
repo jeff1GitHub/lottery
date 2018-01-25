@@ -26,6 +26,6 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 
-logging:
-  level:
-    com.sf.lottery.mapper: DEBUG
+#logging:
+#  level:
+#    com.sf.lottery.mapper: DEBUG

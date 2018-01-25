@@ -19,7 +19,7 @@ public class LotteryApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(LotteryApplication.class);
 	}
-
+	
 	@InitBinder
 	public static void main(String[] args) {
 		SpringApplication.run(LotteryApplication.class, args);

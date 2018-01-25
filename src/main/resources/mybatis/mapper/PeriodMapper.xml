@@ -47,7 +47,7 @@
 		]]>
 	</select>
 	
-	<insert id="insertPeriod" parameterType="java.time.LocalDateTime">
+	<insert id="insertPeriod" parameterType="java.time.LocalDate">
 		<![CDATA[
 			INSERT INTO t_period (
 			  f_code,

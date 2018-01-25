@@ -1,5 +1,6 @@
 package com.sf.lottery.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class BettingServiceImpl implements IBettingService {
 		Page<Betting> page = (Page<Betting>)bettingMapper.selectBettingBySquare(lotteryId, period, square);
 		return page == null ? null : new PageInfo(page);
 	}
+	
+	@Override
+	public List<Betting> getBettingBySquare(int lotteryId, String period, int square) {
+		List<Betting> list = bettingMapper.selectBettingBySquare(lotteryId, period, square);
+		return list;
+	}
 
 	@Override
 	public List<BettingProject> getBettingProject(int lotteryId, String period) {
@@ -70,6 +77,9 @@ public class BettingServiceImpl implements IBettingService {
 	@Override
 	public BettingSquareSummary getBettingSquare(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime) {
 		BettingSquareSummary summary = bettingMapper.selectBettingSquare(lotteryId, acc, startTime, endTime);
+		if(summary == null){
+			summary = new BettingSquareSummary(acc, new BigDecimal(0), new BigDecimal(0), new BigDecimal(0));
+		}
 		return summary;
 	}
 

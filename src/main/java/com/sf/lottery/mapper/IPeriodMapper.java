@@ -1,5 +1,6 @@
 package com.sf.lottery.mapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public interface IPeriodMapper {
 	/**
 	 * 添加指定日期期数
 	 */
-	void insertPeriod(LocalDateTime date);
+	void insertPeriod(LocalDate date);
 	
 	/**
 	 * 更新期数开奖结果

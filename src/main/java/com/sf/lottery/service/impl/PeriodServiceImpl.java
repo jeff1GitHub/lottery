@@ -49,7 +49,7 @@ public class PeriodServiceImpl implements IPeriodService {
 		}
 		
 		//生成今天的所有期数
-		periodMapper.insertPeriod(LocalDateTime.now());
+		periodMapper.insertPeriod(LocalDate.now());
 		return true;
 	}
 	
