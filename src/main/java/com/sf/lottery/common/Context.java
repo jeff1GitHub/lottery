@@ -15,13 +15,15 @@ import com.sf.lottery.entity.User;
 public class Context {
 	/** 服务器开关 */
 	private boolean isOpen = false;
+	
 	/** 投注项集合 */
 	private final Map<Integer, Project> projectMap = new HashMap<>();
-	/** 当前期数集合(在有多个游戏时将改变存放方式) */
-	private final Map<Integer, Period> currentPeriodMap = new ConcurrentHashMap<>();
-	/** 待开奖期数集合(在有多个游戏时将改变存放方式) */
-	private final Map<Integer, Period> waitOpenPeriodMap = new ConcurrentHashMap<>();
-	/** 登录帐号集合(key:帐号 value:帐号对象) */
+	/** 上期期数集合(key:游戏编号  value:期数) */
+	private final ConcurrentHashMap<Integer, Period> beforPeriodMap = new ConcurrentHashMap<>();
+	/** 当前期数集合(key:游戏编号  value:期数) */
+	private final ConcurrentHashMap<Integer, Period> currentPeriodMap = new ConcurrentHashMap<>();
+	
+	/** 登录帐号集合(key:帐号  value:帐号对象) */
 	private final Map<String, User> userMap = new ConcurrentHashMap<>();
 	
 	/**
@@ -77,16 +79,12 @@ public class Context {
 		this.currentPeriodMap.remove(gameId);
 	}
 	
-	public Period getWaitOpenPeriod(int gameId) {
-		return this.waitOpenPeriodMap.get(gameId);
+	public void addBeforPeriod(Period period) {
+		this.beforPeriodMap.put(period.getGameId(), period);
 	}
 	
-	public void addWaitOpenPeriod(Period period) {
-		this.waitOpenPeriodMap.put(period.getGameId(), period);
-	}
-	
-	public void removeWaitOpenPeriod(int gameId) {
-		this.waitOpenPeriodMap.remove(gameId);
+	public Period getBeforPeriod(int gameId) {
+		return beforPeriodMap.get(gameId);
 	}
 	
 }

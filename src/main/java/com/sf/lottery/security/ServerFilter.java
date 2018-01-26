@@ -34,7 +34,7 @@ public class ServerFilter implements Filter {
 			if(!serverContext.isOpen()){
 				response.setContentType("application/json;charset=UTF-8");
 				try (PrintWriter out = response.getWriter()) {
-					out.print("{\"code\": \"499\", \"message\": \"服务器维护中...\"}");
+					out.print("{\"code\": \"260\", \"message\": \"服务器维护中...\"}");
 					out.flush();
 				}
 				return;

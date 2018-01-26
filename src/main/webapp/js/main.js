@@ -17,6 +17,10 @@ function loginOrExit() {
 			});
 		}
 	}else{
+		var userName = window.localStorage.getItem('name');
+		if(userName){
+			$('#acc').val(userName);
+		}
 		$("#openLoginPage").trigger("click");
 	}
 }
@@ -28,7 +32,7 @@ function login() {
 		url: domain + '/lottery/user/login',
 		type: 'POST',
 		dataType: 'json',
-		async: true,
+		async: false,
 		data: {
 			'acc': acc,
 			'pwd': pwd
@@ -37,6 +41,7 @@ function login() {
 			if(result.code == 200){
 				isLogin = true;
 				var userName = result.data.name;
+				window.localStorage.setItem('name', userName);
 				window.localStorage.setItem('token', result.data.token);
 				
 				$('#welcomeSpan').html('您好，' + userName);
@@ -59,7 +64,7 @@ function getStatus() {
 			url: domain + '/lottery/user/status',
 			type: 'POST',
 			dataType: 'json',
-			async: true,
+			async: false,
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader('Authorization', 'Basic'+token)
 			},
@@ -80,10 +85,11 @@ function getStatus() {
 }
 
 function getBeforPeriod() {
+	var resultCode = -1;
 	$.ajax({
 		url: domain + '/lottery/period/beforPeriod',
 		dataType: 'json',
-		async: true,
+		async: false,
 		success: function (result) {
 			if(result.code == 200){
 				if(result.data){
@@ -98,29 +104,32 @@ function getBeforPeriod() {
 						$('#round5').html(resultArr[4]);
 					}
 				}
-			}else{
-				alert(result.message);
 			}
+			resultCode = result.code;
 		},
 		error: function (request, error) {
 			alert('无法连接网络或者返回值错误!');
 		}
 	});
+	return resultCode;
 }
 
 function getNowPeriod() {
 	$.ajax({
 		url: domain + '/lottery/period/nowPeriod',
 		dataType: 'json',
-		async: true,
+		async: false,
 		success: function (result) {
 			if(result.code == 200){
 				if(result.data){
+					cancelSeletedBet();
+					nowLotteryId = result.data.gameId;
+					nowPeriodCode = result.data.code;
 					$('#nowCode').html(result.data.code);
 					
-					if(result.data.status == 0){
-						nowLotteryId = result.data.gameId;
-						nowPeriodCode = result.data.code;
+					if(result.data.startTime <= 0){
+						$('#nextPeriodTimeDiv').css("display", "none");
+						$('#nowPeriodTimeDiv').css("display", "block");
 						var endTime = result.data.endTime;
 						var finishTime = result.data.finishTime;
 						var periodTimer = setInterval(function(){
@@ -154,6 +163,35 @@ function getNowPeriod() {
 								
 								$('#finishTimeSpan').html(endS + ":" + endM);
 								finishTime -= 1;
+							}else{
+								clearInterval(periodTimer);
+								getBeforPeriod();
+								getNowPeriod();
+							}
+						}, 1000);
+					}else{
+						$('#nowPeriodTimeDiv').css("display", "none");
+						$('#nextPeriodTimeDiv').css("display", "block");
+						var startTime = result.data.startTime;
+						var periodTimer = setInterval(function(){
+							if(startTime > 0){
+								var endH = parseInt(startTime / 3600);
+								if(endH < 10){
+									endH = '0' + endH;
+								}
+								
+								var endS = parseInt((startTime % 3600) / 60);
+								if(endS < 10){
+									endS = '0' + endS;
+								}
+								
+								var endM = startTime % 60;
+								if(endM < 10){
+									endM = '0' + endM;
+								}
+								
+								$('#startTimeSpan').html(endH + ":" + endS + ":" + endM);
+								startTime -= 1;
 							}else{
 								clearInterval(periodTimer);
 								getBeforPeriod();
@@ -293,7 +331,7 @@ function commitBet() {
 			url: domain + '/lottery/betting/betting',
 			type: 'POST',
 			dataType: 'json',
-			async: true,
+			async: false,
 			data: {
 				'lotteryId': nowLotteryId,
 				'periodCode': nowPeriodCode,

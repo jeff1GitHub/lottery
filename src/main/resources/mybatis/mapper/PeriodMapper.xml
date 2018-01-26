@@ -33,9 +33,27 @@
 	
 	<select id="selectNowPeriod" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
-			FROM t_period
-			WHERE f_game_id = #{gameId, jdbcType=INTEGER} AND #{nowTime, jdbcType=TIMESTAMP} >= f_start_time AND #{nowTime, jdbcType=TIMESTAMP} < f_finish_time
+			SELECT
+			  f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			FROM
+			  t_period
+			WHERE
+			  f_game_id = #{gameId, jdbcType=INTEGER}
+			  AND f_start_time <= #{nowTime, jdbcType=TIMESTAMP}
+			  AND f_finish_time > #{nowTime, jdbcType=TIMESTAMP}
+		]]>
+	</select>
+	
+	<select id="selectNextPeriod" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT
+			  f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			FROM
+			  t_period
+			WHERE
+			  f_game_id = #{gameId, jdbcType=INTEGER}
+			  AND f_start_time >= #{nowTime, jdbcType=TIMESTAMP}
+			LIMIT 1
 		]]>
 	</select>
 	

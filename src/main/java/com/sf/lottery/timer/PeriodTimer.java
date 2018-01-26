@@ -22,6 +22,7 @@ import com.sf.lottery.entity.Period;
 import com.sf.lottery.enums.ProjectEnum;
 import com.sf.lottery.service.IBettingService;
 import com.sf.lottery.service.IPeriodService;
+import com.sf.lottery.utils.Tools;
 
 @Component
 public class PeriodTimer {
@@ -36,10 +37,34 @@ public class PeriodTimer {
 	private boolean isFirstRunOpenPeriodResult = true;
 
 	/**
-	 * 期数开奖定时任务
+	 * 定时处理当前期数
 	 */
-	@Scheduled(fixedRate=1000)
-	public void OpenPeriodResult() {
+	@Scheduled(fixedRate=500)
+	public void createNowPeriod() {
+		bandleOverduePeriodResult();
+		
+		Period period = context.getCurrentPeriod(1);
+		if(period == null){
+			addNowPeriod();
+		}else{
+			Instant endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant();
+			if(period.getStatus() != 1 && endTime.isBefore(Instant.now())){
+				setPeriodResult(period);
+			}
+			
+			Instant finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
+			if(!finishTime.isAfter(Instant.now())){
+				context.removeCurrentPeriod(period.getGameId());
+				context.addBeforPeriod(period);
+				addNowPeriod();
+			}
+		}
+	}
+	
+	/**
+	 * 对过期期数进行开奖结算
+	 */
+	private void bandleOverduePeriodResult() {
 		//当第一次开始服务时，查询当前时间之前切没有开奖的期数，进行开奖结算操作
 		if(isFirstRunOpenPeriodResult){
 			List<Period> list = periodService.getPeriodByStatus(1, LocalDateTime.now(), 0);
@@ -48,43 +73,13 @@ public class PeriodTimer {
 			});
 			isFirstRunOpenPeriodResult = false;
 		}
-		
-		Period period = context.getWaitOpenPeriod(1);
-		if(period != null && period.getStatus() != 1){
-			Instant finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
-			if(!finishTime.isAfter(Instant.now())){
-				setPeriodResult(period);
-			}
-		}
-	}
-	
-	/**
-	 * 获取当前期数
-	 */
-	@Scheduled(fixedRate=500)
-	public void createNowPeriod() {
-		int nowHour = LocalDateTime.now().getHour();
-		//在每天2点到10点间不进行处理(因为这段时间没有期数)
-		if(nowHour < 2 || nowHour >= 10){
-			Period currentPeriod = context.getCurrentPeriod(1);
-			if(currentPeriod == null){
-				addNowPeriod();
-			}else{
-				Instant finishTime = currentPeriod.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
-				if(!finishTime.isAfter(Instant.now())){
-					context.removeCurrentPeriod(currentPeriod.getGameId());
-					context.addWaitOpenPeriod(currentPeriod);
-					addNowPeriod();
-				}
-			}
-		}
 	}
 	
 	/**
 	 * 获取当前期数(当没有期数时会进行当天期数的生成操作)
 	 */
 	private void addNowPeriod() {
-		Period period = periodService.getNowPeriod(1);
+		Period period = periodService.getNowShowPeriod(1);
 		if(period == null){
 			boolean result = periodService.initPeriod();
 			if(result){
@@ -103,10 +98,15 @@ public class PeriodTimer {
 	 * @param period 期数
 	 */
 	private void setPeriodResult(Period period) {
-		//int[] result = Tools.getRandomNum(5, 10);
+		List<Betting> bettingList = bettingService.getBettingBySquare(period.getGameId(), period.getCode(), 0);
+		int[] result;
 		long nowTime = System.currentTimeMillis();
-		int[] result = reckonPeriodResult(period);
-		logger.info("-------use time:" + (System.currentTimeMillis() - nowTime));
+		if(bettingList.isEmpty()){
+			result = Tools.getRandomNum(5, 10);
+		}else{
+			result = reckonPeriodResult(period, bettingList);
+		}
+		logger.info("-------use time:{}", (System.currentTimeMillis() - nowTime));
 		
 		StringBuilder tempResult = new StringBuilder();
 		for(int num : result){
@@ -173,8 +173,7 @@ public class PeriodTimer {
 	 * 计算期数开奖结果
 	 * @param period
 	 */
-	private int[] reckonPeriodResult(Period period) {
-		List<Betting> list = bettingService.getBettingBySquare(period.getGameId(), period.getCode(), 0);
+	private int[] reckonPeriodResult(Period period, List<Betting> list) {
 		List<BettingSquareInfo> outList = new ArrayList<>();
 		BigDecimal maxProfit = null;
 		int[] perfectResult = new int[5];

@@ -32,13 +32,13 @@ public class Test {
 		System.out.println(System.currentTimeMillis());
 		System.out.println(Tools.MD5("admin"));
 		
-		//125
-		System.out.println(34568 - 6768);
-		System.out.println(6768 / 125.0);
-		System.out.println(120 / 31.0 * 26);
-		
-		System.out.println(120 / 31.0 * (31 - 8));
-		System.out.println(100 / 31.0 * (31 - 8));
+		int[] result = Tools.getRandomNum(5, 10);
+		StringBuilder tempResult = new StringBuilder();
+		for(int num : result){
+			tempResult.append(num).append(",");
+		}
+		tempResult.delete(tempResult.length() - 1, tempResult.length());
+		System.out.println(tempResult);
 	}
 	
 }

@@ -36,6 +36,14 @@ public interface IPeriodMapper {
 	Period selectNowPeriod(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time);
 	
 	/**
+	 * 查询下期期数
+	 * @param gameId 游戏编号
+	 * @param time 当前时间
+	 * @return 彩票期号
+	 */
+	Period selectNextPeriod(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time);
+	
+	/**
 	 * 查询上一期期数
 	 * @param gameId 游戏编号
 	 * @param time 当前时间

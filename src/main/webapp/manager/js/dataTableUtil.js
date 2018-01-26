@@ -101,7 +101,7 @@ function bindPageTable(tableName, pageLength, columns, url, token, queryParam) {
         	$.ajax({
             	url: url,
             	type: 'POST',
-    			async: true,
+    			async: false,
     			data: queryParam,
     			beforeSend: function(xhr) {
     				xhr.setRequestHeader('Authorization', 'Basic'+token)

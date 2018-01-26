@@ -68,8 +68,8 @@ public class BettingController {
         }
 
         // 获取彩票期号
-        Period period = this.periodService.getPeriod(lotteryId, periodCode);
-        if (period == null) {
+        Period period = this.context.getCurrentPeriod(lotteryId);
+        if (period == null || period.getCode().equals(periodCode)) {
             return new JsonResult<>(ResultCode.PARAMS_ERROR, "彩票期号不存在!");
         }
         

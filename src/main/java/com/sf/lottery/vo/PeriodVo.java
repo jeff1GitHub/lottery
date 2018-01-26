@@ -15,6 +15,8 @@ public class PeriodVo {
 	private String code;
 	/** 彩票id */
 	private int gameId;
+	/** 剩余开盘时间 */
+	private int startTime;
 	/** 剩余封盘时间 */
 	private int endTime;
 	/** 剩余开奖时间 */
@@ -32,14 +34,15 @@ public class PeriodVo {
 		if(this.status == 1){
 			this.result = period.getResult();
 		}
-		if(this.status == 0){
-			long nowTime = Instant.now().toEpochMilli();
-			long endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-			long finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-			
-			this.endTime = (int)Math.ceil((endTime - nowTime) / 1000.0);
-			this.finishTime = (int)Math.ceil((finishTime - nowTime) / 1000.0);
-		}
+		
+		long nowTime = Instant.now().toEpochMilli();
+		long startTime = period.getStartTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		
+		this.startTime = (int)Math.ceil((startTime - nowTime) / 1000.0);
+		this.endTime = (int)Math.ceil((endTime - nowTime) / 1000.0);
+		this.finishTime = (int)Math.ceil((finishTime - nowTime) / 1000.0);
 	}
 
 	public int getId() {
@@ -52,6 +55,10 @@ public class PeriodVo {
 
 	public int getGameId() {
 		return gameId;
+	}
+
+	public int getStartTime() {
+		return startTime;
 	}
 
 	public int getEndTime() {

@@ -12,7 +12,7 @@
 		<script src="js/jquery.md5.js"></script>
 		
 		<script type="text/javascript">
-			var domain = 'http://localhost:8899';
+			var domain = 'http://10.21.11.107:8899';
 			var isLogin;
 			var nowLotteryId;
 			var nowPeriodCode;
@@ -46,8 +46,15 @@
 			});
 			
 			$(document).on('pageinit', '#mainPage', function () {
-				getBeforPeriod();
-				getNowPeriod();
+				var statusCode = getBeforPeriod();
+				if(statusCode == 200){
+					getNowPeriod();
+					return;
+				}
+				
+				if(statusCode == 260){
+					alert("服务器维护中...");
+				}
 			});
 			
 			//localStorage 方法
@@ -79,9 +86,12 @@
 					<div class="ui-block-a">
 						第<span id='nowCode'>---</span>期
 					</div>
-					<div class="ui-block-b" style="text-align: right;">
+					<div id="nowPeriodTimeDiv" class="ui-block-b" style="text-align: right; display: none;">
 						<span>封盘:</span><span id="endTimeSpan">--:--</span>&nbsp;
 						<span>开奖:</span><span id="finishTimeSpan">--:--</span>
+					</div>
+					<div id="nextPeriodTimeDiv" class="ui-block-b" style="text-align: right; display: none;">
+						<span>距离开盘:</span><span id="startTimeSpan">--:--:--</span>
 					</div>
 				</div>
 				<div id="gameDiv" style="background: olive;">
@@ -338,7 +348,7 @@
 				<h1>用户登陆</h1>
 			</div>
 			<div data-role="content">
-				<label for="account">账号：</label><input id="acc" type="text">
+				<label for="acc">账号：</label><input id="acc" type="text">
 				<label for="pwd">密码：</label><input id="pwd" type="password">
 				<div style="text-align:center;">
 					<input type="button" data-inline="true" onclick="login()" value="登陆">

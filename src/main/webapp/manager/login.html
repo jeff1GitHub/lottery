@@ -49,7 +49,7 @@
 	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 	<script type="text/javascript" src="lib/jquery.md5.js"></script>
 	<script type="text/javascript">
-	var domain = 'http://localhost:8899';
+	var domain = 'http://10.21.11.107:8899';
 		$(function() {
 			$('#loginBtn').click(function() {
 				var acc = $('#acc').val();
@@ -87,7 +87,7 @@
 					url: domain + '/manager/user/status',
 					type: 'POST',
 					dataType: 'json',
-					async: true,
+					async: false,
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader('Authorization', 'Basic'+token)
 					},
@@ -96,17 +96,23 @@
 							$(location).attr('href', 'index.html');
 						}else{
 							window.localStorage.removeItem('manager-token');
+							setUserName();
 						}
 					},
 					error: function (request, error) {
 						window.localStorage.removeItem('manager-token');
+						setUserName();
 					}
 				});
 			}else{
-				var name = window.localStorage.getItem('manager-name');
-				if(name && name.length > 1){
-					$('#acc').val(name);
-				}
+				setUserName();
+			}
+		}
+		
+		function setUserName() {
+			var name = window.localStorage.getItem('manager-name');
+			if(name && name.length > 1){
+				$('#acc').val(name);
 			}
 		}
 	</script>

@@ -6,9 +6,12 @@ package com.sf.lottery.utils;
 public enum ResultCode {
     /** 成功 */
     SUCCESS("200", "成功"),
+    
+    /** 服务器维护 */
+    SERVER_MAINTENANCE("260", "服务器维护"),
 
     /** 没有登录 */
-    NOT_LOGIN("400", "没有登录"),
+    NOT_LOGIN("400", "未登录"),
 
     /** 发生异常 */
     EXCEPTION("401", "发生异常"),

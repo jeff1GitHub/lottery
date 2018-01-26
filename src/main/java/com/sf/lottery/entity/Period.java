@@ -10,7 +10,7 @@ public class Period {
 	private int id;
 	/** 期号 */
 	private String code;
-	/** 彩票id */
+	/** 彩票编号 */
 	private int gameId;
 	/** 开盘时间 */
 	private LocalDateTime startTime;

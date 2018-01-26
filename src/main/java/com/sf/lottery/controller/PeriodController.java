@@ -37,7 +37,7 @@ public class PeriodController {
 	
 	@RequestMapping(value = "beforPeriod")
 	public JsonResult<PeriodVo> getBeforPeriod() {
-		Period period = periodService.getBeforPeriod(1);
+		Period period = context.getBeforPeriod(1);
 		PeriodVo vo = period == null ? null : new PeriodVo(period);
 		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
