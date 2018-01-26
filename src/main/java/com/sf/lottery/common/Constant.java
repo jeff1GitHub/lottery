@@ -6,6 +6,8 @@ package com.sf.lottery.common;
 public final class Constant {
 	/** 批量更新注单数量 */
 	public static int BATCH_UPDATE_BETTING = 100;
+	/** 期数页大小 */
+	public static int PERIOD_PAGE_SIZE = 15;
 	/** 注单页大小 */
 	public static int BETTING_PAGE_SIZE = 15;
 	/** 用户页大小 */

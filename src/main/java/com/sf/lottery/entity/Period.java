@@ -10,6 +10,8 @@ public class Period {
 	private int id;
 	/** 期号 */
 	private String code;
+	/** 日期 */
+	private String date;
 	/** 彩票编号 */
 	private int gameId;
 	/** 开盘时间 */
@@ -29,6 +31,10 @@ public class Period {
 
 	public String getCode() {
 		return code;
+	}
+
+	public String getDate() {
+		return date;
 	}
 
 	public int getGameId() {

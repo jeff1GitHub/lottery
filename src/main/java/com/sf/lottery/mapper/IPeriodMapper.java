@@ -73,4 +73,12 @@ public interface IPeriodMapper {
 	 */
 	List<Period> selectPeriodByStatus(@Param("gameId") int gameId, @Param("nowTime") LocalDateTime time, @Param("status") int status);
 	
+	/**
+	 * 根据日期查询期数
+	 * @param gameId 游戏编号
+	 * @param date 日期
+	 * @return 期数列表
+	 */
+	List<Period> selectPeriodByDate(@Param("gameId") int gameId, @Param("date") String date);
+	
 }

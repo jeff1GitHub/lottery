@@ -42,4 +42,8 @@ public class PeriodController {
 		return new JsonResult<>(ResultCode.SUCCESS, vo);
 	}
 	
+	public JsonResult<Period> getPeriodPage() {
+		return null;
+	}
+	
 }

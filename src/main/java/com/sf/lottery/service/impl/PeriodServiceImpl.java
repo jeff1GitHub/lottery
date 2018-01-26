@@ -9,6 +9,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.sf.lottery.common.Constant;
+import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.Period;
 import com.sf.lottery.mapper.IPeriodMapper;
 import com.sf.lottery.service.IPeriodService;
@@ -79,6 +83,13 @@ public class PeriodServiceImpl implements IPeriodService {
 	public List<Period> getPeriodByStatus(int gameId, LocalDateTime time, int status) {
 		List<Period> list = periodMapper.selectPeriodByStatus(gameId, time, status);
 		return list;
+	}
+
+	@Override
+	public PageInfo getPeriodByDate(int gameId, String date, int pageNum) {
+		PageHelper.startPage(pageNum, Constant.PERIOD_PAGE_SIZE);
+		Page<Period> page = (Page<Period>)periodMapper.selectPeriodByDate(gameId, date);
+		return page == null ? null : new PageInfo(page);
 	}
 
 }

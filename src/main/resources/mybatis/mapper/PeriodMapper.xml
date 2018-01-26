@@ -5,6 +5,7 @@
 	<resultMap id="BaseResultMap" type="com.sf.lottery.entity.Period">
 		<id column="f_id" property="id" javaType="int" jdbcType="INTEGER" />
 		<result column="f_code" property="code" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_date" property="date" javaType="java.lang.String" jdbcType="VARCHAR"/>
 		<result column="f_game_id" property="gameId" javaType="int" jdbcType="INTEGER" />
 		<result column="f_start_time" property="startTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
 		<result column="f_end_time" property="endTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
@@ -27,14 +28,14 @@
 
 	<select id="selectLastPeriod" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status FROM t_period ORDER BY f_start_time DESC LIMIT 1
+			SELECT f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status FROM t_period ORDER BY f_start_time DESC LIMIT 1
 		]]>
 	</select>
 	
 	<select id="selectNowPeriod" resultMap="BaseResultMap">
 		<![CDATA[
 			SELECT
-			  f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			  f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
 			FROM
 			  t_period
 			WHERE
@@ -47,7 +48,7 @@
 	<select id="selectNextPeriod" resultMap="BaseResultMap">
 		<![CDATA[
 			SELECT
-			  f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			  f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
 			FROM
 			  t_period
 			WHERE
@@ -59,7 +60,7 @@
 	
 	<select id="selectBeforPeriod" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			SELECT f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
 			FROM t_period
 			WHERE f_game_id = #{gameId, jdbcType=INTEGER} AND f_start_time <= #{nowTime, jdbcType=TIMESTAMP} ORDER BY f_code DESC LIMIT 1,1
 		]]>
@@ -69,6 +70,7 @@
 		<![CDATA[
 			INSERT INTO t_period (
 			  f_code,
+			  f_date,
 			  f_game_id,
 			  f_start_time,
 			  f_end_time,
@@ -78,6 +80,7 @@
 			)
 			SELECT
 				CONCAT(DATE_FORMAT(#{value}, '%Y%m%d'), LPAD(f_code, 3, '000')) AS f_code,
+				DATE_FORMAT(#{value}, '%Y-%m-%d') AS f_date,
 				f_game_id,
 				DATE_ADD(#{value}, INTERVAL f_start_time HOUR_SECOND) AS f_start_time,
 				DATE_ADD(#{value}, INTERVAL f_end_time HOUR_SECOND) AS f_end_time,
@@ -101,9 +104,22 @@
 	
 	<select id="selectPeriodByStatus" resultMap="BaseResultMap">
 		<![CDATA[
-			SELECT f_id, f_code, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			SELECT f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
 			FROM t_period
 			WHERE f_game_id = #{gameId, jdbcType=INTEGER} AND f_finish_time <= #{nowTime, jdbcType=TIMESTAMP} AND f_status =  #{status, jdbcType=INTEGER}
+		]]>
+	</select>
+	
+	<select id="selectPeriodByDate" resultMap="BaseResultMap">
+		<![CDATA[
+			SELECT
+				f_id, f_code, f_date, f_game_id, f_start_time, f_end_time, f_finish_time, f_result, f_status
+			FROM
+				t_period
+			WHERE
+				f_game_id = #{gameId, jdbcType=INTEGER} AND f_date = #{date, jdbcType=VARCHAR}
+			ORDER BY
+				f_code
 		]]>
 	</select>
 	
