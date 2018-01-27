@@ -79,8 +79,10 @@
 		$('#searchPeriodBtn').click(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				var url = window.parent.domain + '/manager/account/user/page';
-				bindPageTable("periodList", 15, columns, url, token);
+				var url = window.parent.domain + '/manager/period/periodPage';
+				var queryParam = {};
+				queryParam.date = $('#periodDate').val();
+				bindPageTable("periodList", 15, columns, url, token, queryParam);
 			}else{
 				alert('请先登录!');
 			}

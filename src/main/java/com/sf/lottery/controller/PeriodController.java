@@ -1,16 +1,15 @@
 package com.sf.lottery.controller;
 
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sf.lottery.common.Context;
 import com.sf.lottery.entity.Period;
-import com.sf.lottery.service.IPeriodService;
 import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
 import com.sf.lottery.vo.PeriodVo;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -25,8 +24,6 @@ import javax.annotation.Resource;
 public class PeriodController {
 	@Resource
 	private Context context;
-	@Resource
-    private IPeriodService periodService;
 	
 	@RequestMapping(value = "nowPeriod")
 	public JsonResult<PeriodVo> getNowPeriod() {
@@ -40,10 +37,6 @@ public class PeriodController {
 		Period period = context.getBeforPeriod(1);
 		PeriodVo vo = period == null ? null : new PeriodVo(period);
 		return new JsonResult<>(ResultCode.SUCCESS, vo);
-	}
-	
-	public JsonResult<Period> getPeriodPage() {
-		return null;
 	}
 	
 }
