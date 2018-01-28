@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sf.lottery.entity.PageInfo;
@@ -27,7 +28,7 @@ public class WebPeriodController {
     private IPeriodService periodService;
 	
 	@Secured(AuthorityName.ROLE_ADMIN)
-	@RequestMapping(value = "periodPage")
+	@RequestMapping(value = "periodPage", method = RequestMethod.POST)
 	public JsonResult<PageInfo> getPeriodPage(String date, int pageNum, int draw) {
 		PageInfo info = periodService.getPeriodByDate(1, date, pageNum);
 		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, String.valueOf(draw), info);

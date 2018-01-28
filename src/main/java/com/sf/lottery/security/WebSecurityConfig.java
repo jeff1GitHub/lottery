@@ -6,13 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)// 开启方法级安全
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private ServerFilter serverFilter;
@@ -22,18 +25,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
-		// 关闭csrf验证
+		
+		// 由于使用的是JWT，我们这里不需要csrf
 		http.csrf().disable();
+		// 基于token，所以不需要session
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
+		// 禁用缓存
+		//http.headers().cacheControl();
+		
 		// 对请求进行认证
 		http.authorizeRequests()
-			// 对主页和资源以及期数信息放行
-			.antMatchers("/", "/favicon.ico", "/index.html").permitAll()
-			.antMatchers("/css/**", "/js/**").permitAll()
+			// 允许对于网站静态资源的无授权访问
+			.antMatchers(
+					HttpMethod.GET,
+					"/",
+					"/*.html",
+					"/favicon.ico",
+					"/**/*.html",
+					"/**/*.css",
+					"/**/*.js",
+					"/**/*.ttf",
+					"/**/*.woff",
+					"/**/*.png",
+					"/**/*.jpg",
+					"/**/*.gif"
+			).permitAll()
+			// 允许对期数信息的无授权访问
 			.antMatchers("/lottery/period/**").permitAll()
-			.antMatchers("/manager/login.html").permitAll()
-			.antMatchers("/manager/index.html").permitAll()
-			.antMatchers("/manager/lib/**", "/manager/static/**", "/manager/js/**").permitAll()
-			.antMatchers("/manager/page/**").permitAll()
 			
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()
@@ -42,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.antMatchers("/lottery/**").hasAuthority("AUTH_WRITE");
 			// 角色检查
 			//.antMatchers("/world").hasRole("ADMIN")
-			// 对请求需要身份认证
+			// 除上面外的所有请求全部需要身份认证
 			.anyRequest().authenticated().and();
 		// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
 		http.addFilterBefore(serverFilter, UsernamePasswordAuthenticationFilter.class);

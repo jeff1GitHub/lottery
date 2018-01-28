@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,8 @@ public class ResultExceptionHandle {
 			return new JsonResult<>(ResultCode.EXCEPTION, errMsg);
 		}else if(e instanceof IllegalStateException){
 			return new JsonResult<>(ResultCode.PARAMS_ERROR);
+		}else if(e instanceof AccessDeniedException){
+			return new JsonResult<>(ResultCode.NO_PERMISSION);
 		}else{
 			logger.error("", e);
 			return new JsonResult<>(ResultCode.SYS_ERROR);
