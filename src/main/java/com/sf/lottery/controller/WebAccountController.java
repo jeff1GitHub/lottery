@@ -22,25 +22,26 @@ public class WebAccountController {
 	private IUserService userService;
 	@Resource
 	private IManagerService managerService;
-
-	@Secured(AuthorityName.ROLE_ADMIN)
+	
 	@RequestMapping("user/page")
+	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<PageInfo> getUserPage(int pageNum, int draw) {
 		PageInfo info = userService.getUserPage(pageNum);
 		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, String.valueOf(draw), info);
 		return result;
 	}
 	
-	@Secured(AuthorityName.ROLE_ADMIN)
 	@RequestMapping("admin/page")
+	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<PageInfo> getManagerPage(int pageNum, int draw) {
 		PageInfo info = managerService.getManagerPage(pageNum);
 		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, String.valueOf(draw), info);
 		return result;
 	}
 	
-	@Secured(AuthorityName.ROLE_ADMIN)
+	
 	@RequestMapping("user/all")
+	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<List<String>> getUserName() {
 		List<String> list = userService.getAllUserName();
 		JsonResult<List<String>> result = new JsonResult<>(ResultCode.SUCCESS, list);

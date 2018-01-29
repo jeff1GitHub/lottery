@@ -29,6 +29,7 @@ public class WebController {
 	@Resource
 	private IManagerService managerService;
 
+	@Secured(AuthorityName.ROLE_ADMIN)
 	@RequestMapping(value = "user/status", method = RequestMethod.POST)
 	public JsonResult<String> userStatus() {
 		String acc = SecurityContextHolder.getContext().getAuthentication().getName();

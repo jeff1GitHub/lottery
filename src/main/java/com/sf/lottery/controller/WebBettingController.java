@@ -24,8 +24,8 @@ public class WebBettingController {
 	@Resource
     private IBettingService bettingService;
 	
-	@Secured(AuthorityName.ROLE_ADMIN)
 	@RequestMapping(value = "bettingPage", method = RequestMethod.POST)
+	@Secured(AuthorityName.ROLE_ADMIN)
     public JsonResult<PageInfo> bettingPage(int pageNum, int draw, String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");
 		LocalDateTime end = DateTools.formatDateTime(endTime, "yyyy-MM-dd HH:mm:ss");
@@ -35,8 +35,8 @@ public class WebBettingController {
 		return result;
     }
 	
-	@Secured(AuthorityName.ROLE_ADMIN)
 	@RequestMapping(value = "bettingSquare", method = RequestMethod.POST)
+	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<BettingSquareSummary> bettingSquareSummary(String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");
 		LocalDateTime end = DateTools.formatDateTime(endTime, "yyyy-MM-dd HH:mm:ss");
@@ -46,8 +46,8 @@ public class WebBettingController {
 		return result;
 	}
 	
-	@Secured(AuthorityName.ROLE_ADMIN)
 	@RequestMapping(value = "bettingNum", method = RequestMethod.POST)
+	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<BettingNum> bettingNum(String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");
 		LocalDateTime end = DateTools.formatDateTime(endTime, "yyyy-MM-dd HH:mm:ss");
