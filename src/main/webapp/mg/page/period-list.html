@@ -79,7 +79,7 @@
 		$('#searchPeriodBtn').click(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				var url = window.parent.domain + '/manager/period/periodPage';
+				var url = window.parent.domain + '/admin/period/period_page';
 				var queryParam = {};
 				queryParam.date = $('#periodDate').val();
 				bindPageTable("periodList", 15, columns, url, token, queryParam);

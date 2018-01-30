@@ -8,21 +8,20 @@
 </head>
 <body>
 	<div class="page-container">
-		<table id="userList" class="table table-border table-bordered table-bg">
+		<table id="adminList" class="table table-border table-bordered table-bg">
 			<thead>
-				<tr><th scope="col" colspan="5">用户列表</th></tr>
+				<tr><th scope="col" colspan="4">管理员列表</th></tr>
 				<tr class="text-c">
 					<th>编号</th>
 					<th>账号</th>
 					<th>最后登录时间</th>
-					<th>状态</th>
 					<th width="10%">操作</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
 		</table>
 		<div class="text-c" style="margin-top: 20px;">
-			<button id="refreshUserList" class="btn btn-success"><i class="Hui-iconfont"> &#xe665;</i> 刷新</button>
+			<button id="refreshAdminList" class="btn btn-success"><i class="Hui-iconfont"> &#xe665;</i> 刷新</button>
 		</div>
 	</div>
 	
@@ -48,32 +47,19 @@
 		        }
 	        },
 	        {
-	            data: function(e) {
-	                var element = "";
-	                if (e.isDisable == 1) {
-	                    element = '<span class="label label-danger radius">禁用</span>';
-	                } else {
-	                    element = '<span class="label label-success radius">启用</span>';
-	                }
-	                return element;
-	            },
-	            className: "td-status"
-	        },
-	        {
-	            data: function(e) {
-	                var element = table_disable(e.id, e.isDisable);
-	                element += datatable_button_edit("编辑用户", "user-info", e.id);
+	            data: function (e) {
+	                var element = datatable_button_edit("编辑管理员", "user-info", e.id);
 	                return element;
 	            },
 	            className: "td-manage"
 	        }
 	    ];
 		
-		$('#refreshUserList').click(function() {
+		$('#refreshAdminList').click(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				var url = window.parent.domain + '/manager/account/user/page';
-				bindPageTable("userList", 15, columns, url, token);
+				var url = window.parent.domain + '/admin/account/admin_page';
+				bindPageTable("adminList", 15, columns, url, token);
 			}else{
 				alert('请先登录!');
 			}

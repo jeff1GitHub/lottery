@@ -84,7 +84,7 @@ public class BettingController {
         Instant endTime = period.getEndTime().atZone(ZoneId.systemDefault()).toInstant();
         Instant finishTime = period.getFinishTime().atZone(ZoneId.systemDefault()).toInstant();
         if (nowTime.isBefore(startTime)) {
-            return new JsonResult<>(ResultCode.PARAMS_ERROR, "投注时间无效!");
+            return new JsonResult<>(ResultCode.PARAMS_ERROR, "未开盘!");
         }
         if (nowTime.isAfter(finishTime)) {
         	return new JsonResult<>(ResultCode.PARAMS_ERROR, "已停止投注!");

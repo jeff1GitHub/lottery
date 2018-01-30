@@ -17,8 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)// 开启方法级安全
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Resource
-	private ServerFilter serverFilter;
+//	@Resource
+//	private ServerFilter serverFilter;
 	@Resource
 	private AuthenticationProvider authenticationProvider;
 
@@ -55,17 +55,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()
-			.antMatchers(HttpMethod.POST, "/manager/login").permitAll()
+			.antMatchers(HttpMethod.POST, "/admin/login").permitAll()
 			// 权限检查
 			//.antMatchers("/lottery/**").hasAuthority("AUTH_WRITE");
 			// 角色检查
 			//.antMatchers("/world").hasRole("ADMIN")
 			// 除上面外的所有请求全部需要身份认证
 			.anyRequest().authenticated().and();
+		
 		// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
-		http.addFilterBefore(serverFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JWTLoginFilter("/lottery/user/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-		http.addFilterBefore(new JWTLoginFilter("/manager/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JWTLoginFilter("/admin/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		// 添加一个过滤器验证其他请求的Token是否合法
 		http.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

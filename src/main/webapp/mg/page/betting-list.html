@@ -73,7 +73,7 @@
 		$(function() {
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				var url = window.parent.domain + '/manager/account/user/all';
+				var url = window.parent.domain + '/admin/account/user_all';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -141,7 +141,7 @@
 				queryParam.startTime = $('#datemin').val();
 				queryParam.endTime = $('#datemax').val();
 				
-				url = window.parent.domain + '/manager/betting/bettingSquare';
+				url = window.parent.domain + '/admin/betting/betting_square';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -169,7 +169,7 @@
 					}
 				});
 				
-				url = window.parent.domain + '/manager/betting/bettingNum';
+				url = window.parent.domain + '/admin/betting/betting_num';
 				$.ajax({
 					url: url,
 					type: 'POST',
@@ -197,7 +197,7 @@
 					}
 				});
 				
-				url = window.parent.domain + '/manager/betting/bettingPage';
+				url = window.parent.domain + '/admin/betting/betting_page';
 				bindPageTable("bettingList", 15, columns, url, token, queryParam);
 			}else{
 				alert('请先登录!');

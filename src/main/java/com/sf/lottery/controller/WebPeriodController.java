@@ -22,12 +22,12 @@ import com.sf.lottery.utils.ResultCode;
  * @since 2018-01-03
  */
 @RestController
-@RequestMapping("/manager/period")
+@RequestMapping("/admin/period")
 public class WebPeriodController {
 	@Resource
     private IPeriodService periodService;
 	
-	@RequestMapping(value = "periodPage", method = RequestMethod.POST)
+	@RequestMapping(value = "period_page", method = RequestMethod.POST)
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<PageInfo> getPeriodPage(String date, int pageNum, int draw) {
 		PageInfo info = periodService.getPeriodByDate(1, date, pageNum);

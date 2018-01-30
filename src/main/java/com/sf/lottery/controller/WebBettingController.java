@@ -19,12 +19,12 @@ import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
 
 @RestController()
-@RequestMapping("/manager/betting")
+@RequestMapping("/admin/betting")
 public class WebBettingController {
 	@Resource
     private IBettingService bettingService;
 	
-	@RequestMapping(value = "bettingPage", method = RequestMethod.POST)
+	@RequestMapping(value = "betting_page", method = RequestMethod.POST)
 	@Secured(AuthorityName.ROLE_ADMIN)
     public JsonResult<PageInfo> bettingPage(int pageNum, int draw, String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");
@@ -35,7 +35,7 @@ public class WebBettingController {
 		return result;
     }
 	
-	@RequestMapping(value = "bettingSquare", method = RequestMethod.POST)
+	@RequestMapping(value = "betting_square", method = RequestMethod.POST)
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<BettingSquareSummary> bettingSquareSummary(String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");
@@ -46,7 +46,7 @@ public class WebBettingController {
 		return result;
 	}
 	
-	@RequestMapping(value = "bettingNum", method = RequestMethod.POST)
+	@RequestMapping(value = "betting_num", method = RequestMethod.POST)
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<BettingNum> bettingNum(String name, String startTime, String endTime) {
 		LocalDateTime start = DateTools.formatDateTime(startTime, "yyyy-MM-dd HH:mm:ss");

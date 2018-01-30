@@ -128,8 +128,8 @@ function getNowPeriod() {
 					$('#nowCode').html(result.data.code);
 					
 					if(result.data.startTime <= 0){
-						$('#nextPeriodTimeDiv').css("display", "none");
-						$('#nowPeriodTimeDiv').css("display", "block");
+						$('.nextPeriodTimeSpan').addClass('hideSpan');
+						$('.periodTimeSpan').removeClass('hideSpan');
 						var endTime = result.data.endTime;
 						var finishTime = result.data.finishTime;
 						var periodTimer = setInterval(function(){
@@ -170,8 +170,8 @@ function getNowPeriod() {
 							}
 						}, 1000);
 					}else{
-						$('#nowPeriodTimeDiv').css("display", "none");
-						$('#nextPeriodTimeDiv').css("display", "block");
+						$('.periodTimeSpan').addClass('hideSpan');
+						$('.nextPeriodTimeSpan').removeClass('hideSpan');
 						var startTime = result.data.startTime;
 						var periodTimer = setInterval(function(){
 							if(startTime > 0){

@@ -15,7 +15,7 @@
 			确认密码: <input id="repwd" name="repwd" type="password" class="input-text size-L" />
 		</div>
 		<div style="margin-bottom: 15px;">
-			<input id="loginBtn" type="button" class="btn btn-success radius size-L" onclick="addUser()" value="注册" />
+			<input id="loginBtn" type="button" class="btn btn-success radius size-L" onclick="addManager()" value="注册" />
 		</div>
 	</div>
 
@@ -29,7 +29,7 @@
 	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript" src="../lib/jquery.md5.js"></script>
 	<script type="text/javascript">
-		function addUser() {
+		function addManager() {
 			var acc = $('#acc').val();
 			var pwd = $('#pwd').val();
 			var repwd = $('#repwd').val();
@@ -46,7 +46,7 @@
 			
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
-				var url = window.parent.domain + '/manager/create/user';
+				var url = window.parent.domain + '/admin/create/manager';
 				$.ajax({
 					url: url,
 					type: 'POST',

@@ -16,14 +16,14 @@ import com.sf.lottery.utils.JsonResult;
 import com.sf.lottery.utils.ResultCode;
 
 @RestController
-@RequestMapping("/manager/account")
+@RequestMapping("/admin/account")
 public class WebAccountController {
 	@Resource
 	private IUserService userService;
 	@Resource
 	private IManagerService managerService;
 	
-	@RequestMapping("user/page")
+	@RequestMapping("user_page")
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<PageInfo> getUserPage(int pageNum, int draw) {
 		PageInfo info = userService.getUserPage(pageNum);
@@ -31,7 +31,7 @@ public class WebAccountController {
 		return result;
 	}
 	
-	@RequestMapping("admin/page")
+	@RequestMapping("admin_page")
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<PageInfo> getManagerPage(int pageNum, int draw) {
 		PageInfo info = managerService.getManagerPage(pageNum);
@@ -40,7 +40,7 @@ public class WebAccountController {
 	}
 	
 	
-	@RequestMapping("user/all")
+	@RequestMapping("user_all")
 	@Secured(AuthorityName.ROLE_ADMIN)
 	public JsonResult<List<String>> getUserName() {
 		List<String> list = userService.getAllUserName();

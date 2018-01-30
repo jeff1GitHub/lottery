@@ -55,7 +55,7 @@
 				var acc = $('#acc').val();
 				var pwd = $('#pwd').val();
 				$.ajax({
-					url: domain + '/manager/login',
+					url: domain + '/admin/login',
 					type: 'POST',
 					data: {
 						'acc': acc,
@@ -84,7 +84,7 @@
 			var token = window.localStorage.getItem('manager-token');
 			if(token && token.length > 0){
 				$.ajax({
-					url: domain + '/manager/user/status',
+					url: domain + '/admn/login_status',
 					type: 'POST',
 					dataType: 'json',
 					async: false,

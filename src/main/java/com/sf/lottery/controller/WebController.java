@@ -19,7 +19,7 @@ import com.sf.lottery.utils.ResultCode;
 import com.sf.lottery.utils.Tools;
 
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/admin")
 public class WebController {
 	private final Logger logger = LoggerFactory.getLogger(WebController.class);
 	@Resource
@@ -30,7 +30,7 @@ public class WebController {
 	private IManagerService managerService;
 
 	@Secured(AuthorityName.ROLE_ADMIN)
-	@RequestMapping(value = "user/status", method = RequestMethod.POST)
+	@RequestMapping(value = "login_status", method = RequestMethod.POST)
 	public JsonResult<String> userStatus() {
 		String acc = SecurityContextHolder.getContext().getAuthentication().getName();
 		return new JsonResult<>(ResultCode.SUCCESS, acc);
@@ -78,7 +78,7 @@ public class WebController {
 	}
 	
 	@Secured(AuthorityName.ROLE_ADMIN)
-	@RequestMapping(value = "server/change/status", method = RequestMethod.POST)
+	@RequestMapping(value = "server/change_status", method = RequestMethod.POST)
 	public JsonResult<Boolean> changeServerStatus(boolean status) {
 		context.setOpen(status);
 		JsonResult<Boolean> result = new JsonResult<>(ResultCode.SUCCESS, context.isOpen());
