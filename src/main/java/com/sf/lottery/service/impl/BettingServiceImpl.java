@@ -78,8 +78,9 @@ public class BettingServiceImpl implements IBettingService {
 	public BettingSquareSummary getBettingSquare(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime) {
 		BettingSquareSummary summary = bettingMapper.selectBettingSquare(lotteryId, acc, startTime, endTime);
 		if(summary == null){
-			summary = new BettingSquareSummary(acc, new BigDecimal(0), new BigDecimal(0), new BigDecimal(0));
+			summary = new BettingSquareSummary(acc, new BigDecimal(0), new BigDecimal(0));
 		}
+		summary.computeProfit();
 		return summary;
 	}
 

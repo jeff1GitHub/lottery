@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.sf.lottery.entity.Period;
+import com.sf.lottery.entity.SimplePeriod;
 
 public interface IPeriodMapper {
 	
@@ -80,5 +81,13 @@ public interface IPeriodMapper {
 	 * @return 期数列表
 	 */
 	List<Period> selectPeriodByDate(@Param("gameId") int gameId, @Param("date") String date);
+	
+	/**
+	 * 根据日期查询历史期数
+	 * @param gameId 游戏编号
+	 * @param date 日期
+	 * @return 期数列表
+	 */
+	List<SimplePeriod> selectHistoryPeriodByDate(@Param("gameId") int gameId, @Param("date") String date);
 	
 }

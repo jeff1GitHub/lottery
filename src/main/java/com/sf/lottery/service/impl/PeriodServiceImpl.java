@@ -14,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.sf.lottery.common.Constant;
 import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.Period;
+import com.sf.lottery.entity.SimplePeriod;
 import com.sf.lottery.mapper.IPeriodMapper;
 import com.sf.lottery.service.IPeriodService;
 
@@ -89,6 +90,13 @@ public class PeriodServiceImpl implements IPeriodService {
 	public PageInfo getPeriodByDate(int gameId, String date, int pageNum) {
 		PageHelper.startPage(pageNum, Constant.PERIOD_PAGE_SIZE);
 		Page<Period> page = (Page<Period>)periodMapper.selectPeriodByDate(gameId, date);
+		return page == null ? null : new PageInfo(page);
+	}
+
+	@Override
+	public PageInfo getHistoryPeriodByDate(int gameId, String date, int pageNum) {
+		PageHelper.startPage(pageNum, Constant.PERIOD_PAGE_SIZE);
+		Page<SimplePeriod> page = (Page<SimplePeriod>)periodMapper.selectHistoryPeriodByDate(gameId, date);
 		return page == null ? null : new PageInfo(page);
 	}
 

@@ -213,20 +213,32 @@ function getNowPeriod() {
 function showRightDiv(showName) {
 	if('rightOneDiv' == showName){
 		$('#rightOneDiv').css("display", "block");
+		$('#showOneDiv').css("color", "orange");
+		$('#showOneDiv').html('两面&#160;&#62;');
 	}else{
 		$('#rightOneDiv').css("display", "none");
+		$('#showOneDiv').css("color", "white");
+		$('#showOneDiv').html('两面');
 	}
 	
 	if('rightTwoDiv' == showName){
 		$('#rightTwoDiv').css("display", "block");
+		$('#showTwoDiv').css("color", "orange");
+		$('#showTwoDiv').html('1-5球&#160;&#62;');
 	}else{
 		$('#rightTwoDiv').css("display", "none");
+		$('#showTwoDiv').css("color", "white");
+		$('#showTwoDiv').html('1-5球');
 	}
 	
 	if('rightThreeDiv' == showName){
 		$('#rightThreeDiv').css("display", "block");
+		$('#showThreeDiv').css("color", "orange");
+		$('#showThreeDiv').html('前中后&#160;&#62;');
 	}else{
 		$('#rightThreeDiv').css("display", "none");
+		$('#showThreeDiv').css("color", "white");
+		$('#showThreeDiv').html('前中后');
 	}
 }
 
@@ -356,5 +368,96 @@ function commitBet() {
 		});
 	}else{
 		alert("请选择!");
+	}
+}
+
+function tryOpenHistoryPeriodPage() {
+	if(isLogin){
+		loadHistoryPeriod(1);
+		$("#openHistoryPeriodPage").trigger("click");
+	}else{
+		alert("请先登录!");
+	}
+}
+
+function loadHistoryPeriod(pageNum) {
+	if(!isLogin){
+		alert("请先登录!");
+		return;
+	}
+	
+	var dateType = $('#datePeriod').val();
+	$.ajax({
+		url: domain + '/lottery/period/periodPage',
+		type: 'POST',
+		dataType: 'json',
+		async: true,
+		data: {
+			'type': dateType,
+			'pageNum': pageNum,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('Authorization', 'Basic' + window.localStorage.getItem('token'))
+		},
+		success: function (result) {
+			if(result.code == 200){
+				var obj = result.data.result;
+				var msg = '';
+				if(result.data.total > 0){
+					var resultArr;
+					for(var index in obj){
+						resultArr = obj[index].result.split(",");
+						msg += '<tr>';
+						msg += '<td>' + obj[index].date + '</td>';
+						msg += '<td>' + obj[index].code + '</td><td>';
+						for(var k in resultArr){
+							msg += '<span class="bet round-1">' + resultArr[k] + '</span>'
+						}
+						msg += '</td></tr>'
+					}
+				}else{
+					msg += '<tr><td colspan="3">没有数据</td></tr>';
+				}
+				
+				
+				$('#historyPeriodTable').find('tbody').html(msg);
+				$('#nowPeriodPageNum').html(result.data.pageNum);
+				$('#periodPageCount').html(result.data.pages);
+			}else{
+				alert(result.message);
+			}
+		},
+		error: function (request, error) {
+			alert('无法连接网络或者返回值错误!');
+		}
+	});
+}
+
+function getHistoryPeriodPage(page) {
+	var pageCount = parseInt($('#periodPageCount').html());
+	var nowPageNum = parseInt($('#nowPeriodPageNum').html()) + page;
+	if(nowPageNum >= 1 && nowPageNum <= pageCount){
+		loadHistoryPeriod(nowPageNum);
+	}
+}
+
+function tryOpenMyBetPage() {
+	if(isLogin){
+		loadMyBet(1);
+		$("#openMyBetPage").trigger("click");
+	}else{
+		alert("请先登录!");
+	}
+}
+
+function loadMyBet(pageNum) {
+	
+}
+
+function getMyBetPage(page) {
+	var pageCount = parseInt($('#nowBetPageNum').html());
+	var nowPageNum = parseInt($('#betPageCount').html()) + page;
+	if(nowPageNum >= 1 && nowPageNum <= pageCount){
+		betPageCount(nowPageNum);
 	}
 }

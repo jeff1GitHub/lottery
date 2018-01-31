@@ -43,7 +43,6 @@
 	<resultMap id="BettingSquareSummaryResultMap" type="com.sf.lottery.entity.BettingSquareSummary">
 		<result column="f_user_name" property="userName" javaType="java.lang.String" jdbcType="VARCHAR" />
 		<result column="f_bet_money" property="betMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-		<result column="f_profit" property="profit" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
 		<result column="f_loss" property="loss" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
 	</resultMap>
 	
@@ -140,7 +139,6 @@
 			SELECT
 			  f_user_name,
 			  sum(f_money) AS f_bet_money,
-			  sum(case when f_square_money > 0 then f_square_money else 0 end) AS f_profit,
 			  sum(case when f_square_money < 0 then f_square_money else 0 end) AS f_loss
 			FROM
 			  t_betting

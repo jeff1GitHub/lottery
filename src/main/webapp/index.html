@@ -12,7 +12,7 @@
 		<script src="js/jquery.md5.js"></script>
 		
 		<script type="text/javascript">
-			var domain = '';
+			var domain = 'http://localhost:8899';
 			var isLogin;
 			var nowLotteryId;
 			var nowPeriodCode;
@@ -56,14 +56,6 @@
 					alert("服务器维护中...");
 				}
 			});
-			
-			//localStorage 方法
-			//localStorage.lastname="Smith";
-			//document.write(localStorage.lastname);
-			
-			//sessionStorage 方法
-			//sessionStorage.lastname="Smith";
-			//document.write(sessionStorage.lastname);
 		</script>
 	</head>
 	
@@ -90,9 +82,15 @@
 				</div>
 				<div id="gameDiv" style="background: olive;">
 					<div id="leftDiv" class="inGameDiv" style="border-right:0px;">
-						<div onclick="showRightDiv('rightOneDiv')">两面</div>
-						<div onclick="showRightDiv('rightTwoDiv')">1-5球</div>
-						<div onclick="showRightDiv('rightThreeDiv')">前中后</div>
+						<ul id="menuUL">
+							<li><span id="showOneDiv" style="color: orange;" onclick="showRightDiv('rightOneDiv')">两面&#160;&#62;</span></li>
+							<li><span id="showTwoDiv" onclick="showRightDiv('rightTwoDiv')">1-5球</span></li>
+							<li><span id="showThreeDiv" onclick="showRightDiv('rightThreeDiv')">前中后</span></li>
+							<li style="margin-top: 2rem; size: 1.2rem; font-weight: bold;" onclick="tryOpenHistoryPeriodPage()">历史开奖</li>
+							<li style="size: 1.2rem; font-weight: bold;" onclick="tryOpenMyBetPage()">我的注单</li>
+						</ul>
+						<a id="openHistoryPeriodPage" data-rel="dialog" href="#historyPeriodPage" style="display:none"></a>
+						<a id="openMyBetPage" data-rel="dialog" href="#myBetPage" style="display:none"></a>
 					</div>
 					<div id="rightOneDiv" class="inGameDiv rightGameDiv">
 						<div class="table gameTable" style="border-bottom:0px;">
@@ -355,7 +353,7 @@
 				<h1>下注明细</h1>
 			</div>
 			<div data-role="content">
-				<table id="betTable">
+				<table id="betTable" class="centerTable">
 					<thead>
 						<tr>
 							<th>名称</th>
@@ -370,6 +368,60 @@
 				<div style="text-align:center; margin-top: 2rem">
 					<input type="button" data-inline="true" onclick="commitBet()" value="确定">
 				</div>
+			</div>
+		</div>
+		
+		<div data-role="page" id="historyPeriodPage">
+			<div data-role="header">
+				<h1>历史开奖</h1>
+			</div>
+			<div data-role="content">
+				<div>
+					查询日期:
+					<select id="datePeriod" onchange="loadHistoryPeriod(1)">
+						<option selected="selected" value="1">今日</option>
+						<option value="2">昨日</option>
+					</select>
+				</div>
+				<table id="historyPeriodTable" class="centerTable">
+					<thead>
+						<tr>
+							<th>日期</th>
+							<th>期数</th>
+							<th>中奖号码</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<div data-role="footer" data-position="fixed" class="alignCenter">
+					<span onclick="getHistoryPeriodPage(-1)">上一页</span>
+					第<span id="nowPeriodPageNum">1</span>/<span id="periodPageCount">1</span>页
+					<span onclick="getHistoryPeriodPage(1)">下一页</span>
+			</div>
+		</div>
+		
+		<div data-role="page" id="myBetPage">
+			<div data-role="header">
+				<h1>我的注单</h1>
+			</div>
+			<div data-role="content">
+				<table id="myBetTable" class="centerTable">
+					<thead>
+						<tr>
+							<th>日期</th>
+							<th>期数</th>
+							<th>下注金额</th>
+							<th>结果<th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<div data-role="footer" data-position="fixed" class="alignCenter">
+					<span onclick="getMyBetPage(-1)">上一页</span>
+					第<span id="nowBetPageNum">1</span>/<span id="betPageCount">1</span>页
+					<span onclick="getMyBetPage(1)">下一页</span>
 			</div>
 		</div>
 	</body>

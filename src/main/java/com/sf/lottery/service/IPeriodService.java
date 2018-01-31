@@ -52,8 +52,18 @@ public interface IPeriodService {
 	 * 根据日期查询期数
 	 * @param gameId 游戏编号
 	 * @param date 日期
-	 * @return 期数列表
+	 * @param pageNum 当期页
+	 * @return 期数页
 	 */
 	PageInfo getPeriodByDate(int gameId, String date, int pageNum);
     
+	/**
+	 * 根据日期查询历史期数
+	 * @param gameId 游戏编号
+	 * @param date 日期
+	 * @param pageNum 当期页
+	 * @return 历史期数页
+	 */
+	PageInfo getHistoryPeriodByDate(int gameId, String date, int pageNum);
+	
 }

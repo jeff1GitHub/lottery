@@ -10,17 +10,16 @@ public class BettingSquareSummary {
 	private String userName;
 	/** 下注金额 */
 	private BigDecimal betMoney;
-	/** 盈利 */
-	private BigDecimal profit;
 	/** 亏损 */
 	private BigDecimal loss;
+	/** 盈利 */
+	private BigDecimal profit;
 
 	public BettingSquareSummary() {}
 	
-	public BettingSquareSummary(String userName, BigDecimal betMoney, BigDecimal profit, BigDecimal loss) {
+	public BettingSquareSummary(String userName, BigDecimal betMoney, BigDecimal loss) {
 		this.userName = userName;
 		this.betMoney = betMoney;
-		this.profit = profit;
 		this.loss = loss;
 	}
 
@@ -31,13 +30,17 @@ public class BettingSquareSummary {
 	public BigDecimal getBetMoney() {
 		return betMoney;
 	}
-
-	public BigDecimal getProfit() {
-		return profit;
-	}
-
+	
 	public BigDecimal getLoss() {
 		return loss;
 	}
 
+	public void computeProfit() {
+		this.profit = betMoney.add(loss);
+	}
+
+	public BigDecimal getProfit() {
+		return profit;
+	}
+	
 }

@@ -14,6 +14,12 @@
 		<result column="f_status" property="status" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
 	
+	<resultMap id="SimpleResultMap" type="com.sf.lottery.entity.SimplePeriod">
+		<result column="f_date" property="date" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<result column="f_code" property="code" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_result" property="result" javaType="java.lang.String" jdbcType="VARCHAR" />
+	</resultMap>
+	
 	<select id="insertPeriodTemplate" statementType="CALLABLE">
 		<![CDATA[
 			CALL p_create_period()
@@ -118,6 +124,21 @@
 				t_period
 			WHERE
 				f_game_id = #{gameId, jdbcType=INTEGER} AND f_date = #{date, jdbcType=VARCHAR}
+			ORDER BY
+				f_code
+		]]>
+	</select>
+	
+	<select id="selectHistoryPeriodByDate" resultMap="SimpleResultMap">
+		<![CDATA[
+			SELECT
+				f_date, RIGHT(f_code, 3) f_code, f_result
+			FROM
+				t_period
+			WHERE
+				f_game_id = #{gameId, jdbcType=INTEGER}
+				AND f_date = #{date, jdbcType=VARCHAR}
+				AND f_status = 1
 			ORDER BY
 				f_code
 		]]>

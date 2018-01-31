@@ -1,3 +1,25 @@
+html,body{
+	font-size:98%;
+}
+#menuUL, #menuUL li{
+	list-style-type:none;
+}
+#menuUL {
+	margin-top: .3rem;
+	padding-left: .5rem;
+}
+#menuUL li{
+	margin-bottom: .3rem
+}
+.aTag:link, .aTag:visited {
+	text-decoration: none;
+}
+.aTag:hover {
+	text-decoration: underline;
+}
+.textWhite {
+	color: orange;
+}
 #welcomeSpan {
 	margin-top: .3rem
 }
@@ -41,29 +63,23 @@
     font-size: .9rem;
     font-weight: bolder;
 }
-
 .col {
     padding: .4rem 0;
     font-size: .92rem;
 }
-
 .bet-content {
     display: inline-block;
     line-height: 1.4rem;
 }
-
-
-
 .box {
 	border: 1px solid rgb(217, 232, 247);
 }
-
 .inGameDiv {
 	float: left;
 	border: 1px solid #00F;
 }
 #leftDiv {
-	width: 5rem;
+	width: 7.8rem;
 }
 .rightGameDiv {
 	overflow-y: scroll;
@@ -80,7 +96,6 @@
 	font-weight: bolder;
 	margin-right: .5rem;
 }
-
 .table {
 	display:table;
 	border-bottom:1px solid #0094ff;
@@ -95,8 +110,10 @@
 .seletedBet {
 	background-color: orange;
 }
-
-#betTable {
+.centerTable {
 	text-align: center;
 	width: 100%;
+}
+.alignCenter {
+	text-align: center;
 }
