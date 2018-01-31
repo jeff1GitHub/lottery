@@ -144,4 +144,15 @@ public class BettingController {
         return ret;
     }
     
+    /**
+     * 玩家历史注单
+     * @param betting
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "betPage", method = RequestMethod.POST)
+    public JsonResult<String> getBetPage(int pageNum) {
+    	return null;
+    }
+    
 }

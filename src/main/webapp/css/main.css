@@ -17,8 +17,8 @@ html,body{
 .aTag:hover {
 	text-decoration: underline;
 }
-.textWhite {
-	color: orange;
+.redColor {
+	color: red;
 }
 #welcomeSpan {
 	margin-top: .3rem

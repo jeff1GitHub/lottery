@@ -419,7 +419,6 @@ function loadHistoryPeriod(pageNum) {
 					msg += '<tr><td colspan="3">没有数据</td></tr>';
 				}
 				
-				
 				$('#historyPeriodTable').find('tbody').html(msg);
 				$('#nowPeriodPageNum').html(result.data.pageNum);
 				$('#periodPageCount').html(result.data.pages);
@@ -451,7 +450,59 @@ function tryOpenMyBetPage() {
 }
 
 function loadMyBet(pageNum) {
+	if(!isLogin){
+		alert("请先登录!");
+		return;
+	}
 	
+	$.ajax({
+		url: domain + '/lottery/period/betPage',
+		type: 'POST',
+		dataType: 'json',
+		async: true,
+		data: {
+			'pageNum': pageNum,
+		},
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('Authorization', 'Basic' + window.localStorage.getItem('token'))
+		},
+		success: function (result) {
+			if(result.code == 200){
+				var obj = result.data.result;
+				var msg = '';
+				if(result.data.total > 0){
+					var squareMoney;
+					for(var index in obj){
+						resultArr = obj[index].result.split(",");
+						msg += '<tr>';
+						msg += '<td>' + obj[index].date + '</td>';
+						msg += '<td>' + obj[index].period + '</td>';
+						msg += '<td>' + obj[index].money + '</td>';
+						squareMoney = obj[index].squareMoney;
+						if(squareMoney > 0){
+							msg += '<td class="redColor">' + squareMoney + '</td>';
+						}else if(squareMoney < 0){
+							msg += '<td>' + squareMoney + '</td>';
+						}else{
+							msg += '<td>' + 未结算 + '</td>';
+						}
+						msg += '</tr>'
+					}
+				}else{
+					msg += '<tr><td colspan="3">没有数据</td></tr>';
+				}
+				
+				$('#historyPeriodTable').find('tbody').html(msg);
+				$('#nowPeriodPageNum').html(result.data.pageNum);
+				$('#periodPageCount').html(result.data.pages);
+			}else{
+				alert(result.message);
+			}
+		},
+		error: function (request, error) {
+			alert('无法连接网络或者返回值错误!');
+		}
+	});
 }
 
 function getMyBetPage(page) {
