@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -67,21 +68,31 @@ public class TokenAuthenticationService {
 		if (token == null) {
 			return null;
 		} else {
-			// 解析 Token
-			JwtParser parser = Jwts.parser();
-			// 验签
-			parser.setSigningKey(SECRET);
 			// 去掉 Bearer
-			Claims claims = parser.parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody();
+			token = token.replace(TOKEN_PREFIX, "");
+			
+			try {
+				// 解析 Token
+				JwtParser parser = Jwts.parser();
+				// 验签
+				parser.setSigningKey(SECRET);
+				
+				Claims claims = parser.parseClaimsJws(token).getBody();
+				// 拿用户名
+				String user = claims.getSubject();
 
-			// 拿用户名
-			String user = claims.getSubject();
-
-			// 得到 权限（角色）
-			List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
-
-			// 返回验证令牌
-			return user == null ? null : new UsernamePasswordAuthenticationToken(user, null, authorities);
+				if(user == null){
+					return null;
+				}else{
+					// 得到 权限（角色）
+					List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
+					// 返回验证令牌
+					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+					return authentication;
+				}
+			} catch (ExpiredJwtException e) {
+				return null;
+			}
 		}
 	}
 }

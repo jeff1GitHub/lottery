@@ -52,7 +52,11 @@ function login() {
 			}
 		},
 		error: function (request, error) {
-			alert('无法连接网络或者返回值错误!');
+			if(request.status == 403){
+				alert('请重新登录!');
+			}else{
+				alert('网络异常!');
+			}
 		}
 	});
 }
@@ -108,7 +112,11 @@ function getBeforPeriod() {
 			resultCode = result.code;
 		},
 		error: function (request, error) {
-			alert('无法连接网络或者返回值错误!');
+			if(request.status == 403){
+				alert('请重新登录!');
+			}else{
+				alert('网络异常!');
+			}
 		}
 	});
 	return resultCode;
@@ -205,7 +213,11 @@ function getNowPeriod() {
 			}
 		},
 		error: function (request, error) {
-			alert('无法连接网络或者返回值错误!');
+			if(request.status == 403){
+				alert('请重新登录!');
+			}else{
+				alert('网络异常!');
+			}
 		}
 	});
 }
@@ -363,7 +375,11 @@ function commitBet() {
 				$('#confirmBetPage').dialog('close');
 			},
 			error: function (request, error) {
-				alert('无法连接网络或者返回值错误!');
+				if(request.status == 403){
+					alert('请重新登录!');
+				}else{
+					alert('网络异常!');
+				}
 			}
 		});
 	}else{
@@ -427,7 +443,11 @@ function loadHistoryPeriod(pageNum) {
 			}
 		},
 		error: function (request, error) {
-			alert('无法连接网络或者返回值错误!');
+			if(request.status == 403){
+				alert('请重新登录!');
+			}else{
+				alert('网络异常!');
+			}
 		}
 	});
 }
@@ -500,7 +520,11 @@ function loadMyBet(pageNum) {
 			}
 		},
 		error: function (request, error) {
-			alert('无法连接网络或者返回值错误!');
+			if(request.status == 403){
+				alert('请重新登录!');
+			}else{
+				alert('网络异常!');
+			}
 		}
 	});
 }
