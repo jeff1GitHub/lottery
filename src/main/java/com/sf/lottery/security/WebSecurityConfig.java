@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import com.sf.lottery.common.Context;
 
@@ -62,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.antMatchers("/lottery/**").hasAuthority("AUTH_WRITE");
 			// 角色检查
 			//.antMatchers("/world").hasRole("ADMIN")
+			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			// 除上面外的所有请求全部需要身份认证
 			.anyRequest().authenticated().and();
 		

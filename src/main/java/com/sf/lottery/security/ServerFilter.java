@@ -32,6 +32,13 @@ public class ServerFilter extends FilterSecurityInterceptor {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
+		// 跨域设置
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		res.setHeader("Access-Control-Max-Age", "3600");
+		res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+		
 		if(!requiresAuthentication(req, res)){
 			chain.doFilter(request, response);
 			return;
