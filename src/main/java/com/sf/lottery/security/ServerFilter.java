@@ -3,31 +3,42 @@ package com.sf.lottery.security;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.sf.lottery.common.Context;
 
-public class ServerFilter implements Filter {
+public class ServerFilter extends FilterSecurityInterceptor {
+	private RequestMatcher requiresAuthenticationRequestMatcher;
 	private Context serverContext;
 	
-	@Override
-	public void init(FilterConfig config) throws ServletException {
-		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
-		serverContext = (Context)context.getBean("context");
+	public ServerFilter(Context serverContext, String url, AuthenticationManager authManager) {
+		this.serverContext = serverContext;
+		requiresAuthenticationRequestMatcher = new AntPathRequestMatcher(url);
+		super.setAuthenticationManager(authManager);
+		
 	}
-
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if(serverContext.isOpen()){
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		if(!requiresAuthentication(req, res)){
 			chain.doFilter(request, response);
+			return;
+		}
+		
+		if(serverContext.isOpen()){
+			chain.doFilter(req, res);
 		}else{
 			response.setContentType("application/json;charset=UTF-8");
 			try (PrintWriter out = response.getWriter()) {
@@ -37,9 +48,8 @@ public class ServerFilter implements Filter {
 		}
 	}
 	
-	@Override
-	public void destroy() {
-
+	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+		return requiresAuthenticationRequestMatcher.matches(request);
 	}
-
+	
 }

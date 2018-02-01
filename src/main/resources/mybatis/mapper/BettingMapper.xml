@@ -52,6 +52,14 @@
     	<result column="f_unsquare_num" property="unsquareNum" javaType="int" jdbcType="INTEGER" />
     	<result column="f_other_bet_num" property="otherBetNum" javaType="int" jdbcType="INTEGER" />
 	</resultMap>
+	
+	<resultMap id="SimpleBettingResultMap" type="com.sf.lottery.entity.SimpleBetting">
+		<result column="f_betting_time" property="bettingTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_period" property="period" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_content" property="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="f_money" property="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+		<result column="f_square_money" property="squareMoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+	</resultMap>
 
 	<insert id="insertBetting" parameterType="java.util.List">
 		INSERT INTO lottery.t_betting (
@@ -154,7 +162,7 @@
 	</select>
 	
 	<select id="selectBettingNum" resultMap="BettingNumResultMap">
-		<![CDATA[		   
+		<![CDATA[
 			SELECT
 			  count(1) as f_bet_num,
 			  sum(case when f_square = 1 then 1 else 0 end) as f_squared_num,
@@ -183,5 +191,28 @@
 			]]>
 		</foreach>
 	</update>
+	
+	<select id="selectSimpleBetting" resultMap="SimpleBettingResultMap">
+		<![CDATA[
+			SELECT
+			  DATE_FORMAT(bet.f_betting_time,  '%Y-%m-%d %H:%i:%s') AS f_betting_time,
+			  RIGHT(bet.f_period, 3) AS f_period,
+			  CONCAT(pro.f_name, '(', bet.f_odds, ')') AS f_content,
+			  bet.f_money,
+			  (CASE WHEN bet.f_square = 1 THEN
+			      -(CASE WHEN bet.f_square_money < 0 THEN (bet.f_square_money + bet.f_money) ELSE bet.f_square_money END)
+			   ELSE NULL END) AS f_square_money
+			FROM
+			  t_betting AS bet
+			  LEFT JOIN t_project AS pro ON bet.f_project = pro.f_id AND bet.f_lottery_id = pro.f_lottery_id
+			WHERE
+			  bet.f_lottery_id = #{lotteryId, jdbcType=INTEGER}
+			  AND bet.f_user_id = #{accId, jdbcType=BIGINT}
+			  AND bet.f_betting_time >= #{startDate, jdbcType=DATE}
+			  AND bet.f_betting_time <= #{endDate, jdbcType=DATE}
+			ORDER BY
+			  bet.f_betting_time DESC
+		]]>
+	</select>
 	
 </mapper>

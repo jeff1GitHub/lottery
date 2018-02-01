@@ -1,9 +1,8 @@
 package com.sf.lottery.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 
 import com.sf.lottery.entity.Betting;
 import com.sf.lottery.entity.BettingNum;
@@ -52,7 +51,7 @@ public interface IBettingService {
 	
 	
     /**
-     * 通过彩票编号和彩票期号获取所有注单
+     * 通过彩票编号和彩票期号获取注单分页
      * @param lotteryId 彩票编号
      * @param period 彩票期数
      * @param pageNum 页数
@@ -61,13 +60,13 @@ public interface IBettingService {
     PageInfo getBettingList(int lotteryId, String period, int pageNum);
     
     /**
-	 * 根据彩票编号查询注单分页
+	 * 根据彩票编号和账号查询注单分页
      * @param lotteryId 彩票编号
      * @param pageNum 查询页码
      * @param name 投注账号
      * @param startTime 开始时间
      * @param endTime 结束时间
-     * @return 注单列表
+     * @return 注单页
      */
     PageInfo getBettingPage(int lotteryId, int pageNum, String name, LocalDateTime startTime, LocalDateTime endTime);
 
@@ -86,7 +85,7 @@ public interface IBettingService {
 	 * @param endTime 结束时间
 	 * @return BettingSquareSummary
 	 */
-	BettingSquareSummary getBettingSquare(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+	BettingSquareSummary getBettingSquare(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime);
 	
 	/**
 	 * 根据帐号查询各种状态注单数量
@@ -96,7 +95,17 @@ public interface IBettingService {
 	 * @param endTime 结束时间
 	 * @return BettingNum
 	 */
-	BettingNum getBettingNum(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+	BettingNum getBettingNum(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime);
 
+	/**
+	 * 根据彩票编号和账号查询注单
+	 * @param lotteryId 彩票编号
+	 * @param accId 投注账号编号
+	 * @param startDate 开始日期
+	 * @param endDate 结束日期
+	 * @param pageNum 页码
+	 * @return 简单注单列表
+	 */
+	PageInfo getSimpleBettingPage(int lotteryId, long accId, LocalDate startDate, LocalDate endDate, int pageNum);
     
 }

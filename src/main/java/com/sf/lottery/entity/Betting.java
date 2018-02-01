@@ -40,7 +40,7 @@ public class Betting {
 
 	public Betting(long id, long userId, String userName, String period, LocalDateTime bettingTime, int lotteryId, int project, BigDecimal odds, BigDecimal money) {
 		this.id = id;
-		this.userId = id;
+		this.userId = userId;
 		this.userName = userName;
 		this.period = period;
 		this.bettingTime = bettingTime;

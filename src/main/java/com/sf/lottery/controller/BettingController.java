@@ -2,6 +2,7 @@ package com.sf.lottery.controller;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import com.sf.lottery.common.Context;
 import com.sf.lottery.common.IdGenerator;
 import com.sf.lottery.entity.Betting;
 import com.sf.lottery.entity.Lottery;
+import com.sf.lottery.entity.PageInfo;
 import com.sf.lottery.entity.Period;
 import com.sf.lottery.entity.Project;
 import com.sf.lottery.service.IBettingService;
@@ -151,8 +153,15 @@ public class BettingController {
      * @return
      */
     @RequestMapping(value = "betPage", method = RequestMethod.POST)
-    public JsonResult<String> getBetPage(int pageNum) {
-    	return null;
+    public JsonResult<PageInfo> getBetPage(int pageNum) {
+    	String acc = SecurityContextHolder.getContext().getAuthentication().getName();
+		long userId = context.getUser(acc).getId();
+		
+		LocalDate startDate = LocalDate.now().minusDays(6);
+		LocalDate endDate = LocalDate.now().plusDays(1);
+		PageInfo info = this.bettingService.getSimpleBettingPage(1, userId, startDate, endDate, pageNum);
+		JsonResult<PageInfo> result = new JsonResult<>(ResultCode.SUCCESS, info);
+		return result;
     }
     
 }

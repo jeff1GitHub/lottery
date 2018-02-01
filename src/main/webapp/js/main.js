@@ -456,7 +456,7 @@ function loadMyBet(pageNum) {
 	}
 	
 	$.ajax({
-		url: domain + '/lottery/period/betPage',
+		url: domain + '/lottery/betting/betPage',
 		type: 'POST',
 		dataType: 'json',
 		async: true,
@@ -473,10 +473,10 @@ function loadMyBet(pageNum) {
 				if(result.data.total > 0){
 					var squareMoney;
 					for(var index in obj){
-						resultArr = obj[index].result.split(",");
 						msg += '<tr>';
-						msg += '<td>' + obj[index].date + '</td>';
+						msg += '<td>' + obj[index].bettingTime + '</td>';
 						msg += '<td>' + obj[index].period + '</td>';
+						msg += '<td>' + obj[index].content + '</td>';
 						msg += '<td>' + obj[index].money + '</td>';
 						squareMoney = obj[index].squareMoney;
 						if(squareMoney > 0){
@@ -484,15 +484,15 @@ function loadMyBet(pageNum) {
 						}else if(squareMoney < 0){
 							msg += '<td>' + squareMoney + '</td>';
 						}else{
-							msg += '<td>' + 未结算 + '</td>';
+							msg += '<td>未结算</td>';
 						}
 						msg += '</tr>'
 					}
 				}else{
-					msg += '<tr><td colspan="3">没有数据</td></tr>';
+					msg += '<tr><td colspan="5">没有数据</td></tr>';
 				}
 				
-				$('#historyPeriodTable').find('tbody').html(msg);
+				$('#myBetTable').find('tbody').html(msg);
 				$('#nowPeriodPageNum').html(result.data.pageNum);
 				$('#periodPageCount').html(result.data.pages);
 			}else{

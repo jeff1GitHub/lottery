@@ -1,6 +1,7 @@
 package com.sf.lottery.service.impl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
 import com.sf.lottery.entity.BettingSquareSummary;
 import com.sf.lottery.entity.PageInfo;
+import com.sf.lottery.entity.SimpleBetting;
 import com.sf.lottery.mapper.IBettingMapper;
 import com.sf.lottery.service.IBettingService;
 
@@ -88,6 +90,13 @@ public class BettingServiceImpl implements IBettingService {
 	public BettingNum getBettingNum(int lotteryId, String acc, LocalDateTime startTime, LocalDateTime endTime) {
 		BettingNum result = bettingMapper.selectBettingNum(lotteryId, acc, startTime, endTime);
 		return result;
+	}
+
+	@Override
+	public PageInfo getSimpleBettingPage(int lotteryId, long accId, LocalDate startDate, LocalDate endDate, int pageNum) {
+		PageHelper.startPage(pageNum, Constant.USER_BETTING_PAGE_SIZE);
+		Page<SimpleBetting> page = (Page<SimpleBetting>)bettingMapper.selectSimpleBetting(lotteryId, accId, startDate, endDate);
+		return page == null ? null : new PageInfo(page);
 	}
 
 }

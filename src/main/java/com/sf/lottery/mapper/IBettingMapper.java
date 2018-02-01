@@ -1,6 +1,7 @@
 package com.sf.lottery.mapper;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.sf.lottery.entity.BettingNum;
 import com.sf.lottery.entity.BettingProject;
 import com.sf.lottery.entity.BettingSquareInfo;
 import com.sf.lottery.entity.BettingSquareSummary;
+import com.sf.lottery.entity.SimpleBetting;
 
 public interface IBettingMapper {
 	
@@ -47,7 +49,7 @@ public interface IBettingMapper {
 	List<Betting> selectBetting(@Param("lotteryId") int lotteryId, @Param("period") String period);
 	
 	/**
-	 * 根据彩票编号查询注单
+	 * 根据彩票编号和账号查询注单
 	 * @param lotteryId 彩票编号
 	 * @param acc 投注账号
 	 * @param startTime 开始时间
@@ -91,5 +93,15 @@ public interface IBettingMapper {
 	 * @return BettingNum
 	 */
 	BettingNum selectBettingNum(@Param("lotteryId") int lotteryId, @Param("acc") String acc, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
-
+	
+	/**
+	 * 根据彩票编号和账号查询注单
+	 * @param lotteryId 彩票编号
+	 * @param accId 投注账号编号
+	 * @param startTime 开始时间
+	 * @param endTime 结束时间
+	 * @return 简单注单列表
+	 */
+	List<SimpleBetting> selectSimpleBetting(@Param("lotteryId") int lotteryId, @Param("accId") long accId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+	
 }

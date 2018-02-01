@@ -13,12 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.sf.lottery.common.Context;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)// 开启方法级安全
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//	@Resource
-//	private ServerFilter serverFilter;
+	@Resource
+	private Context serverContext;
 	@Resource
 	private AuthenticationProvider authenticationProvider;
 
@@ -63,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 除上面外的所有请求全部需要身份认证
 			.anyRequest().authenticated().and();
 		
+		// 系统维护过滤器
+		http.addFilterBefore(new ServerFilter(this.serverContext, "/lottery/**", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
 		http.addFilterBefore(new JWTLoginFilter("/lottery/user/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JWTLoginFilter("/admin/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
@@ -73,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// 使用自定义身份验证组件
-        auth.authenticationProvider(authenticationProvider);
+        auth.authenticationProvider(this.authenticationProvider);
 	}
 
 }
