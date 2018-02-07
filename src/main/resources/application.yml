@@ -1,5 +1,14 @@
 server:
   port: 8899
+  undertow:
+    accesslog:
+      enabled: true
+      dir: logs/access
+      rotate: true
+#    worker-threads: 100
+    buffer-size: 1024
+    direct-buffers: true
+    max-http-post-size: 1024
 
 spring:
   application:

@@ -31,13 +31,7 @@
             <div class="flicking_con">
             </div>
             <div class="main_image">
-                <ul>
-                    <a target="_blank" href="">
-                        <li>
-                            <img src="https://m.1680210.com/img/001.png" />
-                        </li>
-                    </a>
-                </ul>
+                <ul></ul>
                 <a href="javascript:;" id="btn_prev" class="displaynone"></a>
                 <a href="javascript:;" id="btn_next" class="displaynone"></a>
             </div>
@@ -50,8 +44,8 @@
         <div class="lilist" id="cz_100021">
             <div class="boxline l1box">
                 <div>
-                    <span class="lotName">时时彩</span>
-                    <span><label id="ssc_period" class="preIssue preDrawIssue">585799</label>期</span>
+                    <span class="lotName">澳门时时彩</span>
+                    <span><label id="ssc_period" class="preIssue preDrawIssue"></label>期</span>
                     <span class="displaynone nextIssue"></span>
                 </div>
                 <div>
@@ -66,11 +60,11 @@
             </div>
             <div class="boxline kajianhao">
                 <ul class="sscli numberbox">
-                    <li id="ssc_num_1">1</li>
-                    <li id="ssc_num_2">2</li>
-                    <li id="ssc_num_3">3</li>
-                    <li id="ssc_num_4">4</li>
-                    <li id="ssc_num_5">5</li>
+                    <li id="ssc_num_1"></li>
+                    <li id="ssc_num_2"></li>
+                    <li id="ssc_num_3"></li>
+                    <li id="ssc_num_4"></li>
+                    <li id="ssc_num_5"></li>
                 </ul>
             </div>
             <div class="boxline">
@@ -621,12 +615,13 @@
     $("#ssc_kjz").hide();// 隐藏开奖中
     /** 请求开奖数据 */
     function requestData(){
-        $.get("indexData",{},function(data){
-            if(data.ret == 200){
-                $("#ssc_period").text(data.nowPeriod.code);// 期号
+        $.get("http://localhost:8899/indexData",{},function(result){
+            if(result.code == 200){
+            	var nowPeriod = result.data.nowPeriod;
+                $("#ssc_period").text(nowPeriod.code);// 期号
 
-                nexttime = data.nowPeriod.endTime;
-                var list = data.berforPeriod.result.split(",");// 开奖好嘛
+                nexttime = nowPeriod.finishTime;
+                var list = result.data.berforPeriod.result.split(",");// 开奖好嘛
                 for(var i = 1; i<= 5; i++){
                     $("#ssc_num_" + i).text(list[i-1]);
                 }
@@ -658,7 +653,7 @@
 
     /** 计算时间 */
     function setTime(){
-        nexttime -= 1000;
+        nexttime -= 1;
 
         if(nexttime < 0){
             requestData();
@@ -666,20 +661,20 @@
         }
 
         var time = "";
-        var val =  parseInt(nexttime / 1000 / 60 / 60 / 24, 10); // 计算剩余的天数
+        var val =  parseInt(nexttime / 60 / 60 / 24, 10); // 计算剩余的天数
         if(val >= 1){
             time += val + " : ";
         }
 
-        var val =  parseInt(nexttime / 1000 / 60 / 60 % 24, 10); // 计算剩余的小时
+        var val =  parseInt(nexttime / 60 / 60 % 24, 10); // 计算剩余的小时
         if(val >= 1){
             time += val + " : ";
         }
 
-        var val =   parseInt(nexttime / 1000 / 60 % 60, 10);// 计算剩余的分钟
+        var val =   parseInt(nexttime / 60 % 60, 10);// 计算剩余的分钟
         time += checkTime(val) + " : ";
 
-        var val =  parseInt(nexttime / 1000 % 60, 10);// 计算剩余的秒数
+        var val =  parseInt(nexttime % 60, 10);// 计算剩余的秒数
         time += checkTime(val);
 
         $("#ssc_time").text(time);

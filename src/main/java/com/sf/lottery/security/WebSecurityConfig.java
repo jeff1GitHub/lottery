@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					"/**/*.gif"
 			).permitAll()
 			// 允许对期数信息的无授权访问
-			.antMatchers("/lottery/period/**").permitAll()
+			.antMatchers("/lottery/period/**", "/indexData").permitAll()
 			
 			// 对以POST请求的登录放行
 			.antMatchers(HttpMethod.POST, "/lottery/user/login").permitAll()
